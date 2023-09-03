@@ -1,6 +1,7 @@
 from api.service.jwthelper import get_access_token, verify_token, decode_token
 from api.controller import UnAuthorized
 from jwt.exceptions import InvalidSignatureError
+from api.service.dbservice import UserService
 
 
 def isAdmin(func):
@@ -21,7 +22,6 @@ def isAdmin(func):
 def isAuthorized(func):
     def wrapper(*arg, **kwargs):
         tok = get_access_token()
-        print(tok)
         verified = verify_token(tok)
         if verified:
             return func(*arg, **kwargs)
@@ -29,3 +29,15 @@ def isAuthorized(func):
             return UnAuthorized('The access token is invalid or expired.')
     wrapper.__name__ = func.__name__
     return wrapper
+
+def userOwnsId(func):
+    def wrapped(*arg, **kwargs):
+        tok = decode_token(get_access_token())
+        user = UserService.getByUsername(tok['username'])
+        if 'id' in kwargs:
+            if user.id == kwargs['id']:
+                return func(*arg, **kwargs)
+            else:
+                return UnAuthorized('The current user does not have permission for this action')
+    wrapped.__name__ = func.__name__
+    return wrapped

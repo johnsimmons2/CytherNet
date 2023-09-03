@@ -57,13 +57,14 @@ class AuthService:
         query = Query(User, db.session)
         secret = user.password
         if user.username is not None:
-            user = query.filter_by(username=user.username).first()
+            user = query.filter_by(username=str.lower(user.username)).first()
         elif user.email is not None:
             user = query.filter_by(email=user.email).first()
         else:
             Logger.error('Attempted to authenticate without email or username provided, or both were provided.')
             return None
         if not user:
+            Logger.error('no user')
             return None
         else:
             if AuthService._hash_password(secret, user.salt) == user.password:
@@ -83,6 +84,10 @@ class UserService:
         return cls.query.filter_by(id=id).first()
     
     @classmethod
+    def getByUsername(cls, username: str):
+        return cls.query.filter_by(username=str.lower(username)).first()
+
+    @classmethod
     def exists(cls, user: User):
         if user.username is not None:
             return cls.query.filter_by(username=user.username).first() is not None
@@ -90,6 +95,19 @@ class UserService:
             return cls.query.filter_by(email=user.email).first() is not None
         else:
             return False
+        
+    @classmethod
+    def updateUser(cls, id: str, user: User):
+        Logger.debug('Updating user with id: ' + id)
+        dbUser: User = cls.query.filter_by(id=id).first()
+        dbUser.username = user.username if user.username is not None else dbUser.username
+        dbUser.email = user.email if user.email is not None else dbUser.email
+        dbUser.fName = user.fName if user.fName is not None else dbUser.fName
+        dbUser.lName = user.lName if user.lName is not None else dbUser.lName
+        dbUser.lastOnline = date.today()
+
+        db.session.commit()
+            
 
 class SpellbookService:
     @classmethod

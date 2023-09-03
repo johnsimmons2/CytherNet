@@ -16,6 +16,20 @@ users = Blueprint('users', __name__)
 def get():
     return UserService.getAll()
 
+@users.route("/users/<id>", methods = ['GET'])
+@isAuthorized
+def getUser(id: str):
+    return UserService.get(id)
+
+@users.route("/users/<id>", methods = ['POST'])
+@isAuthorized
+def updateUser(id: str):
+    if request.get_json() is None:
+        return BadRequest('No user was provided or the input was invalid.')
+    user = User(**json.loads(request.data))
+    UserService.updateUser(id, user)
+    return OK()
+
 @users.route("/auth", methods = ['GET'])
 @isAuthorized
 def checkAuth():

@@ -1,1 +1,41 @@
 /* You can add global styles to this file, and also import other style files */
+@import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
+
+mat-sidenav {
+  width: 20%;
+  min-width: 20%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
+mat-sidenav-content {
+  margin-left: 20%;
+  margin-right: 20%;
+  min-height: 800px;
+}
+
+mat-form-field {
+  width: 50%;
+}
+
+.cyther-page {
+  min-height: 800px;
+}
+
+.form-row {
+  display: flex;
+  margin: 0 5% 1%;
+  text-align: center;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.form-row-item {
+  padding: 5px;
+  margin: 8px;
+  text-align: center;
+  width: 100px;
+}

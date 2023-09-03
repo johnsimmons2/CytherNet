@@ -1,13 +1,20 @@
-<form [formGroup]="loginForm" (ngSubmit)="submit()">
-  <h2>Login</h2>
-  <label>
-    Username:
-    <input type="text" formControlName="username" />
-  </label>
-  <label>
-    Password:
-    <input type="text" formControlName="password" />
-  </label>
-  <button type="submit" [disabled]="!loginForm.valid">Login</button>
-  <button type="button" (click)="register()">Register</button>
-</form>
+<div class="cyther-page">
+  <form [formGroup]="loginForm" (ngSubmit)="submit()">
+    <h2>Login or Make an Account</h2>
+    <div class="form-row">
+      <mat-form-field>
+        <input matInput placeholder="Username" type="text" formControlName="username" />
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field>
+        <input matInput placeholder="Password" type="password" formControlName="password" />
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <button class="form-row-item" type="submit" [disabled]="!loginForm.valid">Login</button>
+      <button class="form-row-item" type="button" (click)="register()">Register</button>
+    </div>
+  </form>
+</div>

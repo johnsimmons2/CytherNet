@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
+import { UserService } from './services/user.service';
+import { Router } from '@angular/router';
 
 /**
  * Todo:
+ *  - clean up a lot
+ *  - unknown pages routing
+ *  - registering should log you in
  *  - Service worker caching for offline use as a PWA
  *  - Error handling***
  *  - profile info editor****
@@ -39,4 +44,16 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Cythernet';
+
+  constructor(private userService: UserService, private router: Router) { }
+
+  get isLoggedIn() {
+    return this.userService.isAuthenticated();
+  }
+
+  logout() {
+    localStorage.removeItem('username');
+    localStorage.removeItem('jwtToken');
+    this.router.navigate(['login']);
+  }
 }

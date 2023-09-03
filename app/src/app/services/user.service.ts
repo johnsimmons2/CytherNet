@@ -18,6 +18,7 @@ export class UserService {
     this.apiService.post('auth/token', user).subscribe((res: any) => {
       if (res.success && res.data.token) {
         localStorage.setItem('jwtToken', res.data.token);
+        localStorage.setItem('username', user.username);
         this.router.navigate(['']);
       }
     });
@@ -27,6 +28,7 @@ export class UserService {
     this.apiService.post('auth/register', user).subscribe((res: any) => {
       if (res.success && res.data.token) {
         localStorage.setItem('jwtToken', res.data.token);
+        localStorage.setItem('username', user.username);
       }
     });
   }
@@ -41,6 +43,7 @@ export class UserService {
 
   isAuthenticated() {
     const user = localStorage.getItem('jwtToken');
+    console.log(user);
     if (user) {
       const decoded: any = jwtDecode(user);
       if (decoded.exp * 1000 < Date.now()) {
