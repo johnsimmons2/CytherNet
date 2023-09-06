@@ -2,6 +2,7 @@
   <div>
     <mat-card>
       <form [formGroup]="characterForm" (ngSubmit)="submit()">
+        <!-- Name Class Level-->
         <div class="character-heading">
           <h2 class="item-large">
             <mat-form-field>
@@ -36,15 +37,78 @@
           </mat-form-field>
         </span>
         </div>
-        <div>
-          <mat-chip-listbox aria-label="Character Type">
-            <mat-chip-option>
-              asdasd
-            </mat-chip-option>
-            <mat-chip-option>
-              asdasd
-            </mat-chip-option>
-          </mat-chip-listbox>
+
+
+        <!-- Character type subclass race -->
+        <div class="character-heading">
+          <mat-chip-list [selectable]="true" id="character-opts" (change)="characterTypeFormUpdate($event)" formControlName="characterTypeForm">
+            <mat-chip id="pc-option"
+            #pcOption="matChip"
+            [selected]="selectedCharType === 0"
+            (click)="characterTypeSelect(pcOption)"
+            >
+            PC
+          </mat-chip>
+          <mat-chip id="npc-option"
+          #npcOption="matChip"
+          [selected]="selectedCharType === 1"
+          (click)="characterTypeSelect(npcOption)"
+          >
+          NPC
+        </mat-chip>
+        <mat-chip id="m-option"
+        #mOption="matChip"
+        [selected]="selectedCharType === 2"
+        (click)="characterTypeSelect(mOption)"
+        >
+        Monster
+      </mat-chip>
+    </mat-chip-list>
+    <span class="item-medium">
+      <mat-form-field>
+        <mat-label>Sub-Class</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let clazz of clazzes" [value]="clazz">
+            {{clazz.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </span>
+    <span class="item-medium">
+      <mat-form-field>
+        <mat-label>Race</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let clazz of clazzes" [value]="clazz">
+            {{clazz.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </span>
+        </div>
+
+        <!-- Hit dice and spell slots -->
+        <div class="character-row">
+          <span class="item-small">
+            <h3>
+              Hit Dice (10 HP)
+            </h3>
+          </span>
+          <span class="item-small-medium">
+            <dice-app *ngFor="let d of hitDice" [dice]="d.amount + 'd' + d.value" [amount]="d.amount" [displayOnly]="true" [size]="12">
+            </dice-app>
+          </span>
+          <span class="item-small-medium">
+            <h3 style="width: 100%;">
+              Spell Slots
+            </h3>
+            <spell-slot-app *ngFor="let d of spellSlots" [amount]="d.amount" [tier]="d.tier" [displayOnly]="true" [size]="12">
+            </spell-slot-app>
+          </span>
+          <div class="item-small">
+            <a>Selected Spells</a>
+            <mat-icon icon="tab_unselected"></mat-icon>
+            <a>Selected Cantrips</a>
+          </div>
         </div>
       </form>
     </mat-card>

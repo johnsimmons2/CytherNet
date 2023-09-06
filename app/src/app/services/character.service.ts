@@ -17,4 +17,9 @@ export class CharacterService {
     return this.apiService.get('characters/player');
   }
 
+  getCharacterHitDice(username: string) {
+    // TODO: Get the hit dice from the api based on the character ID not the username.
+    return this.apiService.get('characters/player');
+  }
+
 }

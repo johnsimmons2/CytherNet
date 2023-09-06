@@ -21,6 +21,7 @@ import {
   MatCardModule,
   MatSelectModule,
   MatCommonModule,
+  MatBadgeModule
 } from '@angular/material';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import {
@@ -31,6 +32,8 @@ import { JournalComponent } from './journal/journal.component';
 import { CharacterComponent } from './character/character.component';
 import { CampaignComponent } from './campaign/campaign.component';
 import { CreateCharacterComponent } from './character/create-character/create-character.component';
+import { DiceComponent } from './shared/dice-component/dice.component';
+import { SpellSlotComponent } from './shared/spell-slot/spell-slot.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +44,9 @@ import { CreateCharacterComponent } from './character/create-character/create-ch
     JournalComponent,
     CharacterComponent,
     CreateCharacterComponent,
-    CampaignComponent
+    CampaignComponent,
+    DiceComponent,
+    SpellSlotComponent
   ],
   imports: [
     BrowserModule,
@@ -61,6 +66,7 @@ import { CreateCharacterComponent } from './character/create-character/create-ch
     MatProgressBarModule,
     MatSelectModule,
     MatChipsModule,
+    MatBadgeModule,
   ],
   providers: [HttpClient],
   bootstrap: [AppComponent],

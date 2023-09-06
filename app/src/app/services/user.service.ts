@@ -14,6 +14,15 @@ export class UserService {
       private apiService: ApiService
   ) {}
 
+  getCurrentUsername() {
+    const user = localStorage.getItem('username');
+    if (user) {
+      return user;
+    }
+    // Blah blah something wrong do something
+    return null;
+  }
+
   login(user: User) {
     this.apiService.post('auth/token', user).subscribe((res: any) => {
       if (res.success && res.data.token) {
