@@ -16,6 +16,38 @@ export class CreateCharacterComponent {
 
   clazzes: Class[] = [];
   hitDice: Dice[] = [];
+  stats: any[] = [
+    {
+      name: "Strength",
+      description: "Strength measures bodily power, athletic training, and the extent to which you can exert raw physical force.",
+      value: 10,
+    },
+    {
+      name: "Dexterity",
+      value: 16,
+      description: "Dexterity measures agility, reflexes, and balance.",
+    },
+    {
+      name: "Constitution",
+      value: 12,
+      description: "Constitution measures health, stamina, and vital force.",
+    },
+    {
+      name: "Intelligence",
+      value: 8,
+      description: "Intelligence measures mental acuity, accuracy of recall, and the ability to reason.",
+    },
+    {
+      name: "Wisdom",
+      value: 11,
+      description: "Wisdom reflects how attuned you are to the world around you and represents perceptiveness and intuition.",
+    },
+    {
+      name: "Charisma",
+      value: 18,
+      description: "Charisma measures your ability to interact effectively with others. It includes such factors as confidence and eloquence, and it can represent a charming or commanding personality.",
+    }
+  ];
   spellSlots: Spellslot[] = [];
   characterForm: FormGroup;
   selectedCharType: number = 0;
@@ -92,10 +124,18 @@ export class CreateCharacterComponent {
     this.initFormVals();
     this.hitDice = [
       {
-        amount: 1,
+        amount: 4,
         value: 12
+      },
+      {
+        amount: 1,
+        value: 6
+      },
+      {
+        amount: 2,
+        value: 8
       }
-    ]
+    ];
     this.clazzes = [
       {
         id: 1,

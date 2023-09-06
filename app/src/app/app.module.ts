@@ -21,8 +21,12 @@ import {
   MatCardModule,
   MatSelectModule,
   MatCommonModule,
-  MatBadgeModule
+  MatBadgeModule,
+  MatGridListModule,
 } from '@angular/material';
+import {
+  MatExpansionModule
+} from '@angular/material/expansion';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import {
   MatFormFieldModule
@@ -34,6 +38,7 @@ import { CampaignComponent } from './campaign/campaign.component';
 import { CreateCharacterComponent } from './character/create-character/create-character.component';
 import { DiceComponent } from './shared/dice-component/dice.component';
 import { SpellSlotComponent } from './shared/spell-slot/spell-slot.component';
+import { StatsFormComponent } from './shared/stats-form-component/stats-form.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +51,8 @@ import { SpellSlotComponent } from './shared/spell-slot/spell-slot.component';
     CreateCharacterComponent,
     CampaignComponent,
     DiceComponent,
-    SpellSlotComponent
+    SpellSlotComponent,
+    StatsFormComponent
   ],
   imports: [
     BrowserModule,
@@ -67,6 +73,8 @@ import { SpellSlotComponent } from './shared/spell-slot/spell-slot.component';
     MatSelectModule,
     MatChipsModule,
     MatBadgeModule,
+    MatExpansionModule,
+    MatGridListModule
   ],
   providers: [HttpClient],
   bootstrap: [AppComponent],

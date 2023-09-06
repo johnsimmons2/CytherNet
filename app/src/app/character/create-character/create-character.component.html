@@ -2,114 +2,129 @@
   <div>
     <mat-card>
       <form [formGroup]="characterForm" (ngSubmit)="submit()">
-        <!-- Name Class Level-->
-        <div class="character-heading">
-          <h2 class="item-large">
+        <mat-grid-list [cols]="10" rowHeight="60px" gutterSize="0">
+          <mat-grid-tile [colspan]="5">
             <mat-form-field>
               <input matInput placeholder="Character Name" type="text" formControlName="characterNameForm" />
-            <mat-error>
-              <span *ngIf="characterForm.controls['characterNameForm'].hasError('required')">Character name is required.</span>
-              <span *ngIf="characterForm.controls['characterNameForm'].hasError('maxlength')">Character name cannot be longer than 20 characters. ({{characterForm.controls['characterNameForm'].value!.toString().length}})</span>
-            </mat-error>
-          </mat-form-field>
-        </h2>
-        <mat-form-field class="item-small">
-          <mat-label></mat-label>
-          <input matInput
-                  class="level-form"
-                  type="number" value="1"
-                  formControlName="levelForm"
-                  placeholder="1"/>
-          <span matPrefix>Level &nbsp;</span>
-          <mat-error>
-            <span *ngIf="characterForm.controls['levelForm'].hasError('max')">Level cap is 20!</span>
-            <span *ngIf="characterForm.controls['levelForm'].hasError('min')">Minimum level is 1.</span>
-          </mat-error>
-        </mat-form-field>
-        <span class="item-medium">
-          <mat-form-field>
-            <mat-label>Class</mat-label>
-            <mat-select>
-              <mat-option *ngFor="let clazz of clazzes" [value]="clazz">
-                {{clazz.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </span>
-        </div>
+              <mat-error>
+                <span *ngIf="characterForm.controls['characterNameForm'].hasError('required')">Character name is required.</span>
+                <span *ngIf="characterForm.controls['characterNameForm'].hasError('maxlength')">Character name cannot be longer than 20 characters. ({{characterForm.controls['characterNameForm'].value!.toString().length}})</span>
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
 
+          <mat-grid-tile [colspan]="1" [rowspan]="2">
+            <mat-form-field style="width:100%;">
+              <input matInput
+                      type="number"
+                      value="1"
+                      formControlName="levelForm"/>
+              <span matPrefix>Level &nbsp;</span>
+              <mat-error>
+                <span *ngIf="characterForm.controls['levelForm'].hasError('max')">Level cap is 20!</span>
+                <span *ngIf="characterForm.controls['levelForm'].hasError('min')">Minimum level is 1.</span>
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
 
-        <!-- Character type subclass race -->
-        <div class="character-heading">
-          <mat-chip-list [selectable]="true" id="character-opts" (change)="characterTypeFormUpdate($event)" formControlName="characterTypeForm">
-            <mat-chip id="pc-option"
-            #pcOption="matChip"
-            [selected]="selectedCharType === 0"
-            (click)="characterTypeSelect(pcOption)"
-            >
-            PC
-          </mat-chip>
-          <mat-chip id="npc-option"
-          #npcOption="matChip"
-          [selected]="selectedCharType === 1"
-          (click)="characterTypeSelect(npcOption)"
-          >
-          NPC
-        </mat-chip>
-        <mat-chip id="m-option"
-        #mOption="matChip"
-        [selected]="selectedCharType === 2"
-        (click)="characterTypeSelect(mOption)"
-        >
-        Monster
-      </mat-chip>
-    </mat-chip-list>
-    <span class="item-medium">
-      <mat-form-field>
-        <mat-label>Sub-Class</mat-label>
-        <mat-select>
-          <mat-option *ngFor="let clazz of clazzes" [value]="clazz">
-            {{clazz.name}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </span>
-    <span class="item-medium">
-      <mat-form-field>
-        <mat-label>Race</mat-label>
-        <mat-select>
-          <mat-option *ngFor="let clazz of clazzes" [value]="clazz">
-            {{clazz.name}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </span>
-        </div>
+          <mat-grid-tile #characterClass [colspan]="4">
+            <mat-form-field>
+              <mat-label>Class</mat-label>
+              <mat-select>
+                <mat-option *ngFor="let clazz of clazzes" [value]="clazz">
+                  {{clazz.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-grid-tile>
 
-        <!-- Hit dice and spell slots -->
-        <div class="character-row">
-          <span class="item-small">
-            <h3>
-              Hit Dice (10 HP)
+          <mat-grid-tile #characterType [colspan]="5">
+            <mat-chip-list [selectable]="true" id="character-opts" (change)="characterTypeFormUpdate($event)" formControlName="characterTypeForm">
+              <mat-chip id="pc-option"
+                        #pcOption="matChip"
+                        [selected]="selectedCharType === 0"
+                        (click)="characterTypeSelect(pcOption)">PC</mat-chip>
+              <mat-chip id="npc-option"
+                        #npcOption="matChip"
+                        [selected]="selectedCharType === 1"
+                        (click)="characterTypeSelect(npcOption)">NPC</mat-chip>
+              <mat-chip id="m-option"
+                        #mOption="matChip"
+                        [selected]="selectedCharType === 2"
+                        (click)="characterTypeSelect(mOption)">Monster</mat-chip>
+            </mat-chip-list>
+          </mat-grid-tile>
+
+          <mat-grid-tile #characterSubclass [colspan]="4">
+            <mat-form-field>
+              <mat-label>Sub-Class</mat-label>
+              <mat-select>
+                <mat-option *ngFor="let clazz of clazzes" [value]="clazz">
+                  {{clazz.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-grid-tile>
+
+          <mat-grid-tile #characterRace [colspan]="4">
+            <mat-form-field>
+              <mat-label>Race</mat-label>
+              <mat-select>
+                <mat-option *ngFor="let clazz of clazzes" [value]="clazz">
+                  {{clazz.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-grid-tile>
+
+          <mat-grid-tile #hitDiceLabel [colspan]="1">
+            <h3 style="width: 100%;">
+              Hit Dice
             </h3>
-          </span>
-          <span class="item-small-medium">
-            <dice-app *ngFor="let d of hitDice" [dice]="d.amount + 'd' + d.value" [amount]="d.amount" [displayOnly]="true" [size]="12">
+          </mat-grid-tile>
+
+          <mat-grid-tile #hitDice [colspan]="1" *ngFor="let d of hitDice">
+            <dice-app [dice]="d.amount + 'd' + d.value" [amount]="d.amount" [displayOnly]="true" [diceSize]="12">
             </dice-app>
-          </span>
-          <span class="item-small-medium">
+          </mat-grid-tile>
+
+          <mat-grid-tile #hp [colspan]="1">
+            <b>
+              10 / 10 HP
+            </b>
+          </mat-grid-tile>
+
+          <mat-grid-tile #personality [colspan]="5" [rowspan]="1">
+            <!-- modal selectors that let the players pick their spells and cantrips, or type up their background / pick background. -->
+            <a>Spells</a>
+            <a>Cantrips</a>
+            <a>Background</a>
+            <a>Personality</a>
+          </mat-grid-tile>
+
+          <mat-grid-tile #spellSlotsLabel [colspan]="1">
             <h3 style="width: 100%;">
               Spell Slots
             </h3>
-            <spell-slot-app *ngFor="let d of spellSlots" [amount]="d.amount" [tier]="d.tier" [displayOnly]="true" [size]="12">
+          </mat-grid-tile>
+
+          <mat-grid-tile #spellSlots [colspan]="1" *ngFor="let d of spellSlots">
+            <spell-slot-app [amount]="d.amount" [tier]="d.tier" [displayOnly]="true" [size]="12">
             </spell-slot-app>
-          </span>
-          <div class="item-small">
-            <a>Selected Spells</a>
-            <mat-icon icon="tab_unselected"></mat-icon>
-            <a>Selected Cantrips</a>
-          </div>
-        </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile #characterStats [colspan]="3" [rowspan]="9">
+            <mat-accordion style="padding:2px; width:100%; height: 100%;" multi *ngIf="stats.length > 0">
+              <stats-form-app style="padding:2px; width:100%;" [class]="'stat-card'" *ngFor="let stat of stats" [statName]="stat.name" [statValue]="stat.value" [statDescription]="stat.description"></stats-form-app>
+            </mat-accordion>
+          </mat-grid-tile>
+
+          <!-- proficiencies | saving throws: show you how many are available,  -->
+          <!-- skills and traits | total skills and traits-->
+          <mat-grid-tile [colspan]="2">
+          </mat-grid-tile>
+
+        </mat-grid-list>
       </form>
     </mat-card>
   </div>
