@@ -16,9 +16,11 @@ from sqlalchemy.orm import sessionmaker, Query
 
 class AuthService:
     @classmethod
-    def isAuthorized(cls, user: User, secret: str) -> User | None:
-        # Request the auth-api project to see if a given user and secret combo
-        pass
+    def addDefaultRole(cls, user):
+        roles = Query(UserRole, db.session).filter_by(userId=user.id).all()
+        if roles is None or roles == []:
+            user.roles.append(Query(Role, db.session).filter_by(roleName='Player').first())
+            db.session.commit()
 
     @classmethod
     def register_user(cls, user: User):       
@@ -29,9 +31,9 @@ class AuthService:
         nUser.lastOnline = date.today()
         nUser.username = user.username
         nUser.email = user.email
-
         db.session.add(nUser)
         db.session.commit()
+        cls.addDefaultRole(nUser)
         return True
     
     @classmethod
@@ -49,10 +51,6 @@ class AuthService:
         return None
 
     @classmethod
-    def isAuthorized(cls, user: User, token: str) -> User | None:
-        jwth.verify_token(token)
-
-    @classmethod
     def authenticate_user(cls, user: User) -> User | None:
         query = Query(User, db.session)
         secret = user.password
@@ -68,9 +66,20 @@ class AuthService:
             return None
         else:
             if AuthService._hash_password(secret, user.salt) == user.password:
+                user.lastOnline = date.today()
+                cls.addDefaultRole(user)
                 return jwth.create_token(user)
             else:
                 return None
+
+class RoleService:
+    query = Query(Role, db.session)
+
+    @classmethod
+    def initRoles(cls):
+        cls.query.filter_by(roleName='Admin').first() or db.session.add(Role(roleName='Admin', level=0))
+        cls.query.filter_by(roleName='Player').first() or db.session.add(Role(roleName='Player', level=1))
+        db.session.commit()
 
 class UserService:
     query = Query(User, db.session)

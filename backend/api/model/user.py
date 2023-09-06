@@ -14,6 +14,7 @@ class UserRole(db.Model):
 @dataclass
 class Role(db.Model):
     id: int = db.Column(Integer, primary_key=True, autoincrement=True)
+    level: int = db.Column(Integer)
     roleName: str = db.Column(String)
 
 @dataclass
@@ -29,5 +30,4 @@ class User(db.Model):
     lastOnline = db.Column(DateTime)
     
     roles = db.relationship('Role', secondary='user_role', backref='user')
-    characters = relationship("Character", backref="user")
     

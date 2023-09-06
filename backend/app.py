@@ -9,6 +9,7 @@ from api.controller.usercontroller import users
 from api.controller.charactercontroller import characters
 from api.model import db
 from api.model.user import User
+from api.service.dbservice import RoleService
 
 
 # Setup logger
@@ -39,5 +40,6 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
     db.session.commit()
+    RoleService.initRoles()
 
 

@@ -4,7 +4,8 @@ import { UserService } from "../services/user.service";
 
 @Component({
   selector: 'character-app',
-  templateUrl: './character.component.html'
+  templateUrl: './character.component.html',
+  styleUrls: ['./character.component.scss']
 })
 export class CharacterComponent {
 

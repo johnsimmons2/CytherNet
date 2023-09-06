@@ -1,0 +1,17 @@
+
+.character {
+  display: flex;
+  flex-direction: column;
+}
+
+.character-heading {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.character-heading h2, p {
+  padding: 8px;
+}
+

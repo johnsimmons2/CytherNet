@@ -1,0 +1,52 @@
+<div class="cyther-page">
+  <div>
+    <mat-card>
+      <form [formGroup]="characterForm" (ngSubmit)="submit()">
+        <div class="character-heading">
+          <h2 class="item-large">
+            <mat-form-field>
+              <input matInput placeholder="Character Name" type="text" formControlName="characterNameForm" />
+            <mat-error>
+              <span *ngIf="characterForm.controls['characterNameForm'].hasError('required')">Character name is required.</span>
+              <span *ngIf="characterForm.controls['characterNameForm'].hasError('maxlength')">Character name cannot be longer than 20 characters. ({{characterForm.controls['characterNameForm'].value!.toString().length}})</span>
+            </mat-error>
+          </mat-form-field>
+        </h2>
+        <mat-form-field class="item-small">
+          <mat-label></mat-label>
+          <input matInput
+                  class="level-form"
+                  type="number" value="1"
+                  formControlName="levelForm"
+                  placeholder="1"/>
+          <span matPrefix>Level &nbsp;</span>
+          <mat-error>
+            <span *ngIf="characterForm.controls['levelForm'].hasError('max')">Level cap is 20!</span>
+            <span *ngIf="characterForm.controls['levelForm'].hasError('min')">Minimum level is 1.</span>
+          </mat-error>
+        </mat-form-field>
+        <span class="item-medium">
+          <mat-form-field>
+            <mat-label>Class</mat-label>
+            <mat-select>
+              <mat-option *ngFor="let clazz of clazzes" [value]="clazz">
+                {{clazz.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </span>
+        </div>
+        <div>
+          <mat-chip-listbox aria-label="Character Type">
+            <mat-chip-option>
+              asdasd
+            </mat-chip-option>
+            <mat-chip-option>
+              asdasd
+            </mat-chip-option>
+          </mat-chip-listbox>
+        </div>
+      </form>
+    </mat-card>
+  </div>
+</div>

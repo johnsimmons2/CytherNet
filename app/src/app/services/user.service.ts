@@ -24,6 +24,21 @@ export class UserService {
     });
   }
 
+  isAdmin() {
+    const user = localStorage.getItem('jwtToken');
+    if (user) {
+      const decoded: any = jwtDecode(user);
+      let result = false;
+      decoded.roles.forEach((role: any) => {
+        if (role.level === 0) {
+          result = true;
+        }
+      });
+      return result;
+    }
+    return false;
+  }
+
   register(user: User) {
     this.apiService.post('auth/register', user).subscribe((res: any) => {
       if (res.success && res.data.token) {
@@ -43,7 +58,6 @@ export class UserService {
 
   isAuthenticated() {
     const user = localStorage.getItem('jwtToken');
-    console.log(user);
     if (user) {
       const decoded: any = jwtDecode(user);
       if (decoded.exp * 1000 < Date.now()) {

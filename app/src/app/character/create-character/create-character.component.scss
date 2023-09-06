@@ -1,0 +1,50 @@
+.character-heading {
+  display: inline-flex;
+  flex-flow: row;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.character-heading > * {
+  padding: 8px;
+}
+
+.character-heading h2 {
+  padding: 8px;
+}
+
+.character-heading p {
+  padding: 8px;
+}
+
+.item-small {
+  flex: 1;
+  max-width: 80px;
+  padding: 8px;
+  margin: 8px;
+}
+
+.item-large {
+  flex: 5;
+}
+
+.item-medium {
+  flex: 3;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+
+input.level-form {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+input.level-form::-webkit-outer-spin-button,
+input.level-form::-webkit-inner-spin-button {
+  display: none;
+}

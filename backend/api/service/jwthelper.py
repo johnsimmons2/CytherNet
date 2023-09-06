@@ -12,6 +12,7 @@ def create_token(user: User) -> str:
         'username': user.username,
         'email': user.email,
         'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30),
+        'roles': [{'roleName': role.roleName, 'level': role.level} for role in user.roles]
         }, config('security')['jwtsecret'], "HS256")
 
 def decode_token(token: str) -> dict:

@@ -6,14 +6,13 @@ from .dice import Hitdice
 
 class Character(db.Model):
     id: int = db.Column(Integer, primary_key=True, autoincrement=True)
-    userId: int = db.Column(Integer, ForeignKey('user.id'))
     name: str = db.Column(String)
     # 0: Player
     # 1: NPC
     type: int = db.Column(Integer)
     race: str = db.Column(String)
-    className: str = db.Column(String)
-    subClassName: str = db.Column(String)
+    classId: int = db.Column(Integer)
+    subclassId: int = db.Column(Integer)
 
     statsheet = relationship("Statsheet", back_populates="character", cascade="all,delete")
 
