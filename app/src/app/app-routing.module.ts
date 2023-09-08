@@ -8,7 +8,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { JournalComponent } from './journal/journal.component';
 import { CharacterComponent } from './character/character.component';
 import { CampaignComponent } from './campaign/campaign.component';
-import { CreateCharacterComponent } from './character/create-character/create-character.component';
+import { CreateCharacterComponent } from './create/create-character/create-character.component';
+import { CreateComponent } from './create/create.component';
 
 const routes: Routes = [
   {
@@ -38,7 +39,11 @@ const routes: Routes = [
         component: CampaignComponent
       },
       {
-        path: 'character/create',
+        path: 'create',
+        component: CreateComponent
+      },
+      {
+        path: 'create/character',
         component: CreateCharacterComponent
       }
     ]

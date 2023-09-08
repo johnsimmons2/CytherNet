@@ -5,15 +5,46 @@
     </button>
     <span class="nav-title">Cythernet</span>
     <div>
-      <a *ngIf="isLoggedIn" mat-button [routerLink]="'/'" routerLinkActive="active">Home</a>
-      <a *ngIf="isLoggedIn" mat-button [routerLink]="'/character'" routerLinkActive="active">Character</a>
-      <a *ngIf="isLoggedIn" mat-button [routerLink]="'/journal'" routerLinkActive="active">Journal</a>
-      <a *ngIf="isLoggedIn" mat-button [routerLink]="'/campaign'" routerLinkActive="active">Campaign</a>
+      <app-header-button buttonName="Home"
+                        buttonIcon="home"
+                        buttonRoute="/"
+                        [isLoggedIn]="isLoggedIn">
+      </app-header-button>
+
+      <app-header-button buttonName="Character"
+                        buttonIcon="person"
+                        buttonRoute="/character"
+                        [isLoggedIn]="isLoggedIn">
+      </app-header-button>
+
+      <app-header-button buttonName="Campaign"
+                        buttonIcon="map"
+                        buttonRoute="/campaign"
+                        [isLoggedIn]="isLoggedIn">
+      </app-header-button>
+
+      <app-header-button buttonName="Journal"
+                        buttonIcon="bookmark_border"
+                        buttonIconActive="bookmark"
+                        buttonRoute="/journal"
+                        [isLoggedIn]="isLoggedIn">
+      </app-header-button>
+
+      <app-header-button buttonName="Create"
+                        buttonIcon="add_circle_outline"
+                        buttonIconActive="add_circle"
+                        buttonRoute="/create"
+                        [isLoggedIn]="isLoggedIn">
+      </app-header-button>
     </div>
+
     <div style="flex: 1 1 auto;"></div>
-    <div>
-      <a *ngIf="isLoggedIn" mat-button (click)="logout()" style="right: 0;">Logout</a>
-    </div>
+
+    <app-header-button buttonName="Logout"
+                      buttonIcon="logout"
+                      (click)="logout()"
+                      [isLoggedIn]="isLoggedIn">
+    </app-header-button>
   </mat-toolbar-row>
 </mat-toolbar>
 

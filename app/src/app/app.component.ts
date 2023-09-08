@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { UserService } from './services/user.service';
 import { Router } from '@angular/router';
+import { MatIconRegistry } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
 
 /**
  * Todo:
@@ -45,10 +47,43 @@ import { Router } from '@angular/router';
 export class AppComponent {
   title = 'Cythernet';
 
-  constructor(private userService: UserService, private router: Router) { }
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private matIconRegistry: MatIconRegistry,
+    private domSanitizer: DomSanitizer) {
+      this.matIconRegistry.addSvgIcon(
+        "dice-4",
+        this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/dice-4.svg")
+      );
+      this.matIconRegistry.addSvgIcon(
+        "dice-6",
+        this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/dice-6.svg")
+      );
+      this.matIconRegistry.addSvgIcon(
+        "dice-8",
+        this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/dice-8.svg")
+      );
+      this.matIconRegistry.addSvgIcon(
+        "dice-10",
+        this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/dice-10.svg")
+      );
+      this.matIconRegistry.addSvgIcon(
+        "dice-12",
+        this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/dice-12.svg")
+      );
+      this.matIconRegistry.addSvgIcon(
+        "dice-20",
+        this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/dice-20.svg")
+      );
+    }
 
   get isLoggedIn() {
     return this.userService.isAuthenticated();
+  }
+
+  get isAdmin() {
+    return this.userService.isAdmin();
   }
 
   logout() {

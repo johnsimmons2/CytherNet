@@ -23,6 +23,7 @@ import {
   MatCommonModule,
   MatBadgeModule,
   MatGridListModule,
+  MatIconRegistry,
 } from '@angular/material';
 import {
   MatExpansionModule
@@ -35,10 +36,13 @@ import { ProfileComponent } from './profile/profile.component';
 import { JournalComponent } from './journal/journal.component';
 import { CharacterComponent } from './character/character.component';
 import { CampaignComponent } from './campaign/campaign.component';
-import { CreateCharacterComponent } from './character/create-character/create-character.component';
+import { CreateCharacterComponent } from './create/create-character/create-character.component';
 import { DiceComponent } from './shared/dice-component/dice.component';
 import { SpellSlotComponent } from './shared/spell-slot/spell-slot.component';
 import { StatsFormComponent } from './shared/stats-form-component/stats-form.component';
+import { CreateComponent } from './create/create.component';
+import { HeaderButtonComponent } from './shared/header-button/header-button.component';
+import { HealthComponent } from './shared/health-component/health.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +56,10 @@ import { StatsFormComponent } from './shared/stats-form-component/stats-form.com
     CampaignComponent,
     DiceComponent,
     SpellSlotComponent,
-    StatsFormComponent
+    StatsFormComponent,
+    CreateComponent,
+    HeaderButtonComponent,
+    HealthComponent
   ],
   imports: [
     BrowserModule,
@@ -76,7 +83,7 @@ import { StatsFormComponent } from './shared/stats-form-component/stats-form.com
     MatExpansionModule,
     MatGridListModule
   ],
-  providers: [HttpClient],
+  providers: [HttpClient, MatIconRegistry],
   bootstrap: [AppComponent],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
