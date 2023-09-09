@@ -1,0 +1,90 @@
+.character-form {
+  height: 100%;
+}
+
+.character-heading {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.character-row {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.hitdice-tile > ::ng-deep figure  {
+  justify-content: left;
+}
+
+.stat-card {
+}
+
+.character-heading > * {
+  padding: 8px;
+}
+
+.character-heading h2 {
+  padding: 8px;
+}
+
+.character-heading p {
+  padding: 8px;
+}
+
+.item-small {
+  display: flex;
+  flex: 1;
+  padding: 4px;
+  margin: 4px;
+  flex-direction: row;
+  flex-flow: row;
+  flex-wrap: wrap;
+}
+
+.item-tiny {
+  display: flex;
+  flex: 0.5;
+  padding: 8px;
+  margin: 8px;
+  flex-direction: row;
+  flex-flow: row;
+  flex-wrap: wrap;
+}
+
+a {
+  text-decoration: underline dotted #636363;
+  color: #636363;
+  padding: 12px;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.item-small-medium {
+  display: flex;
+  flex: 2;
+  padding: 8px;
+  flex-flow: row;
+}
+
+.item-large {
+  flex: 5;
+}
+
+.item-medium {
+  flex: 3;
+}
+
+input.level-form {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+input.level-form::-webkit-outer-spin-button,
+input.level-form::-webkit-inner-spin-button {
+  display: none;
+}

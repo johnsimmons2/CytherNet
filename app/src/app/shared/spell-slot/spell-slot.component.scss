@@ -1,0 +1,55 @@
+:host ::ng-deep .mat-badge-medium {
+  .mat-badge-content {
+    z-index: 10000;
+  }
+}
+
+.spell-slot-card {
+  display: flex;
+  width: 10px;
+  height: 10px;
+  max-width: 10px;
+  max-height: 10px;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+  text-align: center;
+  line-height: 10px;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  h2 {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    text-anchor: left;
+    vertical-align: middle;
+    flex: 0 0 10px;
+  }
+}
+
+.enabled {
+  cursor: pointer;
+  &:hover {
+    // Create a shadow and inlet the card a little bit:
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    transform: scale(1.1);
+  }
+}
+
+.spell-slot-card h2 {
+  margin: 0;
+  padding: 0;
+}
+
+::ng-deep mat-card {
+  margin: 0;
+}
+
+::ng-deep .spell-slot-card {
+  background-color: green !important;
+  color: white;
+  font-size: small;
+}

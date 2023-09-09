@@ -1,0 +1,10 @@
+<div class="dice-container">
+  <ng-container *ngFor="let d of dice">
+    <dice-app [dice]="d.amount + 'd' + d.value"
+              [amount]="d.amount"
+              [displayOnly]="true"
+              [diceSize]="d.value"
+              [size]="0">
+    </dice-app>
+  </ng-container>
+</div>
