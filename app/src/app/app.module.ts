@@ -43,6 +43,9 @@ import { StatsFormComponent } from './shared/stats-form-component/stats-form.com
 import { CreateComponent } from './create/create.component';
 import { HeaderButtonComponent } from './shared/header-button/header-button.component';
 import { HealthComponent } from './shared/health-component/health.component';
+import { SubtleModalComponent } from './shared/subtle-modal/subtle-modal.component';
+import { ModalComponent } from './shared/subtle-modal/modal/modal.component';
+import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -59,7 +62,9 @@ import { HealthComponent } from './shared/health-component/health.component';
     StatsFormComponent,
     CreateComponent,
     HeaderButtonComponent,
-    HealthComponent
+    HealthComponent,
+    SubtleModalComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
@@ -81,7 +86,8 @@ import { HealthComponent } from './shared/health-component/health.component';
     MatChipsModule,
     MatBadgeModule,
     MatExpansionModule,
-    MatGridListModule
+    MatGridListModule,
+    MatDialogModule
   ],
   providers: [HttpClient, MatIconRegistry],
   bootstrap: [AppComponent],

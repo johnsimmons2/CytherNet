@@ -1,10 +1,19 @@
-<div class="dice-container">
-  <ng-container *ngFor="let d of dice">
-    <dice-app [dice]="d.amount + 'd' + d.value"
-              [amount]="d.amount"
-              [displayOnly]="true"
-              [diceSize]="d.value"
-              [size]="0">
-    </dice-app>
-  </ng-container>
+<div style="display: flex;">
+  <div>
+    <p style="margin:0;">
+      Health: {{health}}/{{maxHealth}}
+    </p>
+  </div>
+
+  <div class="healthbar">
+    <mat-progress-bar mode="determinate" [value]="health"></mat-progress-bar>
+    <ng-container *ngFor="let d of dice">
+      <dice-app [dice]="d.amount + 'd' + d.value"
+                [amount]="d.amount"
+                [displayOnly]="true"
+                [diceSize]="d.value"
+                [size]="0">
+      </dice-app>
+    </ng-container>
+  </div>
 </div>

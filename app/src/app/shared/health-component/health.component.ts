@@ -10,6 +10,9 @@ export class HealthComponent implements OnInit {
 
   @Input() dice: Dice[] = [];
 
+  health: number = 100;
+  maxHealth: number = 100;
+
   constructor() { }
 
   ngOnInit(): void {

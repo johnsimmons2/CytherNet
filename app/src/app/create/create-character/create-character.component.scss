@@ -1,5 +1,20 @@
+.twocolumns {
+  display: flex;
+  flex-flow: row;
+  gap: 8px;
+}
+
+.onecolumn {
+  flex: 1;
+  margin: 8px;
+}
+
 .character-form {
   height: 100%;
+}
+
+.class-subclass {
+  margin: 4px;
 }
 
 .character-heading {
@@ -16,8 +31,12 @@
   flex-wrap: wrap;
 }
 
-.hitdice-tile > ::ng-deep figure  {
+.leftjustify > ::ng-deep figure  {
   justify-content: left;
+}
+
+.spacedaround > ::ng-deep figure  {
+  justify-content: space-around;
 }
 
 .stat-card {

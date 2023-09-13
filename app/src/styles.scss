@@ -33,6 +33,10 @@ $cyther-app-theme: mat-light-theme($cyther-app-primary, $cyther-app-accent, $cyt
 // that you are using.
 @include angular-material-theme($cyther-app-theme);
 
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
 mat-sidenav {
   width: 20%;
   min-width: 20%;
