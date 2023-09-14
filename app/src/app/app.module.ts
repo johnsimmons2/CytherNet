@@ -11,20 +11,15 @@ import { HttpClientModule } from '@angular/common/http';
 import {
   MatChipsModule
 } from '@angular/material/chips';
-import {
-  MatToolbarModule,
-  MatSidenavModule,
-  MatListModule,
-  MatIconModule,
-  MatButtonModule,
-  MatInputModule,
-  MatCardModule,
-  MatSelectModule,
-  MatCommonModule,
-  MatBadgeModule,
-  MatGridListModule,
-  MatIconRegistry,
-} from '@angular/material';
+import { MatBadgeModule} from '@angular/material/badge';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCardModule } from '@angular/material/card';
+import { MatToolbarModule} from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatInputModule } from '@angular/material/input';
+import { MatGridListModule } from '@angular/material/grid-list';
 import {
   MatExpansionModule
 } from '@angular/material/expansion';
@@ -45,7 +40,10 @@ import { HeaderButtonComponent } from './shared/header-button/header-button.comp
 import { HealthComponent } from './shared/health-component/health.component';
 import { SubtleModalComponent } from './shared/subtle-modal/subtle-modal.component';
 import { ModalComponent } from './shared/subtle-modal/modal/modal.component';
-import { MatDialogModule, MatDialog } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatCommonModule } from '@angular/material/core';
+import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -69,6 +67,7 @@ import { MatDialogModule, MatDialog } from '@angular/material/dialog';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    CommonModule,
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,

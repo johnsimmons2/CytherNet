@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { UserService } from './services/user.service';
 import { Router } from '@angular/router';
-import { MatIconRegistry } from '@angular/material';
+import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 
 /**

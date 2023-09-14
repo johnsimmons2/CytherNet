@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import { UserService } from "../../services/user.service";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { Class } from "src/app/model/class";
-import { MatChip, MatChipList, MatChipListChange } from "@angular/material";
+import { MatChip } from "@angular/material/chips";
 import { Dice } from "src/app/model/dice";
 import { Spellslot } from "src/app/model/spellslot";
 import { StatsFormComponent } from "src/app/shared/stats-form-component/stats-form.component";
@@ -83,7 +83,7 @@ export class CreateCharacterComponent {
     }
   }
 
-  characterTypeFormUpdate(event: MatChipListChange) {
+  characterTypeFormUpdate(event: any) {
     console.log('hi')
     if (event.value.replace(/\s/g, "") === "PC") {
 
