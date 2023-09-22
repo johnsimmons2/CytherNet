@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng build --prod --aot && ng serve --port 8080",
+    "start": "ng build --configuration production && ng serve --port 8080",
     "build": "npm install && ng build",
-    "build-prod": "ng build --prod --aot",
+    "build-prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
