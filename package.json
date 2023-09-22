@@ -1,41 +1,48 @@
 {
-    "name": "cythernet-app",
-    "version": "0.0.1",
-    "scripts": {
-      "ng": "ng",
-      "start": "cd app && npm run start",
-      "build": "cd app && npm run build",
-      "watch": "cd app && ng build --watch --configuration development",
-      "test": "cd app && ng test"
-    },
-    "private": true,
-    "dependencies": {
-      "@angular/animations": "^16.2.5",
-      "@angular/common": "^16.2.5",
-      "@angular/compiler": "^16.2.5",
-      "@angular/core": "^16.2.5",
-      "@angular/forms": "^16.2.5",
-      "@angular/material": "^16.2.4",
-      "@angular/platform-browser": "^16.2.5",
-      "@angular/platform-browser-dynamic": "^16.2.5",
-      "@angular/router": "^16.2.5",
-      "@angular/cli": "~16.2.2",
-      "@angular/compiler-cli": "^16.2.5",
-      "@angular-devkit/build-angular": "^16.2.2",
-      "jwt-decode": "^3.1.2",
-      "rxjs": "~7.5.0",
-      "tslib": "^2.3.0",
-      "zone.js": "~0.13.0"
-    },
-    "devDependencies": {
-      "@types/jasmine": "~4.0.0",
-      "jasmine-core": "~4.1.0",
-      "karma": "~6.3.0",
-      "karma-chrome-launcher": "~3.1.0",
-      "karma-coverage": "~2.2.0",
-      "karma-jasmine": "~5.0.0",
-      "karma-jasmine-html-reporter": "~1.7.0",
-      "typescript": "~4.9.5"
-    }
+  "name": "app",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "node server.js",
+    "build": "ng build",
+    "build-prod": "ng build --configuration production",
+    "heroku-postbuild": "npm run build-prod",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "^16.2.5",
+    "@angular/common": "^16.2.5",
+    "@angular/compiler": "^16.2.5",
+    "@angular/core": "^16.2.5",
+    "@angular/forms": "^16.2.5",
+    "@angular/material": "^16.2.4",
+    "@angular/platform-browser": "^16.2.5",
+    "@angular/platform-browser-dynamic": "^16.2.5",
+    "@angular/router": "^16.2.5",
+    "@angular/cli": "~16.2.2",
+    "@angular/compiler-cli": "^16.2.5",
+    "@angular-devkit/build-angular": "^16.2.2",
+    "express": "^4.18.2",
+    "jwt-decode": "^3.1.2",
+    "path": "^0.12.7",
+    "rxjs": "~7.5.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.13.0"
+  },
+  "devDependencies": {
+    "@types/jasmine": "~4.0.0",
+    "jasmine-core": "~4.1.0",
+    "karma": "~6.3.0",
+    "karma-chrome-launcher": "~3.1.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.0.0",
+    "karma-jasmine-html-reporter": "~1.7.0",
+    "typescript": "~4.9.5"
+  },
+  "engines": {
+    "node": "16.16.0",
+    "npm": "8.11.0"
   }
-  
+}
