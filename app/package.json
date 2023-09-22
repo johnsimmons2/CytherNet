@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng build --prod --aot && ng serve --port 8080",
     "build": "ng build",
+    "build-prod": "ng build --prod --aot",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
