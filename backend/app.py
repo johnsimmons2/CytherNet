@@ -26,14 +26,21 @@ app.register_blueprint(characters)
 CORS(app)
 # Register db
 set_config_path(os.path.dirname(os.path.realpath(__file__)))
-cfg = config()
-uri = URL.create(cfg['drivername'],
-                 cfg['username'],
-                 cfg['password'],
-                 cfg['host'],
-                 cfg['port'],
-                 cfg['database'])
-app.config['SQLALCHEMY_DATABASE_URI'] = uri
+
+
+dburl = os.getenv('DATABASE_URL')
+if dburl is not None:
+  Logger.info(f"Database URL: {dburl}")
+  app.config['SQLALCHEMY_DATABASE_URI'] = dburl
+else:
+  cfg = config()
+  uri = URL.create(cfg['drivername'],
+                  cfg['username'],
+                  cfg['password'],
+                  cfg['host'],
+                  cfg['port'],
+                  cfg['database'])
+  app.config['SQLALCHEMY_DATABASE_URI'] = uri
 
 db.init_app(app)
 
