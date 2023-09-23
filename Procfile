@@ -1,2 +1,2 @@
 web: npm run start
-worker: cd backend && flask run
+worker: cd backend && python app.py
