@@ -30,7 +30,6 @@ set_config_path(os.path.dirname(os.path.realpath(__file__)))
 
 dburl = os.getenv('DATABASE_URL')
 if dburl is not None:
-  Logger.info(f"Database URL: {dburl}")
   app.config['SQLALCHEMY_DATABASE_URI'] = dburl
 else:
   cfg = config()
