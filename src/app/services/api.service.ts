@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class ApiService {
 
-  readonly ROOT_URL = '';
+  readonly ROOT_URL = '/api/';
 
   constructor(
       private router: Router,

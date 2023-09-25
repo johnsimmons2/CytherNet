@@ -17,13 +17,13 @@ Logger.config_set_handler(FormattedLogHandler().set_color_dates(True))
 
 # Create app
 app = Flask(__name__)
+CORS(app)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Register routes
 
 app.register_blueprint(users)
 app.register_blueprint(characters)
 
-CORS(app)
 # Register db
 set_config_path(os.path.dirname(os.path.realpath(__file__)))
 
