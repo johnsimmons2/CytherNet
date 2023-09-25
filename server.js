@@ -9,7 +9,7 @@ console.log('Starting node server...');
 app.use(express.static(__dirname + '/dist/app'));
 
 const apiProxy = createProxyMiddleware('/api', {
-  target: 'http://127.0.0.1:5000',
+  target: 'http://127.0.0.1:5000/',
   changeOrigin: true,
   pathRewrite: {
     '^/api': '', // Remove the '/api' prefix from the request path
