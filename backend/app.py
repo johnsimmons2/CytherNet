@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, request
 from flask_cors import CORS
 from sqlalchemy.engine import URL
 from api.loghandler.logger import Logger
@@ -42,6 +42,18 @@ else:
   app.config['SQLALCHEMY_DATABASE_URI'] = uri
 
 db.init_app(app)
+
+# Logging middleware
+
+@app.before_request
+def before_request():
+    Logger.debug(f"Request: {request.method} {request.path}")
+
+@app.after_request
+def after_request(response):
+    Logger.debug(f"Response: {response.status_code}")
+    return response
+
 
 with app.app_context():
     db.create_all()

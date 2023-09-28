@@ -13,6 +13,7 @@ const apiUrl = process.env.API_URL || 'http://localhost:5000';
 const apiProxy = createProxyMiddleware('/api', {
   target: apiUrl,
   changeOrigin: true,
+  logger: console,
   pathRewrite: {
     '^/api': '', // Remove the '/api' prefix from the request path
   },
@@ -31,6 +32,8 @@ const apiProxy = createProxyMiddleware('/api', {
     // Log the response body when it's complete
     proxyRes.on('end', () => {
       console.log('Response Body:', responseData);
+      console.log('Response Status:', proxyRes.statusCode);
+      console.log('Requested to:', req.path)
     });
   }
 });
