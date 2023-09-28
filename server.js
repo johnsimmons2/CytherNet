@@ -39,7 +39,7 @@ const apiProxy = createProxyMiddleware('/api', {
     proxyRes.on('end', () => {
       console.log('Response Body:', responseData);
       console.log('Response Status:', proxyRes.statusCode);
-      console.log('Requested to:', req.path)
+      console.log('Requested to:', req.hostname + req.url);
     });
   }
 });
