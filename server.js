@@ -16,9 +16,6 @@ const apiProxy = createProxyMiddleware('/api', {
   target: apiUrl,
   changeOrigin: true,
   secure: true,
-  headers: {
-    Host: apiUrl,
-  },
   pathRewrite: {
     '^/api': '', // Remove the '/api' prefix from the request path
   },
