@@ -11,6 +11,8 @@ app.use(express.static(__dirname + '/dist/app'));
 const apiUrl = process.env.API_URL || 'localhost:5000';
 const apiHost = 'http://' + apiUrl
 
+console.log(`Proxying API requests to ${apiHost} (url: ${apiUrl})`);
+
 const apiProxy = createProxyMiddleware('/api', {
   target: apiUrl,
   changeOrigin: true,
