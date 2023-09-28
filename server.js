@@ -10,7 +10,7 @@ app.use(express.static(__dirname + '/dist/app'));
 
 const apiUrl = process.env.API_URL || 'localhost:5000';
 
-console.log(`Proxying API requests to ${apiHost} (url: ${apiUrl})`);
+console.log(`Proxying API requests to (url: ${apiUrl})`);
 
 const apiProxy = createProxyMiddleware('/api', {
   target: apiUrl,
