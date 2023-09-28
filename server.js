@@ -8,20 +8,19 @@ console.log('Starting node server...');
 
 app.use(express.static(__dirname + '/dist/app'));
 
-const apiUrl = process.env.API_URL || 'localhost:5000';
+const apiUrl = process.env.API_URL || 'http://127.0.0.1:5000/';
 
 console.log(`Proxying API requests to (url: ${apiUrl})`);
 
 const apiProxy = createProxyMiddleware('/api', {
   target: apiUrl,
   changeOrigin: true,
-  secure: true,
   pathRewrite: {
     '^/api': '', // Remove the '/api' prefix from the request path
   },
 
   onProxyReq: (proxyReq, req, res) => {
-    console.log(`Proxying request to: ${proxyReq.path}, ${proxyReq.host}`);
+    console.log(`Proxying request to: ${proxyReq.host + req.url}}`);
     console.log(`  Headers: ${JSON.stringify(proxyReq.getHeaders())}`);
   },
 
@@ -36,7 +35,6 @@ const apiProxy = createProxyMiddleware('/api', {
     proxyRes.on('end', () => {
       console.log('Response Body:', responseData);
       console.log('Response Status:', proxyRes.statusCode);
-      console.log('Requested to:', req.hostname + req.url);
     });
   }
 });
