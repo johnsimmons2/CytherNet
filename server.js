@@ -13,15 +13,16 @@ const apiUrl = process.env.API_URL || 'http://localhost:5000';
 const apiProxy = createProxyMiddleware('/api', {
   target: apiUrl,
   changeOrigin: true,
-  logger: console,
+  headers: {
+    Host: apiUrl,
+  },
   pathRewrite: {
     '^/api': '', // Remove the '/api' prefix from the request path
   },
 
   onProxyReq: (proxyReq, req, res) => {
     console.log(`Proxying request to: ${proxyReq.path}, ${proxyReq.host}`);
-    console.log(`Adding the host header ${apiUrl} to the request.`)
-    proxyReq.setHeader('Host', apiUrl);
+    console.log(`Added the host header ${apiUrl} to the request.`)
   },
 
   onProxyRes: (proxyRes, req, res) => {
