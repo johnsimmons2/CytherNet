@@ -18,7 +18,7 @@ const apiProxy = createProxyMiddleware('/api', {
   },
 
   onProxyReq: (proxyReq, req, res) => {
-    console.log(`Proxying request to: ${proxyReq.path}`);
+    console.log(`Proxying request to: ${proxyReq.path}, ${proxyReq.host}`);
   },
 
   onProxyRes: (proxyRes, req, res) => {
