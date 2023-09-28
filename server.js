@@ -8,14 +8,15 @@ console.log('Starting node server...');
 
 app.use(express.static(__dirname + '/dist/app'));
 
-const apiUrl = process.env.API_URL || 'http://localhost:5000';
+const apiUrl = process.env.API_URL || 'localhost:5000';
+const apiHost = 'http://' + apiUrl
 
 const apiProxy = createProxyMiddleware('/api', {
   target: apiUrl,
   changeOrigin: true,
   secure: true,
   headers: {
-    Host: apiUrl,
+    Host: apiHost,
   },
   pathRewrite: {
     '^/api': '', // Remove the '/api' prefix from the request path
