@@ -7,6 +7,7 @@
 /integration/bazel/bazel-*
 *.log
 /node_modules/
+/CytherAPI/
 
 .c9
 .idea/
