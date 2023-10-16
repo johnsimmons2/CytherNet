@@ -46,6 +46,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class AppComponent {
   title = 'Cythernet';
+  opened: boolean = false;
 
   constructor(
     private userService: UserService,
@@ -86,9 +87,24 @@ export class AppComponent {
     return this.userService.isAdmin();
   }
 
+  get isPlayer() {
+    return this.userService.isPlayer();
+  }
+
+  routeTo(route: string) {
+    this.router.navigate([route]).then(() => {
+      this.opened = false;
+    });
+  }
+
   logout() {
     localStorage.removeItem('username');
     localStorage.removeItem('jwtToken');
-    this.router.navigate(['login']);
+    this.routeTo('login');
+  }
+
+  toggleNav() {
+    console.log(this.opened);
+    this.opened = !this.opened;
   }
 }

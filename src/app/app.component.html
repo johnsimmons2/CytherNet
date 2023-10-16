@@ -1,40 +1,45 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <button *ngIf="isLoggedIn" mat-icon-button>
-      <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
+    <button *ngIf="isLoggedIn" mat-icon-button (click)="toggleNav()">
+      <mat-icon>menu</mat-icon>
     </button>
     <span class="nav-title">Cythernet</span>
     <div>
       <app-header-button buttonName="Home"
-                        buttonIcon="home"
                         buttonRoute="/"
-                        [isLoggedIn]="isLoggedIn">
+                        buttonIcon="home"
+                        (click)="routeTo('')"
+                        [isEnabled]="isLoggedIn">
       </app-header-button>
 
-      <app-header-button buttonName="Character"
-                        buttonIcon="person"
+      <app-header-button buttonName="Characters"
                         buttonRoute="/character"
-                        [isLoggedIn]="isLoggedIn">
+                        buttonIcon="person"
+                        (click)="routeTo('character')"
+                        [isEnabled]="isLoggedIn">
       </app-header-button>
 
       <app-header-button buttonName="Campaign"
-                        buttonIcon="map"
                         buttonRoute="/campaign"
-                        [isLoggedIn]="isLoggedIn">
+                        buttonIcon="map"
+                        (click)="routeTo('campaign')"
+                        [isEnabled]="isLoggedIn">
       </app-header-button>
 
       <app-header-button buttonName="Journal"
+                        buttonRoute="/journal"
                         buttonIcon="bookmark_border"
                         buttonIconActive="bookmark"
-                        buttonRoute="/journal"
-                        [isLoggedIn]="isLoggedIn">
+                        (click)="routeTo('journal')"
+                        [isEnabled]="isLoggedIn && isPlayer">
       </app-header-button>
 
       <app-header-button buttonName="Create"
+                        buttonRoute="/create"
                         buttonIcon="add_circle_outline"
                         buttonIconActive="add_circle"
-                        buttonRoute="/create"
-                        [isLoggedIn]="isLoggedIn">
+                        (click)="routeTo('create')"
+                        [isEnabled]="isLoggedIn && isAdmin">
       </app-header-button>
     </div>
 
@@ -43,15 +48,15 @@
     <app-header-button buttonName="Logout"
                       buttonIcon="logout"
                       (click)="logout()"
-                      [isLoggedIn]="isLoggedIn">
+                      [isEnabled]="isLoggedIn">
     </app-header-button>
   </mat-toolbar-row>
 </mat-toolbar>
 
 <mat-sidenav-container>
-  <mat-sidenav #sidenav>
+  <mat-sidenav mode="over" [(opened)]="opened">
     <mat-nav-list>
-      <a mat-list-item routerLink="/profile" routerLinkActive="active">Profile</a>
+      <a mat-list-item (click)="routeTo('profile')" routerLinkActive="active">Profile</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

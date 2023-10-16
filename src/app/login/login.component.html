@@ -14,7 +14,7 @@
 
     <div class="form-row">
       <button class="form-row-item" type="submit" [disabled]="!loginForm.valid">Login</button>
-      <button class="form-row-item" type="button" (click)="register()">Register</button>
+      <button class="form-row-item" (click)="registerUser()" [disabled]="!loginForm.valid">Register</button>
     </div>
   </form>
 </div>

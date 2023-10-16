@@ -28,34 +28,82 @@ export class UserService {
       if (res.success && res.data.token) {
         localStorage.setItem('jwtToken', res.data.token);
         localStorage.setItem('username', user.username);
+        this.getUserRoles();
         this.router.navigate(['']);
       }
     });
   }
 
   isAdmin() {
-    const user = localStorage.getItem('jwtToken');
-    if (user) {
-      const decoded: any = jwtDecode(user);
-      let result = false;
-      decoded.roles.forEach((role: any) => {
-        if (role.level === 0) {
-          result = true;
-        }
-      });
-      return result;
+    if (!localStorage.getItem('roles')) {
+      this.getUserRoles();
+      if (localStorage.getItem('roles') === null) {
+        return false;
+      }
     }
-    return false;
+
+    const roleString = localStorage.getItem('roles');
+    const roles = JSON.parse(roleString!);
+    let isAdmin = false;
+    roles.forEach((role: any) => {
+      if (role.level === 0) {
+        isAdmin = true;
+      }
+    });
+    return isAdmin;
   }
 
-  register(user: User) {
-    this.apiService.post('auth/register', user).subscribe((res: any) => {
-      if (res.success && res.data.token) {
-        localStorage.setItem('jwtToken', res.data.token);
-        localStorage.setItem('username', user.username);
+  isPlayer() {
+    if (!localStorage.getItem('roles')) {
+      this.getUserRoles();
+      if (localStorage.getItem('roles') === null) {
+        return false;
+      }
+    }
+
+    const roleString = localStorage.getItem('roles');
+    const roles = JSON.parse(roleString!);
+    let isPlayer = false;
+    roles.forEach((role: any) => {
+      if (role.level <= 1) {
+        isPlayer = true;
+      }
+    });
+    return isPlayer;
+  }
+
+  getUserRoles() {
+    this.apiService.get('auth').subscribe((res: any) => {
+      if (res.success && res.data && localStorage.getItem('jwtToken') !== null) {
+        localStorage.setItem('roles', JSON.stringify(res.data));
       }
     });
   }
+
+  async isNameRegistered(username: string) {
+    return this.apiService.get('users/' + username).subscribe((res: any) => {
+      if (res.success && res.data) {
+        return true;
+      }
+      return false;
+    });
+  }
+
+  async register(user: User): Promise<boolean> {
+    try {
+      const res: any = await this.apiService.post('auth/register', user).toPromise();
+      if (res.success && res.data.token) {
+        localStorage.setItem('jwtToken', res.data.token);
+        localStorage.setItem('username', user.username);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  }
+
 
   getJwt() {
     const user = localStorage.getItem('jwtToken');
@@ -95,7 +143,9 @@ export class UserService {
   }
 
   logout() {
-    localStorage.removeItem('jwtToken');
     this.router.navigate(['/login']);
+    localStorage.clear();
+
+    console.log("logged out user");
   }
 }

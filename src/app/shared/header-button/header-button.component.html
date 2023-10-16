@@ -1,7 +1,7 @@
-<a *ngIf="isLoggedIn" mat-button [routerLink]="buttonRoute" routerLinkActive="active">
+<a *ngIf="isEnabled" mat-button>
   <mat-icon *ngIf="!isActiveRoute; else activeIcon">{{buttonIcon}}</mat-icon>
   <ng-template #activeIcon>
     <mat-icon color="accent">{{calculatedIcon}}</mat-icon>
   </ng-template>
-  {{buttonName}}
+  <span [ngClass]="{'active-link': isActiveRoute}">{{buttonName}}</span>
 </a>

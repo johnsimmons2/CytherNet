@@ -9,12 +9,16 @@ import { Router } from '@angular/router';
 export class HeaderButtonComponent implements OnInit {
 
   @Input() buttonName: string = '';
-  @Input() isLoggedIn: boolean = false;
+  @Input() isEnabled: boolean = false;
   @Input() buttonRoute: string = '';
   @Input() buttonIcon: string = '';
   @Input() buttonIconActive: string = '';
 
   constructor(private router: Router) { }
+
+  get textColor(): string {
+    return "warn";
+  }
 
   get isActiveRoute(): boolean {
     return this.router.url === this.buttonRoute;

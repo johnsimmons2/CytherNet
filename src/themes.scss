@@ -1,0 +1,20 @@
+/* You can add global styles to this file, and also import other style files */
+
+@use '@angular/material' as mat;
+@import '@angular/material/theming';
+
+$cyther-app-primary: mat-palette($mat-green, 600);
+$cyther-app-accent:  mat-palette($mat-yellow, 400, 300, 700);
+
+// The warn palette is optional (defaults to red).
+$cyther-app-warn: mat-palette($mat-red);
+// Create the theme object (a Sass map containing all of the palettes)
+$cyther-app-theme: mat-light-theme((
+  color: (
+    primary: $cyther-app-primary,
+    accent: $cyther-app-accent,
+    warn: $cyther-app-warn,
+  ),
+  typography: mat.define-typography-config(),
+  density: 0,
+));
