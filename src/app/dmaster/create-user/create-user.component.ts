@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { User } from 'src/app/model/user';
+import { UserDto } from 'src/app/model/user';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -42,16 +42,6 @@ export class CreateComponent implements OnInit {
 
   createCharacter() {
     this.router.navigate(['create/character']);
-  }
-
-  register() {
-    if (this.registerUser.valid) {
-      var user: User = {
-        password: this.registerUser.value.password!,
-        username: this.registerUser.value.username!
-      };
-      this.loginService.register(user);
-    }
   }
 
 }

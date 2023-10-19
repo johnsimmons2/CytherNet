@@ -34,11 +34,11 @@
                         [isEnabled]="isLoggedIn && isPlayer">
       </app-header-button>
 
-      <app-header-button buttonName="Create"
-                        buttonRoute="/create"
+      <app-header-button buttonName="Dungeon Master"
+                        buttonRoute="/dmaster"
                         buttonIcon="add_circle_outline"
                         buttonIconActive="add_circle"
-                        (click)="routeTo('create')"
+                        (click)="routeTo('dmaster')"
                         [isEnabled]="isLoggedIn && isAdmin">
       </app-header-button>
     </div>
@@ -57,6 +57,9 @@
   <mat-sidenav mode="over" [(opened)]="opened">
     <mat-nav-list>
       <a mat-list-item (click)="routeTo('profile')" routerLinkActive="active">Profile</a>
+      <hr/>
+      <h3>Dungeon Master</h3>
+      <a mat-list-item>Users</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

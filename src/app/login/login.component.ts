@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from "@angular/forms";
-import { User } from "../model/user";
+import { UserDto } from "../model/user";
 import { UserService } from "../services/user.service";
 
 @Component({
@@ -23,7 +23,7 @@ export class LoginComponent {
 
   submit() {
     if (this.loginForm.valid) {
-      var user: User = {
+      var user: UserDto = {
         password: this.loginForm.value.password!,
         username: this.loginForm.value.username!
       };
@@ -33,7 +33,7 @@ export class LoginComponent {
 
   registerUser() {
     if (this.loginForm.valid) {
-      var user: User = {
+      var user: UserDto = {
         password: this.loginForm.value.password!,
         username: this.loginForm.value.username!
       };

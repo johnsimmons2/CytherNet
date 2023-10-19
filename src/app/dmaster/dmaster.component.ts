@@ -3,10 +3,10 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create',
-  templateUrl: './create.component.html',
-  styleUrls: ['./create.component.scss']
+  templateUrl: './dmaster.component.html',
+  styleUrls: ['./dmaster.component.scss']
 })
-export class CreateComponent implements OnInit {
+export class DungeonMasterComponent implements OnInit {
 
   constructor(private router: Router) { }
 
@@ -15,6 +15,10 @@ export class CreateComponent implements OnInit {
 
   createCharacter() {
     this.router.navigate(['create/character']);
+  }
+
+  navigateTo(path: string) {
+    this.router.navigate([path]);
   }
 
 }

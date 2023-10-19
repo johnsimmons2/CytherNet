@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import {
   MatChipsModule
 } from '@angular/material/chips';
+import { MatTableModule } from '@angular/material/table';
 import { MatBadgeModule} from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
@@ -31,11 +32,11 @@ import { ProfileComponent } from './profile/profile.component';
 import { JournalComponent } from './journal/journal.component';
 import { CharacterComponent } from './character/character.component';
 import { CampaignComponent } from './campaign/campaign.component';
-import { CreateCharacterComponent } from './create/create-character/create-character.component';
+import { CreateCharacterComponent } from './dmaster/create-character/create-character.component';
 import { DiceComponent } from './shared/dice-component/dice.component';
 import { SpellSlotComponent } from './shared/spell-slot/spell-slot.component';
 import { StatsFormComponent } from './shared/stats-form-component/stats-form.component';
-import { CreateComponent } from './create/create.component';
+import { DungeonMasterComponent } from './dmaster/dmaster.component';
 import { HeaderButtonComponent } from './shared/header-button/header-button.component';
 import { HealthComponent } from './shared/health-component/health.component';
 import { SubtleModalComponent } from './shared/subtle-modal/subtle-modal.component';
@@ -44,6 +45,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatCommonModule } from '@angular/material/core';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
+import { ManageUsersComponent } from './dmaster/manage-users/manage-users.component';
 
 @NgModule({
   declarations: [
@@ -58,11 +60,12 @@ import { CommonModule } from '@angular/common';
     DiceComponent,
     SpellSlotComponent,
     StatsFormComponent,
-    CreateComponent,
+    DungeonMasterComponent,
     HeaderButtonComponent,
     HealthComponent,
     SubtleModalComponent,
-    ModalComponent
+    ModalComponent,
+    ManageUsersComponent
   ],
   imports: [
     BrowserModule,
@@ -86,7 +89,8 @@ import { CommonModule } from '@angular/common';
     MatBadgeModule,
     MatExpansionModule,
     MatGridListModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTableModule
   ],
   providers: [HttpClient, MatIconRegistry],
   bootstrap: [AppComponent],

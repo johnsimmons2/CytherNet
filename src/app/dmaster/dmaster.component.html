@@ -1,7 +1,7 @@
 <section>
-  <h3>Dungeon Master Creation Panel</h3>
+  <h3>Dungeon Master Panel</h3>
   <hr/>
-  <mat-grid-list [cols]="10" rowHeight="20px" gutterSize="6">
+  <mat-grid-list [cols]="10" rowHeight="200px" gutterSize="6">
     <mat-grid-tile [colspan]="4" [rowspan]="4">
       <mat-card class="button-holder">
         <button mat-raised-button (click)="createCharacter()" color="primary" >Create Character</button>
@@ -11,14 +11,11 @@
     <mat-grid-tile [colspan]="6" [rowspan]="6">
       <mat-card class="button-holder">
         <mat-card-content>
-          Test
-          <button mat-raised-button color="accent">Create User</button>
-          <button mat-raised-button color="accent">Create Item</button>
-          <button mat-raised-button color="accent">Create Item</button>
-          <button mat-raised-button color="accent">Create Item</button>
-        </mat-card-content>
-        <mat-card-content>
-          Test 2
+          Users and User interaction
+          <button mat-raised-button color="primary" (click)="navigateTo('/dmaster/users')">Manage Users</button>
+          <button mat-raised-button color="accent">Manage Items</button>
+          <button mat-raised-button color="accent">Manage Knowledge</button>
+          <button mat-raised-button color="accent">Manage Spells</button>
           <button mat-raised-button color="accent">Create Item</button>
           <button mat-raised-button color="accent">Create Item</button>
           <button mat-raised-button color="accent">Create Item</button>

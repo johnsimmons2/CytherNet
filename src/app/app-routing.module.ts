@@ -8,8 +8,9 @@ import { ProfileComponent } from './profile/profile.component';
 import { JournalComponent } from './journal/journal.component';
 import { CharacterComponent } from './character/character.component';
 import { CampaignComponent } from './campaign/campaign.component';
-import { CreateCharacterComponent } from './create/create-character/create-character.component';
-import { CreateComponent } from './create/create.component';
+import { CreateCharacterComponent } from './dmaster/create-character/create-character.component';
+import { DungeonMasterComponent } from './dmaster/dmaster.component';
+import { ManageUsersComponent } from './dmaster/manage-users/manage-users.component';
 
 const routes: Routes = [
   {
@@ -39,12 +40,16 @@ const routes: Routes = [
         component: CampaignComponent
       },
       {
-        path: 'create',
-        component: CreateComponent
+        path: 'dmaster',
+        component: DungeonMasterComponent
       },
       {
-        path: 'create/character',
+        path: 'dmaster/character',
         component: CreateCharacterComponent
+      },
+      {
+        path: 'dmaster/users',
+        component: ManageUsersComponent
       }
     ]
   }

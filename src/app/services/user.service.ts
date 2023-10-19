@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { User } from '../model/user';
+import { UserDto } from '../model/user';
 import { ApiService } from './api.service';
 import jwtDecode from 'jwt-decode';
 
@@ -14,6 +14,10 @@ export class UserService {
       private apiService: ApiService
   ) {}
 
+  getUsers() {
+    return this.apiService.get('users');
+  }
+
   getCurrentUsername() {
     const user = localStorage.getItem('username');
     if (user) {
@@ -23,7 +27,7 @@ export class UserService {
     return null;
   }
 
-  login(user: User) {
+  login(user: UserDto) {
     this.apiService.post('auth/token', user).subscribe((res: any) => {
       if (res.success && res.data.token) {
         localStorage.setItem('jwtToken', res.data.token);
@@ -89,7 +93,7 @@ export class UserService {
     });
   }
 
-  async register(user: User): Promise<boolean> {
+  async register(user: UserDto): Promise<boolean> {
     try {
       const res: any = await this.apiService.post('auth/register', user).toPromise();
       if (res.success && res.data.token) {
