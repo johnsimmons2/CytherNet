@@ -4,6 +4,8 @@ import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/ro
 import { UserDto } from '../model/user';
 import { ApiService } from './api.service';
 import jwtDecode from 'jwt-decode';
+import { catchError, map } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 
 @Injectable({ providedIn: 'root' })
@@ -28,14 +30,22 @@ export class UserService {
   }
 
   login(user: UserDto) {
-    this.apiService.post('auth/token', user).subscribe((res: any) => {
-      if (res.success && res.data.token) {
-        localStorage.setItem('jwtToken', res.data.token);
-        localStorage.setItem('username', user.username);
-        this.getUserRoles();
-        this.router.navigate(['']);
-      }
-    });
+    return this.apiService.post('auth/token', user).pipe(
+      map((res: any) => {
+        if (res.success && res.data.token) {
+          localStorage.setItem('jwtToken', res.data.token);
+          localStorage.setItem('username', user.username);
+          this.getUserRoles();
+          return true;
+        } else {
+          return false;
+        }
+    }),
+    catchError((err) => {
+      console.error(err);
+      return of(false);
+    })
+    );
   }
 
   isAdmin() {
@@ -74,6 +84,10 @@ export class UserService {
       }
     });
     return isPlayer;
+  }
+
+  getRolesForUser(userId: number) {
+    return this.apiService.get('users/' + userId + '/roles');
   }
 
   getUserRoles() {

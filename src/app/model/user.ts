@@ -16,4 +16,5 @@ export interface User {
   lastName?: string;
   lastOnline?: Date;
   created?: Date;
+  roles?: string;
 }

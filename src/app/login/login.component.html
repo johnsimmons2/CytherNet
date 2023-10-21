@@ -1,20 +1,32 @@
 <div class="cyther-page">
   <form [formGroup]="loginForm" (ngSubmit)="submit()">
     <h2>Login or Make an Account</h2>
+    <mat-error *ngIf="loginError">
+      Username and password do not match.
+    </mat-error>
+    <mat-error *ngIf="nameTaken">
+      A user with that username is already registered.
+    </mat-error>
     <div class="form-row">
       <mat-form-field>
-        <input matInput placeholder="Username" type="text" formControlName="username" />
+        <input id="username" matInput placeholder="Username" type="text" formControlName="username" />
+        <mat-error *ngIf="loginForm.controls.username.errors?.['required']">
+          Username is required.
+        </mat-error>
       </mat-form-field>
     </div>
     <div class="form-row">
       <mat-form-field>
-        <input matInput placeholder="Password" type="password" formControlName="password" />
+        <input id="password" matInput placeholder="Password" type="password" formControlName="password" />
+        <mat-error *ngIf="loginForm.controls.password.errors?.['required']">
+          Password is required.
+        </mat-error>
       </mat-form-field>
     </div>
 
     <div class="form-row">
       <button class="form-row-item" type="submit" [disabled]="!loginForm.valid">Login</button>
-      <button class="form-row-item" (click)="registerUser()" [disabled]="!loginForm.valid">Register</button>
+      <button class="form-row-item" type="button" (click)="registerUser()" [disabled]="!loginForm.valid">Register</button>
     </div>
   </form>
 </div>
