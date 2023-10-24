@@ -1,4 +1,4 @@
-<a *ngIf="isEnabled" mat-button>
+<a *ngIf="isEnabled" mat-button (click)="routeTo()">
   <mat-icon *ngIf="!isActiveRoute; else activeIcon">{{buttonIcon}}</mat-icon>
   <ng-template #activeIcon>
     <mat-icon color="accent">{{calculatedIcon}}</mat-icon>

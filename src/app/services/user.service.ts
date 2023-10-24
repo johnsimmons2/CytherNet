@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { UserDto } from '../model/user';
+import { Role, UserDto } from '../model/user';
 import { ApiService } from './api.service';
 import jwtDecode from 'jwt-decode';
 import { catchError, map } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 
 @Injectable({ providedIn: 'root' })
@@ -15,6 +15,10 @@ export class UserService {
       private http: HttpClient,
       private apiService: ApiService
   ) {}
+
+  updateUser(user: UserDto) {
+    return this.apiService.post(`users/${user.id}`, user);
+  }
 
   getUsers() {
     return this.apiService.get('users');
@@ -34,7 +38,7 @@ export class UserService {
       map((res: any) => {
         if (res.success && res.data.token) {
           localStorage.setItem('jwtToken', res.data.token);
-          localStorage.setItem('username', user.username);
+          localStorage.setItem('username', user.username!);
           this.getUserRoles();
           return true;
         } else {
@@ -86,6 +90,10 @@ export class UserService {
     return isPlayer;
   }
 
+  deleteUser(userId: number) {
+    return this.apiService.delete('users/' + userId, null);
+  }
+
   getRolesForUser(userId: number) {
     return this.apiService.get('users/' + userId + '/roles');
   }
@@ -98,6 +106,19 @@ export class UserService {
     });
   }
 
+  updateUserRoles(userId: number, roles: Role[]) {
+    return this.apiService.post('users/' + userId + '/roles', roles);
+  }
+
+  getAllRoles() {
+    return this.apiService.get('roles').pipe(map((res: any) => {
+      if (res.success && res.data) {
+        return res.data;
+      }
+      return [];
+    }));
+  }
+
   async isNameRegistered(username: string) {
     return this.apiService.get('users/' + username).subscribe((res: any) => {
       if (res.success && res.data) {
@@ -107,19 +128,20 @@ export class UserService {
     });
   }
 
-  async register(user: UserDto): Promise<boolean> {
-    try {
-      const res: any = await this.apiService.post('auth/register', user).toPromise();
-      if (res.success && res.data.token) {
-        localStorage.setItem('jwtToken', res.data.token);
-        localStorage.setItem('username', user.username);
-        return true;
-      }
-      return false;
-    } catch (error) {
-      console.error(error);
-      return false;
-    }
+  register(user: UserDto): Observable<boolean> {
+      return this.apiService.post('auth/register', user).pipe(map(
+        (res: any) => {
+          if (res.success && res.data) {
+            localStorage.setItem('jwtToken', res.data);
+            localStorage.setItem('username', user.username!);
+            return true;
+          }
+          return false;
+        }
+      ),
+      catchError((err) => {
+        return of(false);
+      }));
   }
 
 

@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -30,7 +30,7 @@ import {
 } from '@angular/material/form-field';
 import { ProfileComponent } from './profile/profile.component';
 import { JournalComponent } from './journal/journal.component';
-import { CharacterComponent } from './character/character.component';
+import { CharactersComponent } from './characters/characters.component';
 import { CampaignComponent } from './campaign/campaign.component';
 import { CreateCharacterComponent } from './dmaster/create-character/create-character.component';
 import { DiceComponent } from './shared/dice-component/dice.component';
@@ -46,6 +46,9 @@ import { MatCommonModule } from '@angular/material/core';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { ManageUsersComponent } from './dmaster/manage-users/manage-users.component';
+import { ConfirmationModal } from './shared/confirmation-modal/confirmation-modal.component';
+import { ManageCharactersComponent } from './dmaster/manage-characters/manage-characters.component';
+import { CharacterTableComponent } from './shared/character-table/character-table.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +57,7 @@ import { ManageUsersComponent } from './dmaster/manage-users/manage-users.compon
     LoginComponent,
     ProfileComponent,
     JournalComponent,
-    CharacterComponent,
+    CharactersComponent,
     CreateCharacterComponent,
     CampaignComponent,
     DiceComponent,
@@ -65,14 +68,18 @@ import { ManageUsersComponent } from './dmaster/manage-users/manage-users.compon
     HealthComponent,
     SubtleModalComponent,
     ModalComponent,
-    ManageUsersComponent
+    ManageUsersComponent,
+    ConfirmationModal,
+    ManageCharactersComponent,
+    CharacterTableComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
+    FormsModule,
     CommonModule,
     AppRoutingModule,
-    ReactiveFormsModule,
     HttpClientModule,
     MatCommonModule,
     MatToolbarModule,

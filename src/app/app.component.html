@@ -4,7 +4,7 @@
       <mat-icon>menu</mat-icon>
     </button>
     <span class="nav-title">Cythernet</span>
-    <div>
+    <span>
       <app-header-button buttonName="Home"
                         buttonRoute="/"
                         buttonIcon="home"
@@ -13,35 +13,31 @@
       </app-header-button>
 
       <app-header-button buttonName="Characters"
-                        buttonRoute="/character"
+                        buttonRoute="characters"
                         buttonIcon="person"
-                        (click)="routeTo('character')"
                         [isEnabled]="isLoggedIn">
       </app-header-button>
 
       <app-header-button buttonName="Campaign"
-                        buttonRoute="/campaign"
+                        buttonRoute="campaign"
                         buttonIcon="map"
-                        (click)="routeTo('campaign')"
                         [isEnabled]="isLoggedIn">
       </app-header-button>
 
       <app-header-button buttonName="Journal"
-                        buttonRoute="/journal"
+                        buttonRoute="journal"
                         buttonIcon="bookmark_border"
                         buttonIconActive="bookmark"
-                        (click)="routeTo('journal')"
                         [isEnabled]="isLoggedIn && isPlayer">
       </app-header-button>
 
       <app-header-button buttonName="Dungeon Master"
-                        buttonRoute="/dmaster"
+                        buttonRoute="dmaster"
                         buttonIcon="add_circle_outline"
                         buttonIconActive="add_circle"
-                        (click)="routeTo('dmaster')"
                         [isEnabled]="isLoggedIn && isAdmin">
       </app-header-button>
-    </div>
+    </span>
 
     <div style="flex: 1 1 auto;"></div>
 

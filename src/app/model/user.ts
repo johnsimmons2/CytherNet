@@ -1,11 +1,17 @@
 export interface UserDto {
     id?: number;
-    username: string;
+    username?: string;
     email?: string;
     password?: string;
     firstName?: string;
     lastName?: string;
     token?: string;
+}
+
+export interface Role {
+  id: number;
+  roleName: string;
+  level: number;
 }
 
 export interface User {
@@ -16,5 +22,5 @@ export interface User {
   lastName?: string;
   lastOnline?: Date;
   created?: Date;
-  roles?: string;
+  roles?: Role[];
 }

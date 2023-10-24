@@ -14,7 +14,7 @@ export class DungeonMasterComponent implements OnInit {
   }
 
   createCharacter() {
-    this.router.navigate(['create/character']);
+    this.router.navigate(['dmaster/characters/create']);
   }
 
   navigateTo(path: string) {

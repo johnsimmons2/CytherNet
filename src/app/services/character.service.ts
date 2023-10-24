@@ -13,8 +13,16 @@ export class CharacterService {
       private apiService: ApiService
   ) {}
 
-  getCharacters() {
+  getPlayerCharacters(userId: string) {
+    return this.apiService.get(`characters?userId=${userId}`);
+  }
+
+  getAllPlayerCharacters() {
     return this.apiService.get('characters/player');
+  }
+
+  getAllNPCCharacters() {
+    return this.apiService.get('characters/npc');
   }
 
   getCharacterHitDice(username: string) {

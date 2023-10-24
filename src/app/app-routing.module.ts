@@ -6,11 +6,12 @@ import { LoginGuard } from './login/loginguard';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
 import { JournalComponent } from './journal/journal.component';
-import { CharacterComponent } from './character/character.component';
+import { CharactersComponent } from './characters/characters.component';
 import { CampaignComponent } from './campaign/campaign.component';
 import { CreateCharacterComponent } from './dmaster/create-character/create-character.component';
 import { DungeonMasterComponent } from './dmaster/dmaster.component';
 import { ManageUsersComponent } from './dmaster/manage-users/manage-users.component';
+import { ManageCharactersComponent } from './dmaster/manage-characters/manage-characters.component';
 
 const routes: Routes = [
   {
@@ -32,8 +33,8 @@ const routes: Routes = [
         component: JournalComponent
       },
       {
-        path: 'character',
-        component: CharacterComponent
+        path: 'characters',
+        component: CharactersComponent
       },
       {
         path: 'campaign',
@@ -44,12 +45,16 @@ const routes: Routes = [
         component: DungeonMasterComponent
       },
       {
-        path: 'dmaster/character',
+        path: 'dmaster/characters/create',
         component: CreateCharacterComponent
       },
       {
         path: 'dmaster/users',
         component: ManageUsersComponent
+      },
+      {
+        path: 'dmaster/users/:id/characters',
+        component: ManageCharactersComponent
       }
     ]
   }

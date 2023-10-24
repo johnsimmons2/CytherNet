@@ -23,6 +23,10 @@ export class ApiService {
     return headers;
   }
 
+  delete(endpoint: string, payload: any): Observable<any> {
+    return this.http.delete(this.ROOT_URL + endpoint, { headers: this.getHeaders() });
+  }
+
   post(endpoint: string, payload: any): Observable<any> {
     return this.http.post(this.ROOT_URL + endpoint, payload, { headers: this.getHeaders() });
   }

@@ -46,9 +46,11 @@ export class LoginComponent {
         password: this.loginForm.value.password!,
         username: this.loginForm.value.username!
       };
-      this.loginService.register(user).then((res: boolean) => {
+      this.loginService.register(user).subscribe((res: boolean) => {
         if (!res) {
           this.nameTaken = true;
+        } else {
+          this.router.navigate(['/']);
         }
       });
     }

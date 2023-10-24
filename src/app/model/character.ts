@@ -11,7 +11,7 @@ export interface Character {
   charisma: number;
   level: number;
   experience: number;
-  hitpoints: number;
+  health: number;
   armorclass: number;
   initiative: number;
   speed: number;

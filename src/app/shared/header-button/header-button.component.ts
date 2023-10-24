@@ -9,10 +9,10 @@ import { Router } from '@angular/router';
 export class HeaderButtonComponent implements OnInit {
 
   @Input() buttonName: string = '';
-  @Input() isEnabled: boolean = false;
   @Input() buttonRoute: string = '';
   @Input() buttonIcon: string = '';
   @Input() buttonIconActive: string = '';
+  @Input() isEnabled!: boolean ;
 
   constructor(private router: Router) { }
 
@@ -30,6 +30,12 @@ export class HeaderButtonComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  routeTo() {
+    if (this.isEnabled) {
+      this.router.navigate([this.buttonRoute]);
+    }
   }
 
 }
