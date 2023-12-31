@@ -12,7 +12,7 @@ export class CharacterTableComponent implements OnInit, AfterViewInit {
     @Input() userId!: string;
     @Input() dataSource: Character[] = [];
 
-    @ViewChild(MatTable) table!: MatTable<Character>;
+    @ViewChild('table') table: MatTable<Character> | undefined;
 
     xcolumns: string[] = ['name', 'race', 'class', 'level', 'health', 'actions'];
 
@@ -23,7 +23,7 @@ export class CharacterTableComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit() {
-      this.table.renderRows();
+      this.table!.renderRows();
     }
 
 }

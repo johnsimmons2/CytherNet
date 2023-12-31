@@ -49,6 +49,9 @@ import { ManageUsersComponent } from './dmaster/manage-users/manage-users.compon
 import { ConfirmationModal } from './shared/confirmation-modal/confirmation-modal.component';
 import { ManageCharactersComponent } from './dmaster/manage-characters/manage-characters.component';
 import { CharacterTableComponent } from './shared/character-table/character-table.component';
+import { RegisterComponent } from './login/register/register.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { ToolbarComponent } from './shared/toolbar/toolbar.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +74,9 @@ import { CharacterTableComponent } from './shared/character-table/character-tabl
     ManageUsersComponent,
     ConfirmationModal,
     ManageCharactersComponent,
-    CharacterTableComponent
+    CharacterTableComponent,
+    RegisterComponent,
+    ToolbarComponent
   ],
   imports: [
     BrowserModule,
@@ -80,6 +85,7 @@ import { CharacterTableComponent } from './shared/character-table/character-tabl
     FormsModule,
     CommonModule,
     AppRoutingModule,
+    MatTableModule,
     HttpClientModule,
     MatCommonModule,
     MatToolbarModule,
@@ -97,7 +103,7 @@ import { CharacterTableComponent } from './shared/character-table/character-tabl
     MatExpansionModule,
     MatGridListModule,
     MatDialogModule,
-    MatTableModule
+    FlexLayoutModule,
   ],
   providers: [HttpClient, MatIconRegistry],
   bootstrap: [AppComponent],

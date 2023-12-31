@@ -3,8 +3,8 @@ export interface UserDto {
     username?: string;
     email?: string;
     password?: string;
-    firstName?: string;
-    lastName?: string;
+    fName?: string;
+    lName?: string;
     token?: string;
 }
 

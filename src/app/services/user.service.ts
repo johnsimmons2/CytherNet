@@ -47,9 +47,8 @@ export class UserService {
     }),
     catchError((err) => {
       console.error(err);
-      return of(false);
-    })
-    );
+      return of(null);
+    }));
   }
 
   isAdmin() {

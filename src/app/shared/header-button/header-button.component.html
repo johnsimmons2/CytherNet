@@ -1,7 +1,11 @@
-<a *ngIf="isEnabled" mat-button (click)="routeTo()">
-  <mat-icon *ngIf="!isActiveRoute; else activeIcon">{{buttonIcon}}</mat-icon>
-  <ng-template #activeIcon>
-    <mat-icon color="accent">{{calculatedIcon}}</mat-icon>
-  </ng-template>
-  <span [ngClass]="{'active-link': isActiveRoute}">{{buttonName}}</span>
+<a *ngIf="isEnabled" mat-button (click)="routeTo()" fxLayout="row" fxLayoutGap="5px">
+  <div fxFlex style="width: 80%; margin-top: 8px">
+    <mat-icon style="transform: scale(1.6)" *ngIf="!isActiveRoute; else activeIcon">{{buttonIcon}}</mat-icon>
+    
+    <ng-template #activeIcon>
+      <mat-icon color="accent" style="transform: scale(1.6)">{{calculatedIcon}}</mat-icon>
+    </ng-template>
+  </div>
+
+  <div fxFlex [ngClass]="{'active-link': isActiveRoute}" style="margin-left: 8px" fxHide.lt-md>{{buttonName}}</div>
 </a>

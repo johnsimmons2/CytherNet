@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { UserService } from './services/user.service';
-import { Router } from '@angular/router';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -49,8 +47,6 @@ export class AppComponent {
   opened: boolean = false;
 
   constructor(
-    private userService: UserService,
-    private router: Router,
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer) {
       this.matIconRegistry.addSvgIcon(
@@ -78,33 +74,4 @@ export class AppComponent {
         this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/dice-20.svg")
       );
     }
-
-  get isLoggedIn() {
-    return this.userService.isAuthenticated();
-  }
-
-  get isAdmin() {
-    return this.userService.isAdmin();
-  }
-
-  get isPlayer() {
-    return this.userService.isPlayer();
-  }
-
-  routeTo(route: string) {
-    this.router.navigate([route]).then(() => {
-      this.opened = false;
-    });
-  }
-
-  logout() {
-    localStorage.removeItem('username');
-    localStorage.removeItem('jwtToken');
-    this.routeTo('login');
-  }
-
-  toggleNav() {
-    console.log(this.opened);
-    this.opened = !this.opened;
-  }
 }

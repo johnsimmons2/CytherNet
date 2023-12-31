@@ -4,7 +4,7 @@ import { Role, User, UserDto } from 'src/app/model/user';
 import { ApiService } from 'src/app/services/api.service';
 import { UserService } from 'src/app/services/user.service';
 import { forkJoin } from 'rxjs'
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmationModal } from 'src/app/shared/confirmation-modal/confirmation-modal.component';
 import { FormControl, Validators } from '@angular/forms';
 import { TupleType } from 'typescript';
@@ -79,13 +79,14 @@ export class ManageUsersComponent implements OnInit, AfterViewInit {
   deleteRow(row: any): void {
     console.log(row);
     let duration = '100ms';
-    let modal = this.modal.open(ConfirmationModal, {
+    let modal: MatDialogRef<ConfirmationModal> = this.modal.open(ConfirmationModal, {
       width: '500px',
       data: {
         duration,
         action: row.id,
       },
     });
+    
     modal.componentInstance.title = 'Delete User';
     modal.componentInstance.content = `Are you sure you want to delete ${row.username}?`;
     modal.componentInstance.action = 'Delete';
@@ -105,7 +106,7 @@ export class ManageUsersComponent implements OnInit, AfterViewInit {
 
   resetTable(): void {
     this.dataSource = this.dataSource.sort((a: any, b: any) => a.id - b.id);
-    this.table.renderRows();
+    //this.table.renderRows();
   }
 
   ngAfterViewInit(): void {

@@ -12,12 +12,17 @@ import { CreateCharacterComponent } from './dmaster/create-character/create-char
 import { DungeonMasterComponent } from './dmaster/dmaster.component';
 import { ManageUsersComponent } from './dmaster/manage-users/manage-users.component';
 import { ManageCharactersComponent } from './dmaster/manage-characters/manage-characters.component';
+import { RegisterComponent } from './login/register/register.component';
 
 const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
     canActivate: [LoginGuard]
+  },
+  {
+    path: 'register',
+    component: RegisterComponent
   },
   {
     path: '',

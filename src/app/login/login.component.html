@@ -1,14 +1,14 @@
 <div class="cyther-page">
   <form [formGroup]="loginForm" (ngSubmit)="submit()">
     <h2>Login or Make an Account</h2>
-    <mat-error *ngIf="loginError">
-      Username and password do not match.
+    <mat-error *ngIf="genericError">
+      An unknown error has occured. Please try again later, or check the console for more information.
     </mat-error>
-    <mat-error *ngIf="nameTaken">
-      A user with that username is already registered.
+    <mat-error *ngIf="loginError">
+      The provided username and password combination could not be found.
     </mat-error>
     <div class="form-row">
-      <mat-form-field>
+      <mat-form-field style="width:80%">
         <input id="username" matInput placeholder="Username" type="text" formControlName="username" />
         <mat-error *ngIf="loginForm.controls.username.errors?.['required']">
           Username is required.
@@ -16,7 +16,7 @@
       </mat-form-field>
     </div>
     <div class="form-row">
-      <mat-form-field>
+      <mat-form-field style="width:80%">
         <input id="password" matInput placeholder="Password" type="password" formControlName="password" />
         <mat-error *ngIf="loginForm.controls.password.errors?.['required']">
           Password is required.
@@ -25,8 +25,15 @@
     </div>
 
     <div class="form-row">
-      <button class="form-row-item" type="submit" [disabled]="!loginForm.valid">Login</button>
-      <button class="form-row-item" type="button" (click)="registerUser()" [disabled]="!loginForm.valid">Register</button>
+      <div fxFlex="column" fxLayoutGap="20px">
+        <div fxFlex class="form-row-item">
+          <button mat-raised-button color="primary" class="form-row-item" type="submit" [disabled]="!loginForm.valid">Login</button>
+        </div>
+        <div fxFlex="0.5" fxHide.lt-md></div>
+        <div fxFlex class="form-row-item">
+          <button mat-raised-button color="accent" class="form-row-item" type="button" (click)="registerUser()">Register</button>
+        </div>
+      </div>
     </div>
   </form>
 </div>

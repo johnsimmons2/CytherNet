@@ -1,0 +1,70 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <button *ngIf="isLoggedIn" mat-icon-button (click)="toggleNav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+
+      <div class="nav-title" fxHide.lt-sm>{{currentTitle}}</div>
+
+      <span fxLayout="row" fxLayoutGap.gt-sm="20px">
+        <app-header-button  fxFlex 
+                            buttonName="Home"
+                            buttonRoute="/"
+                            buttonIcon="home"
+                            [isEnabled]="isLoggedIn">
+        </app-header-button>
+  
+        <app-header-button  fxFlex 
+                            buttonName="Characters"
+                            buttonRoute="/characters"
+                            buttonIcon="person"
+                            [isEnabled]="isLoggedIn">
+        </app-header-button>
+  
+        <app-header-button  fxFlex 
+                            buttonName="Campaign"
+                            buttonRoute="/campaign"
+                            buttonIcon="map"
+                            [isEnabled]="isLoggedIn">
+        </app-header-button>
+  
+        <app-header-button  fxFlex 
+                            buttonName="Journal"
+                            buttonRoute="/journal"
+                            buttonIcon="bookmark_border"
+                            buttonIconActive="bookmark"
+                            [isEnabled]="isLoggedIn && isPlayer">
+        </app-header-button>
+  
+        <app-header-button  fxFlex 
+                            buttonName="Dungeon Master"
+                            buttonRoute="/dmaster"
+                            buttonIcon="add_circle_outline"
+                            buttonIconActive="add_circle"
+                            [isEnabled]="isLoggedIn && isAdmin">
+        </app-header-button>
+      </span>
+  
+      <div style="flex: 1 1 auto;"></div>
+  
+      <app-header-button buttonName="Logout"
+                        buttonIcon="logout"
+                        (click)="logout()"
+                        [isEnabled]="isLoggedIn">
+      </app-header-button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <mat-sidenav-container>
+    <mat-sidenav mode="over" [(opened)]="opened">
+      <mat-nav-list>
+        <a mat-list-item (click)="routeTo('profile')" routerLinkActive="active">Profile</a>
+        <hr/>
+        <h3>Dungeon Master</h3>
+        <a mat-list-item>Users</a>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <ng-container [ngTemplateOutlet]="content"></ng-container>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
