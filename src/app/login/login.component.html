@@ -1,15 +1,15 @@
 <div class="cyther-page">
   <form [formGroup]="loginForm" (ngSubmit)="submit()">
     <h2>Login or Make an Account</h2>
-    <mat-error *ngIf="genericError">
-      An unknown error has occured. Please try again later, or check the console for more information.
-    </mat-error>
-    <mat-error *ngIf="loginError">
-      The provided username and password combination could not be found.
-    </mat-error>
     <div class="form-row">
       <mat-form-field style="width:80%">
         <input id="username" matInput placeholder="Username" type="text" formControlName="username" />
+        <mat-error *ngIf="loginForm.controls.username.errors?.['genericError']">
+          An unknown error has occured. Please try again later, or check the console for more information.
+        </mat-error>
+        <mat-error *ngIf="loginForm.controls.username.errors?.['loginError']">
+          The provided username and password combination could not be found.
+        </mat-error>
         <mat-error *ngIf="loginForm.controls.username.errors?.['required']">
           Username is required.
         </mat-error>

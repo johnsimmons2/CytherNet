@@ -10,10 +10,6 @@ import { Router } from "@angular/router";
 })
 export class LoginComponent {
 
-
-  public loginError: boolean = false;
-  public genericError: boolean = false;
-
   constructor(private loginService: UserService, private router: Router) { }
 
   loginForm = new FormGroup({
@@ -22,6 +18,10 @@ export class LoginComponent {
   })
 
   ngOnInit() {
+    this.loginForm.controls.password.valueChanges.subscribe((value: any) => {
+      this.loginForm.controls.password.setErrors(null);
+      this.loginForm.controls.username.setErrors(null);
+    });
   }
 
   submit() {
@@ -33,14 +33,19 @@ export class LoginComponent {
         username: this.loginForm.value.username!
       };
 
-      this.loginService.login(user).subscribe((res: boolean | null) => {
+      this.loginService.login(user).subscribe((res: any) => {
         if (res !== null) {
-          this.loginError = !res;
-          if (!this.loginError) {
+          if (res.success) {
             this.router.navigate(['/']);
+          } else {
+            if (res.status === 401) {
+              this.loginForm.controls.username.setErrors({'loginError': true});
+            } else {
+              this.loginForm.controls.username.setErrors({'genericError': true});
+            }
           }
         } else {
-          this.genericError = true;
+          this.loginForm.controls.username.setErrors({'genericError': true});
         }
       });
     }

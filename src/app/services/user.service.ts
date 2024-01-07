@@ -40,14 +40,12 @@ export class UserService {
           localStorage.setItem('jwtToken', res.data.token);
           localStorage.setItem('username', user.username!);
           this.getUserRoles();
-          return true;
-        } else {
-          return false;
         }
+        return res;
     }),
     catchError((err) => {
       console.error(err);
-      return of(null);
+      return of(err);
     }));
   }
 
@@ -133,13 +131,13 @@ export class UserService {
           if (res.success && res.data) {
             localStorage.setItem('jwtToken', res.data);
             localStorage.setItem('username', user.username!);
-            return true;
           }
-          return false;
+          return res;
         }
       ),
       catchError((err) => {
-        return of(false);
+        console.log(err);
+        return of(err);
       }));
   }
 

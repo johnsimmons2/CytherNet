@@ -64,8 +64,12 @@ export class RegisterComponent implements AfterViewInit {
             }
 
             this.loginService.register(user).subscribe((res: any) => {
-                if (!res) {
-                    this.registerForm.controls.username.setErrors({ 'nameTaken': true });
+                if (!res.success) {
+                    if (res.status === 409) {
+                        this.registerForm.controls.username.setErrors({ 'nameTaken': true });
+                    } else {
+                        this.registerForm.controls.username.setErrors({ 'genericError': true });
+                    }
                 } else {
                     this.router.navigate(['/']);
                 }
