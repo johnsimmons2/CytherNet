@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 /**
  * Todo:
@@ -47,6 +48,7 @@ export class AppComponent {
   opened: boolean = false;
 
   constructor(
+    private router: Router,
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer) {
       this.matIconRegistry.addSvgIcon(
@@ -73,5 +75,15 @@ export class AppComponent {
         "dice-20",
         this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/dice-20.svg")
       );
-    }
+  }
+
+  toggleNav() {
+    this.opened = !this.opened;
+  }
+
+  routeTo(route: string) {
+    this.router.navigate([route]).then(() => {
+        this.opened = false;
+    });
+  }
 }

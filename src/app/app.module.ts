@@ -37,7 +37,7 @@ import { DiceComponent } from './shared/dice-component/dice.component';
 import { SpellSlotComponent } from './shared/spell-slot/spell-slot.component';
 import { StatsFormComponent } from './shared/stats-form-component/stats-form.component';
 import { DungeonMasterComponent } from './dmaster/dmaster.component';
-import { HeaderButtonComponent } from './shared/header-button/header-button.component';
+import { HeaderButtonComponent } from './shared/toolbar/header-button/header-button.component';
 import { HealthComponent } from './shared/health-component/health.component';
 import { SubtleModalComponent } from './shared/subtle-modal/subtle-modal.component';
 import { ModalComponent } from './shared/subtle-modal/modal/modal.component';
@@ -67,7 +67,7 @@ import { ToolbarComponent } from './shared/toolbar/toolbar.component';
     SpellSlotComponent,
     StatsFormComponent,
     DungeonMasterComponent,
-    HeaderButtonComponent,
+    ToolbarComponent,
     HealthComponent,
     SubtleModalComponent,
     ModalComponent,
@@ -76,7 +76,7 @@ import { ToolbarComponent } from './shared/toolbar/toolbar.component';
     ManageCharactersComponent,
     CharacterTableComponent,
     RegisterComponent,
-    ToolbarComponent
+    HeaderButtonComponent,
   ],
   imports: [
     BrowserModule,

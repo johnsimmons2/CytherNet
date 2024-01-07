@@ -1,4 +1,4 @@
-import { Component, Input, TemplateRef } from "@angular/core";
+import { Component, EventEmitter, Input, Output, TemplateRef } from "@angular/core";
 import { Router } from "@angular/router";
 import { UserService } from "src/app/services/user.service";
 
@@ -11,8 +11,8 @@ export class ToolbarComponent {
     opened: boolean = false;
     currentTitle: string = 'CytherNet';
 
-    @Input() content!: TemplateRef<any>;
-    
+    @Output() navToggleChange = new EventEmitter<boolean>();
+   
     constructor(private userService: UserService, private router: Router) {}
 
     get isLoggedIn() {
@@ -41,5 +41,6 @@ export class ToolbarComponent {
 
     toggleNav() {
         this.opened = !this.opened;
+        this.navToggleChange.emit(!this.opened);
     }
 }
