@@ -3,12 +3,13 @@ import { MatTable } from '@angular/material/table';
 import { Role, User, UserDto } from 'src/app/model/user';
 import { ApiService } from 'src/app/services/api.service';
 import { UserService } from 'src/app/services/user.service';
-import { forkJoin } from 'rxjs'
+import { forkJoin, mergeMap, map } from 'rxjs'
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmationModal } from 'src/app/shared/confirmation-modal/confirmation-modal.component';
 import { FormControl, Validators } from '@angular/forms';
 import { TupleType } from 'typescript';
 import { Router } from '@angular/router';
+import { ApiResult } from 'src/app/model/apiresult';
 
 // We set the ID user 1 disabled because it is always admin.
 
@@ -41,7 +42,6 @@ export class ManageUsersComponent implements OnInit, AfterViewInit {
   manageCharacters(userId: any): void {
     this.router.navigate([`/dmaster/users/${userId}/characters/`]);
   }
-
 
   updateRolesFor(id: string, event: any): void {
     console.log(event);
@@ -106,32 +106,43 @@ export class ManageUsersComponent implements OnInit, AfterViewInit {
 
   resetTable(): void {
     this.dataSource = this.dataSource.sort((a: any, b: any) => a.id - b.id);
-    //this.table.renderRows();
+    this.table.renderRows();
   }
 
   ngAfterViewInit(): void {
-    this.userService.getUsers().subscribe((res: any) => {
-      if (res.success) {
-        const roles = res.data.map((user: any) => this.userService.getRolesForUser(user.id));
-
-        forkJoin(roles).subscribe((response: any) => {
-          response.forEach((roleRes: any, index: number)=> {
-            this.dataSource.push({
-              id: res.data[index].id,
-              username: res.data[index].username ?? '',
-              email: res.data[index].email ?? '',
-              firstName: res.data[index].fName ?? '',
-              lastName: res.data[index].lName ?? '',
-              lastOnline: res.data[index].lastOnline ?? '',
-              created: res.data[index].created ?? '',
-              roles: roleRes.data ?? null,
-            });
-          })
-          this.resetTable();
-          console.log(this.dataSource);
+    this.userService.getUsers().pipe(
+      mergeMap((res: ApiResult) => {
+        const userWithRoles = res.data.map((user: User) => {
+          return this.userService.getRolesForUser(user.id).pipe(
+            map((roles: Role[]) => ({ user, roles }))
+          );
         });
+        return forkJoin(userWithRoles);
+      })
+    ).subscribe({
+      next: (data: any) => {
+        if (data !== undefined && Array.isArray(data)) {
+          data.forEach((userWithRoles: any) => {
+            this.dataSource.push({
+              id: userWithRoles.user.id,
+              username: userWithRoles.user.username ?? '',
+              email: userWithRoles.user.email ?? '',
+              firstName: userWithRoles.user.fName ?? '',
+              lastName: userWithRoles.user.lName ?? '',
+              lastOnline: userWithRoles.user.lastOnline ?? '',
+              created: userWithRoles.user.created ?? '',
+              roles: userWithRoles.roles.data ?? null,
+            });
+          });
+        }
+        this.resetTable();
+      },
+      error: (err: any) => {
+        console.log(err);
+        console.log('error in the table');
       }
     });
   }
+
 
 }

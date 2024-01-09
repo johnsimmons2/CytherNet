@@ -3,6 +3,7 @@ import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validator
 import { UserDto } from "../model/user";
 import { UserService } from "../services/user.service";
 import { Router } from "@angular/router";
+import { ApiResult } from "../model/apiresult";
 
 @Component({
   selector: 'login',
@@ -33,17 +34,15 @@ export class LoginComponent {
         username: this.loginForm.value.username!
       };
 
-      this.loginService.login(user).subscribe((res: any) => {
-        if (res !== null) {
-          if (res.success) {
-            this.router.navigate(['/']);
-          } else {
-            if (res.status === 401) {
-              this.loginForm.controls.username.setErrors({'loginError': true});
-            } else {
-              this.loginForm.controls.username.setErrors({'genericError': true});
-            }
-          }
+      this.loginService.login(user).subscribe((res: ApiResult) => {
+        if (res.success) {
+          this.router.navigate(['/']);
+        } 
+      },
+
+      (error: any) => {
+        if (error.status === 401) {
+          this.loginForm.controls.username.setErrors({'loginError': true});
         } else {
           this.loginForm.controls.username.setErrors({'genericError': true});
         }

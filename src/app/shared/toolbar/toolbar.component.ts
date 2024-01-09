@@ -8,9 +8,9 @@ import { UserService } from "src/app/services/user.service";
 })
 export class ToolbarComponent {
 
-    opened: boolean = false;
-    currentTitle: string = 'CytherNet';
-
+    
+    @Input() currentTitle: string = 'CytherNet';
+    @Input() opened: boolean = false;
     @Output() navToggleChange = new EventEmitter<boolean>();
    
     constructor(private userService: UserService, private router: Router) {}
@@ -20,11 +20,11 @@ export class ToolbarComponent {
     }
 
     get isAdmin() {
-        return this.userService.isAdmin();
+        return this.userService.hasRoleLevel(0);
     }
 
     get isPlayer() {
-        return this.userService.isPlayer();
+        return this.userService.hasRoleLevel(1);
     }
 
     routeTo(route: string) {
@@ -36,11 +36,13 @@ export class ToolbarComponent {
     logout() {
         localStorage.removeItem('username');
         localStorage.removeItem('jwtToken');
+
+        this.navToggleChange.emit(false); // Close the sidenav; it could remain open after logging out.
         this.routeTo('login');
     }
 
     toggleNav() {
         this.opened = !this.opened;
-        this.navToggleChange.emit(!this.opened);
+        this.navToggleChange.emit(this.opened);
     }
 }

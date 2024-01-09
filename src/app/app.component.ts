@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { UserService } from './services/user.service';
 
 /**
  * Todo:
@@ -47,10 +48,36 @@ export class AppComponent {
   title = 'Cythernet';
   opened: boolean = false;
 
+  get isAdmin() {
+    return this.userService.hasRoleLevel(0);
+  }
+
+  get username() {
+    return localStorage.getItem('username');
+  }
+
+  get selectedCampaign() {
+    const campaign = localStorage.getItem('campaign');
+    if (campaign) {
+      return campaign;
+    }
+    return '';
+  }
+
+  get toolbarTitle(): string {
+    const campaign = localStorage.getItem('campaign');
+    if (campaign) {
+      return campaign;
+    }
+    
+    return 'CytherNet';
+  }
+
   constructor(
     private router: Router,
     private matIconRegistry: MatIconRegistry,
-    private domSanitizer: DomSanitizer) {
+    private domSanitizer: DomSanitizer,
+    private userService: UserService) {
       this.matIconRegistry.addSvgIcon(
         "dice-4",
         this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/dice-4.svg")
@@ -77,8 +104,8 @@ export class AppComponent {
       );
   }
 
-  toggleNav() {
-    this.opened = !this.opened;
+  toggleNav(value: boolean) {
+    this.opened = value;
   }
 
   routeTo(route: string) {

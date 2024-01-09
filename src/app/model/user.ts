@@ -9,8 +9,8 @@ export interface UserDto {
 }
 
 export interface Role {
-  id: number;
-  roleName: string;
+  id?: number;
+  roleName?: string;
   level: number;
 }
 

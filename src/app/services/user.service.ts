@@ -4,119 +4,42 @@ import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/ro
 import { Role, UserDto } from '../model/user';
 import { ApiService } from './api.service';
 import jwtDecode from 'jwt-decode';
-import { catchError, map } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
+import { Observable, Subscription, of } from 'rxjs';
+import { ApiResult } from '../model/apiresult';
 
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
+
+  private adjustmentPeriod: number = 1000 * 60; // 30 seconds
+
   constructor(
       private router: Router,
-      private http: HttpClient,
       private apiService: ApiService
   ) {}
-
-  updateUser(user: UserDto) {
-    return this.apiService.post(`users/${user.id}`, user);
-  }
-
-  getUsers() {
-    return this.apiService.get('users');
-  }
-
-  getCurrentUsername() {
-    const user = localStorage.getItem('username');
-    if (user) {
-      return user;
-    }
-    // Blah blah something wrong do something
-    return null;
-  }
-
-  login(user: UserDto) {
+  
+  public login(user: UserDto): Observable<ApiResult> {
     return this.apiService.post('auth/token', user).pipe(
-      map((res: any) => {
-        if (res.success && res.data.token) {
+      tap((res: ApiResult) => {
+        if (res.success && res.data) {
+          localStorage.clear();
           localStorage.setItem('jwtToken', res.data.token);
-          localStorage.setItem('username', user.username!);
-          this.getUserRoles();
+          const decoded: any = jwtDecode(res.data.token);
+          // Use the username we received from the server, not the one the user entered.
+          localStorage.setItem('username', decoded.username);
+          localStorage.setItem('rolesLastUpdate', Date.now().toString());
+          localStorage.setItem('roles', JSON.stringify(decoded.roles));
         }
-        return res;
-    }),
-    catchError((err) => {
-      console.error(err);
-      return of(err);
-    }));
+      }));
   }
 
-  isAdmin() {
-    if (!localStorage.getItem('roles')) {
-      this.getUserRoles();
-      if (localStorage.getItem('roles') === null) {
-        return false;
-      }
-    }
-
-    const roleString = localStorage.getItem('roles');
-    const roles = JSON.parse(roleString!);
-    let isAdmin = false;
-    roles.forEach((role: any) => {
-      if (role.level === 0) {
-        isAdmin = true;
-      }
-    });
-    return isAdmin;
+  public logout(): void {
+    localStorage.clear();
+    this.router.navigate(['/login']);
   }
 
-  isPlayer() {
-    if (!localStorage.getItem('roles')) {
-      this.getUserRoles();
-      if (localStorage.getItem('roles') === null) {
-        return false;
-      }
-    }
-
-    const roleString = localStorage.getItem('roles');
-    const roles = JSON.parse(roleString!);
-    let isPlayer = false;
-    roles.forEach((role: any) => {
-      if (role.level <= 1) {
-        isPlayer = true;
-      }
-    });
-    return isPlayer;
-  }
-
-  deleteUser(userId: number) {
-    return this.apiService.delete('users/' + userId, null);
-  }
-
-  getRolesForUser(userId: number) {
-    return this.apiService.get('users/' + userId + '/roles');
-  }
-
-  getUserRoles() {
-    this.apiService.get('auth').subscribe((res: any) => {
-      if (res.success && res.data && localStorage.getItem('jwtToken') !== null) {
-        localStorage.setItem('roles', JSON.stringify(res.data));
-      }
-    });
-  }
-
-  updateUserRoles(userId: number, roles: Role[]) {
-    return this.apiService.post('users/' + userId + '/roles', roles);
-  }
-
-  getAllRoles() {
-    return this.apiService.get('roles').pipe(map((res: any) => {
-      if (res.success && res.data) {
-        return res.data;
-      }
-      return [];
-    }));
-  }
-
-  async isNameRegistered(username: string) {
+  public async isNameRegistered(username: string): Promise<Subscription> {
     return this.apiService.get('users/' + username).subscribe((res: any) => {
       if (res.success && res.data) {
         return true;
@@ -125,7 +48,7 @@ export class UserService {
     });
   }
 
-  register(user: UserDto): Observable<boolean> {
+  public register(user: UserDto): Observable<boolean> {
       return this.apiService.post('auth/register', user).pipe(map(
         (res: any) => {
           if (res.success && res.data) {
@@ -137,32 +60,11 @@ export class UserService {
       ),
       catchError((err) => {
         console.log(err);
-        return of(err);
+        throw(err);
       }));
   }
 
-
-  getJwt() {
-    const user = localStorage.getItem('jwtToken');
-    if (user) {
-        return user;
-    }
-    return null;
-  }
-
-  isAuthenticated() {
-    const user = localStorage.getItem('jwtToken');
-    if (user) {
-      const decoded: any = jwtDecode(user);
-      if (decoded.exp * 1000 < Date.now()) {
-        return false;
-      }
-      return true;
-    }
-    return false;
-  }
-
-  refreshToken() {
+  public refreshToken(): void {
     const user = localStorage.getItem('jwtToken');
     if (user) {
       const decoded: any = jwtDecode(user);
@@ -178,11 +80,156 @@ export class UserService {
       }
     }
   }
-
-  logout() {
-    this.router.navigate(['/login']);
-    localStorage.clear();
-
-    console.log("logged out user");
+  
+  // PLAYER :-> 1
+  public hasRolePlayer(): boolean {
+    return this.hasRoleLevel(1);
   }
+
+  // ADMIN :-> 0
+  public hasRoleAdmin(): boolean {
+    return this.hasRoleLevel(0);
+  }
+
+  public hasRoleLevel(roleLevel: number): boolean {
+    if (this.validateUserRolesInStorage()) {
+      return this.doesRoleContain({ level: roleLevel });
+    }
+
+    return false;
+  }
+
+  public deleteUser(userId: number): Observable<any> {
+    return this.apiService.delete('users/' + userId, null);
+  }
+
+  public getRolesForUser(userId: number): Observable<any> {
+    return this.apiService.get('users/' + userId + '/roles');
+  }
+
+  public updateUserRoles(userId: number, roles: Role[]): Observable<any> {
+    return this.apiService.post('users/' + userId + '/roles', roles);
+  }
+
+  public getAllRoles(): Observable<any> {
+    return this.apiService.get('roles').pipe(map((res: any) => {
+      if (res.success && res.data) {
+        return res.data;
+      }
+      return [];
+    }));
+  }
+
+  public updateUser(user: UserDto): Observable<any> {
+    return this.apiService.post(`users/${user.id}`, user);
+  }
+
+  public getUsers(): Observable<any> {
+    return this.apiService.get('users');
+  }
+
+  public getUser(userId: number): Observable<any> {
+    return this.apiService.get(`users/${userId}`);
+  }
+
+  public getCurrentUsername(): string | null {
+    const user = localStorage.getItem('username');
+    if (user) {
+      return user;
+    }
+    // Blah blah something wrong do something
+    return null;
+  }
+
+  public getJwt(): string | null {
+    const user = localStorage.getItem('jwtToken');
+    if (user) {
+        return user;
+    }
+    return null;
+  }
+
+  public isAuthenticated(): boolean {
+    const user = localStorage.getItem('jwtToken');
+    if (user) {
+      const decoded: any = jwtDecode(user);
+      if (decoded.exp * 1000 < Date.now()) {
+        return false;
+      }
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * @returns True if the user has roles and were validated - checking server only ocassionally, false otherwise.
+  */
+  private validateUserRolesInStorage(): boolean {
+    const jwtToken = localStorage.getItem('jwtToken');
+    if (jwtToken && this.isAuthenticated()) {
+      const lastUpdate = localStorage.getItem('rolesLastUpdate');
+      const roles = localStorage.getItem('roles');
+
+      if (lastUpdate && roles) {
+        if (Date.now() - Number.parseInt(lastUpdate) > this.adjustmentPeriod) {
+          console.log('validating user roles, the period is outside acceptable period: ' + this.adjustmentPeriod + 'ms, it is: ' + (Date.now() - Number.parseInt(lastUpdate)) + 'ms');
+          
+          localStorage.setItem('rolesLastUpdate', Date.now().toString());
+          return this.getUserRoles();
+        } else {
+          return true;
+        }
+      } else {
+        localStorage.setItem('rolesLastUpdate', Date.now().toString());
+        return this.getUserRoles();
+      }
+    }
+
+    return false;
+  }
+
+  private doesRoleContain({level}: Role): boolean {
+    var contains = false;
+    const roleString = localStorage.getItem('roles');
+    const roles = JSON.parse(roleString!);
+
+    roles.forEach((role: any) => {
+      if (role.level <= level && role.level >= 0) {
+        contains = true;
+        return;
+      }
+    });
+
+    return contains;
+  }
+
+  /**
+   * Authenticates based on current JWT token and refreshes the roles in local storage.
+   * @returns True if the user has roles and were validated, false otherwise.
+   */
+  private getUserRoles(): boolean {
+    var success = false;
+
+    this.apiService.get('auth').subscribe((res: any) => {
+      // Seeing as we use the current JWT Token to get the roles, we can assume that the user is logged in.
+      if (res.success && res.data) {
+        localStorage.setItem('roles', JSON.stringify(res.data));
+        success = true;
+      }
+    }),
+
+    // We know that the authentication must have failed; or the server could not be reached.
+    (error: any) => {
+      if (error.status === 401) {
+        this.logout();
+      } else {
+        console.error('Error getting user roles: ' + error);
+        console.error('Please contact System Administrator.')
+        this.logout();
+      }
+    };
+
+    return success;
+  }
+
 }

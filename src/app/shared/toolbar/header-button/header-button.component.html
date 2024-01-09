@@ -1,9 +1,9 @@
 <a *ngIf="isEnabled" mat-button (click)="routeTo()" fxLayout="row" fxLayoutGap="5px">
   <div fxFlex style="width: 80%; margin-top: 8px">
-    <mat-icon style="transform: scale(1.6)" *ngIf="!isActiveRoute; else activeIcon">{{buttonIcon}}</mat-icon>
+    <mat-icon style="transform: scale(1.4)" *ngIf="!isActiveRoute; else activeIcon">{{buttonIcon}}</mat-icon>
     
     <ng-template #activeIcon>
-      <mat-icon color="accent" style="transform: scale(1.6)">{{calculatedIcon}}</mat-icon>
+      <mat-icon color="accent" style="transform: scale(1.4)">{{calculatedIcon}}</mat-icon>
     </ng-template>
   </div>
 

@@ -45,9 +45,10 @@ const routes: Routes = [
         path: 'campaign',
         component: CampaignComponent
       },
+      // DUNGEON MASTER TABS
       {
         path: 'dmaster',
-        component: DungeonMasterComponent
+        component: DungeonMasterComponent,
       },
       {
         path: 'dmaster/characters/create',

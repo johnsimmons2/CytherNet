@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
+import { ApiResult } from '../model/apiresult';
 
 
 @Injectable({ providedIn: 'root' })
@@ -12,7 +13,8 @@ export class ApiService {
   constructor(
       private router: Router,
       private http: HttpClient
-  ) {}
+  ) {
+  }
 
   private getHeaders() {
     const token = localStorage.getItem('jwtToken')
@@ -23,16 +25,60 @@ export class ApiService {
     return headers;
   }
 
+  private getHeadersWithToken(token: string) {
+    var headers = new HttpHeaders()
+    if (token !== null) {
+      headers = headers.append('Authorization', 'Bearer ' + token)
+    }
+    return headers;
+  }
+
+  private wrapper(action: (...args: any[]) => Observable<any>, 
+                  path: string, 
+                  headers: any, 
+                  payload?: any): any {
+    
+    return new Observable((observer) => {
+      var actualConductedAction = null;
+
+      if (payload === undefined) {
+        // No payload / body
+        actualConductedAction = action.call(this.http, path, headers);
+      } else {
+        // Has a payload / json body
+        actualConductedAction = action.call(this.http, path, payload, headers);
+      }
+
+      try {
+        actualConductedAction.subscribe((res: ApiResult) => {
+          observer.next(res);
+          observer.complete();
+        }, (err: any) => {
+          observer.error(err);
+        });
+      } catch (err: any) {
+        observer.error(err);
+      }
+    });
+  }
+
   delete(endpoint: string, payload: any): Observable<any> {
-    return this.http.delete(this.ROOT_URL + endpoint, { headers: this.getHeaders() });
+    return this.wrapper(this.http.delete, this.ROOT_URL + endpoint, { headers: this.getHeaders() });
   }
 
   post(endpoint: string, payload: any): Observable<any> {
-    return this.http.post(this.ROOT_URL + endpoint, payload, { headers: this.getHeaders() });
+    return this.wrapper(this.http.post, this.ROOT_URL + endpoint, { headers: this.getHeaders() }, payload);
   }
 
-  get(endpoint: string): Observable<any> {
-    return this.http.get(this.ROOT_URL + endpoint, { headers: this.getHeaders() });
+  get(endpoint: string, headers?: any): Observable<ApiResult> {
+    if (headers === undefined) {
+      headers = { headers: this.getHeaders() };
+    }
+    return this.wrapper(this.http.get, this.ROOT_URL + endpoint, headers);
+  }
+
+  validateToken(substitutedToken: any) {
+    return this.get(this.ROOT_URL + 'auth', { headers: this.getHeadersWithToken(substitutedToken) });
   }
 
 }

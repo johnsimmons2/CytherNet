@@ -12,7 +12,7 @@ export class CharacterTableComponent implements OnInit, AfterViewInit {
     @Input() userId!: string;
     @Input() dataSource: Character[] = [];
 
-    @ViewChild('table') table: MatTable<Character> | undefined;
+    @ViewChild(MatTable) table: MatTable<Character> | undefined;
 
     xcolumns: string[] = ['name', 'race', 'class', 'level', 'health', 'actions'];
 

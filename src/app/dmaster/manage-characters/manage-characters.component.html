@@ -1,2 +1,17 @@
-<character-table [dataSource]="characters">
-</character-table>
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>
+            Character Manager for {{selectedUsername}}
+        </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <character-table [dataSource]="characters">
+        </character-table>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="routeTo('dmaster/character/create')">
+            <!-- Create a character for this user. -->
+            Create Character
+        </button>
+    </mat-card-actions>
+</mat-card>

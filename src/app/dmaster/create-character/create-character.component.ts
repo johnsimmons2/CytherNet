@@ -72,7 +72,7 @@ export class CreateCharacterComponent {
 
 
   get isadmin() {
-    return this.userService.isAdmin();
+    return this.userService.hasRoleAdmin();
   }
 
   get level() {
@@ -111,7 +111,7 @@ export class CreateCharacterComponent {
   initFormVals() {
     this.characterForm.get('levelForm')!.setValue(1);
     this.characterForm.get('characterTypeForm')!.setValue(0);
-    if (this.userService.isAdmin()) {
+    if (this.isadmin) {
       this.characterForm.get('levelForm')!.enable();
       this.characterForm.get('characterTypeForm')!.enable();
     } else {

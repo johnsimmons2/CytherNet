@@ -38,7 +38,7 @@ export class StatsFormComponent {
   }
 
   get isAdmin(): boolean {
-    return this.userService.isAdmin();
+    return this.userService.hasRoleAdmin();
   }
 
   iChanged(event: any) {
