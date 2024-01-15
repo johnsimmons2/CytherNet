@@ -1,10 +1,9 @@
-<h2 mat-dialog-title>Test title</h2>
+<h2 mat-dialog-title>{{data.title}}</h2>
 <mat-dialog-content>
-  <p>
-    content
+  <p [innerHtml]="data.content">
   </p>
 </mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-button mat-dialog-close>Close</button>
-  <button mat-button [mat-dialog-close]="true">Accept</button>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close color="warn">Close</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial color="primary">Accept</button>
 </mat-dialog-actions>

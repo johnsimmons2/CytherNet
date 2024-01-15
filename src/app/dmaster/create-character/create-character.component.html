@@ -1,134 +1,110 @@
 <div class="cyther-page">
   <div>
     <mat-card>
-      <form [formGroup]="characterForm" (ngSubmit)="submit()" class="twocolumns">
+      <mat-card-content>
+        <form [formGroup]="characterForm" (ngSubmit)="submit()" fxLayout="row wrap" fxLayoutAlign="space-between none">
 
-        <!-- Column 1 -->
-        <mat-grid-list [cols]="5" rowHeight="60px" gutterSize="0" class="onecolumn">
+          <mat-form-field fxFlex="60">
+            <input matInput placeholder="Character Name" type="text" formControlName="characterNameForm" />
+            <mat-error>
+              <span *ngIf="characterForm.controls['characterNameForm'].hasError('required')">Character name is required.</span>
+              <span *ngIf="characterForm.controls['characterNameForm'].hasError('maxlength')">Character name cannot be longer than 20 characters. ({{characterForm.controls['characterNameForm'].value!.toString().length}})</span>
+            </mat-error>
+          </mat-form-field>
 
-          <mat-grid-tile [colspan]="4" class="leftjustify">
-            <mat-form-field style="width:85%;">
-              <input matInput placeholder="Character Name" type="text" formControlName="characterNameForm" />
-              <mat-error>
-                <span *ngIf="characterForm.controls['characterNameForm'].hasError('required')">Character name is required.</span>
-                <span *ngIf="characterForm.controls['characterNameForm'].hasError('maxlength')">Character name cannot be longer than 20 characters. ({{characterForm.controls['characterNameForm'].value!.toString().length}})</span>
-              </mat-error>
-            </mat-form-field>
-          </mat-grid-tile>
+          <mat-form-field fxFlex="30">
+            <input matInput
+                    type="number"
+                    value="1"
+                    formControlName="levelForm"/>
+            <span matPrefix>&nbsp;&nbsp;Level</span>
+            <mat-error>
+              <span *ngIf="characterForm.controls['levelForm'].hasError('max')">Level cap is 20!</span>
+              <span *ngIf="characterForm.controls['levelForm'].hasError('min')">Minimum level is 1.</span>
+            </mat-error>
+          </mat-form-field>
 
-          <mat-grid-tile [colspan]="1">
-            <mat-form-field style="width:100%;">
-              <input matInput
-                      type="number"
-                      value="1"
-                      formControlName="levelForm"/>
-              <span matPrefix>Level &nbsp;</span>
-              <mat-error>
-                <span *ngIf="characterForm.controls['levelForm'].hasError('max')">Level cap is 20!</span>
-                <span *ngIf="characterForm.controls['levelForm'].hasError('min')">Minimum level is 1.</span>
-              </mat-error>
-            </mat-form-field>
-          </mat-grid-tile>
-
-          <mat-grid-tile #characterRace [colspan]="5" class="spacedaround">
-            <mat-form-field>
-              <mat-label>Race</mat-label>
-              <mat-select>
-                <mat-option *ngFor="let clazz of clazzes" [value]="clazz">
-                  {{clazz.name}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <div>
-              <app-subtle-modal text="Race Traits">
+          <mat-form-field>
+            <mat-label>Race</mat-label>
+            <mat-select formControlName="raceForm">
+              <mat-option *ngFor="let clazz of clazzes" [value]="clazz">
+                {{clazz.name}}
+              </mat-option>
+            </mat-select>
+            <mat-hint>
+              <!-- Eventually, grab the race traits and append to this list via method -->
+              <app-subtle-modal title="Race Traits" [text]="getRaceTraitDescription()">
               </app-subtle-modal>
-            </div>
-          </mat-grid-tile>
+            </mat-hint>
+          </mat-form-field>
 
-          <mat-grid-tile #classSubclass [colspan]="5" >
-              <mat-form-field style="flex: 1; margin: 4px; padding: 2px;">
-                <mat-label>Class</mat-label>
-                <mat-select>
-                  <mat-option *ngFor="let clazz of clazzes" [value]="clazz">
-                    {{clazz.name}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+          <mat-form-field>
+            <mat-label>Class</mat-label>
+            <mat-select>
+              <mat-option *ngFor="let clazz of clazzes" [value]="clazz">
+                {{clazz.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-              <mat-form-field style="flex: 1; margin: 4px; padding: 2px;">
-                <mat-label>Sub-Class</mat-label>
-                <mat-select>
-                  <mat-option *ngFor="let clazz of clazzes" [value]="clazz">
-                    {{clazz.name}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-          </mat-grid-tile>
+          <mat-form-field>
+            <mat-label>Sub-Class</mat-label>
+            <mat-select>
+              <mat-option *ngFor="let clazz of getSubclasses()" [value]="clazz">
+                {{clazz.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-          <!-- <mat-grid-tile #characterType [colspan]="3">
-            <mat-chip-list [selectable]="true" id="character-opts" (change)="characterTypeFormUpdate($event)" formControlName="characterTypeForm">
-              <mat-chip id="pc-option"
-                        #pcOption="matChip"
-                        [selected]="selectedCharType === 0"
-                        (click)="characterTypeSelect(pcOption)">PC</mat-chip>
-              <mat-chip id="npc-option"
-                        #npcOption="matChip"
-                        [selected]="selectedCharType === 1"
-                        (click)="characterTypeSelect(npcOption)">NPC</mat-chip>
-              <mat-chip id="m-option"
-                        #mOption="matChip"
-                        [selected]="selectedCharType === 2"
-                        (click)="characterTypeSelect(mOption)">Monster</mat-chip>
-            </mat-chip-list>
-          </mat-grid-tile> -->
+            <!-- <mat-grid-tile #characterType [colspan]="3">
+              <mat-chip-list [selectable]="true" id="character-opts" (change)="characterTypeFormUpdate($event)" formControlName="characterTypeForm">
+                <mat-chip id="pc-option"
+                          #pcOption="matChip"
+                          [selected]="selectedCharType === 0"
+                          (click)="characterTypeSelect(pcOption)">PC</mat-chip>
+                <mat-chip id="npc-option"
+                          #npcOption="matChip"
+                          [selected]="selectedCharType === 1"
+                          (click)="characterTypeSelect(npcOption)">NPC</mat-chip>
+                <mat-chip id="m-option"
+                          #mOption="matChip"
+                          [selected]="selectedCharType === 2"
+                          (click)="characterTypeSelect(mOption)">Monster</mat-chip>
+              </mat-chip-list>
+            </mat-grid-tile> -->
 
 
-          <mat-grid-tile #healthTile [colspan]="5" class="leftjustify">
-            <app-health [dice]="hitDice">
-            </app-health>
-          </mat-grid-tile>
+          <app-health [dice]="hitDice">
+          </app-health>
 
-          <mat-grid-tile #personality [colspan]="5" [rowspan]="1">
-            <!-- modal selectors that let the players pick their spells and cantrips, or type up their background / pick background. -->
-            <a>Spells</a>
-            <a>Cantrips</a>
-            <a>Background</a>
-            <a>Personality</a>
-          </mat-grid-tile>
+          <!-- modal selectors that let the players pick their spells and cantrips, or type up their background / pick background. -->
+          <a>Spells</a>
+          <a>Cantrips</a>
+          <a>Background</a>
+          <a>Personality</a>
 
-          <mat-grid-tile #spellSlotsLabel [colspan]="1">
-            <h3 style="width: 100%;">
-              Spell Slots
-            </h3>
-          </mat-grid-tile>
+          <h3 style="width: 100%;">
+            Spell Slots
+          </h3>
 
+          <ng-container *ngFor="let d of spellSlots">
+            <spell-slot-app [amount]="d.amount" [tier]="d.tier" [displayOnly]="true" style="margin: 4px;">
+            </spell-slot-app>
+          </ng-container>
 
-
-          <!-- proficiencies | saving throws: show you how many are available,  -->
-          <!-- skills and traits | total skills and traits-->
-          <mat-grid-tile [colspan]="2">
-
-          </mat-grid-tile>
-
-        </mat-grid-list>
-
-
-        <!-- Column 2 -->
-        <mat-grid-list [cols]="5" rowHeight="60px" gutterSize="0" class="onecolumn">
-          <mat-grid-tile #spellSlotsTile [colspan]="5" class="leftjustify">
-            <ng-container *ngFor="let d of spellSlots">
-              <spell-slot-app [amount]="d.amount" [tier]="d.tier" [displayOnly]="true" style="margin: 4px;">
-              </spell-slot-app>
-            </ng-container>
-          </mat-grid-tile>
-
-          <mat-grid-tile #characterStats [colspan]="5" [rowspan]="9">
-            <mat-accordion style="padding:2px; width:100%; height: 100%;" multi *ngIf="stats.length > 0">
-              <stats-form-app style="padding:2px; width:100%;" [class]="'stat-card'" *ngFor="let stat of stats" [statName]="stat.name" [statValue]="stat.value" [statDescription]="stat.description"></stats-form-app>
-            </mat-accordion>
-          </mat-grid-tile>
-        </mat-grid-list>
-      </form>
+        </form>
+      </mat-card-content>
     </mat-card>
+    <div class="form-row">
+      <div fxFlex="column" fxLayoutGap="20px">
+          <div fxFlex class="form-row-item">
+              <button mat-raised-button type="submit" color="primary" [disabled]="!characterForm.valid">Create</button>
+          </div>
+          <div fxFlex="0.5" fxHide.lt-md></div>
+          <div fxFlex class="form-row-item">
+              <button mat-raised-button type="button" color="warn" (click)="router.navigate(['/'])">Cancel</button>
+          </div>
+      </div>
+  </div>
   </div>
 </div>

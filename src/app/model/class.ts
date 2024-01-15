@@ -1,8 +1,9 @@
 
 
 export interface Class {
-  id: number;
+  id?: number;
   name: string;
   description: string;
-  startingHp: number;
+  startingHp?: number;
+  subclasses?: Class[];
 }

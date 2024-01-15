@@ -10,6 +10,7 @@ import { ModalComponent } from './modal/modal.component';
 export class SubtleModalComponent implements OnInit {
 
   @Input() text: string = "";
+  @Input() title: string = "";
 
   constructor(public dialog: MatDialog) { }
 
@@ -17,7 +18,12 @@ export class SubtleModalComponent implements OnInit {
   }
 
   openDialog() {
-    const dialogReg = this.dialog.open(ModalComponent);
+    const dialogReg = this.dialog.open(ModalComponent, {
+      data: {
+        content: this.text,
+        title: this.title
+      }
+    });
 
     dialogReg.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);

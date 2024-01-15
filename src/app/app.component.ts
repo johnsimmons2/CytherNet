@@ -3,6 +3,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { UserService } from './services/user.service';
+import { SpinnerService } from './shared/loading-spinner/spinner.service';
 
 /**
  * Todo:
@@ -48,6 +49,10 @@ export class AppComponent {
   title = 'Cythernet';
   opened: boolean = false;
 
+  get showSpinner() {
+    return this.spinnerService.spinnerVisible;
+  }
+
   get isAdmin() {
     return this.userService.hasRoleLevel(0);
   }
@@ -77,7 +82,8 @@ export class AppComponent {
     private router: Router,
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer,
-    private userService: UserService) {
+    private userService: UserService,
+    public spinnerService: SpinnerService) {
       this.matIconRegistry.addSvgIcon(
         "dice-4",
         this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/dice-4.svg")

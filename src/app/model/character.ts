@@ -16,4 +16,7 @@ export interface Character {
   initiative: number;
   speed: number;
   proficiencybonus: number;
+
+  // 0 player, 1 npc
+  type?: number;
 }

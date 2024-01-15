@@ -22,21 +22,22 @@
         </app-header-button>
   
         <app-header-button  fxFlex 
-                            buttonName="Campaign"
+                            buttonName="Campaigns"
                             buttonRoute="/campaign"
                             buttonIcon="map"
                             [isEnabled]="isLoggedIn">
         </app-header-button>
   
-        <app-header-button  fxFlex 
+        <!-- <app-header-button  fxFlex 
                             buttonName="Journal"
                             buttonRoute="/journal"
                             buttonIcon="bookmark_border"
                             buttonIconActive="bookmark"
                             [isEnabled]="isLoggedIn && isPlayer">
-        </app-header-button>
+        </app-header-button> -->
   
-        <app-header-button  fxFlex 
+        <app-header-button  *ngIf="isLoggedIn && isAdmin"
+                            fxFlex 
                             buttonName="Dungeon Master"
                             buttonRoute="/dmaster"
                             buttonIcon="add_circle_outline"

@@ -6,6 +6,9 @@ import { MatChip } from "@angular/material/chips";
 import { Dice } from "src/app/model/dice";
 import { Spellslot } from "src/app/model/spellslot";
 import { StatsFormComponent } from "src/app/shared/stats-form-component/stats-form.component";
+import { Router } from "@angular/router";
+import { StatsService } from "src/app/services/stats.service";
+import { ClassService } from "src/app/services/class.service";
 
 
 @Component({
@@ -17,43 +20,17 @@ export class CreateCharacterComponent {
 
   clazzes: Class[] = [];
   hitDice: Dice[] = [];
-  stats: any[] = [
-    {
-      name: "Strength",
-      description: "Strength measures bodily power, athletic training, and the extent to which you can exert raw physical force.",
-      value: 10,
-    },
-    {
-      name: "Dexterity",
-      value: 16,
-      description: "Dexterity measures agility, reflexes, and balance.",
-    },
-    {
-      name: "Constitution",
-      value: 12,
-      description: "Constitution measures health, stamina, and vital force.",
-    },
-    {
-      name: "Intelligence",
-      value: 8,
-      description: "Intelligence measures mental acuity, accuracy of recall, and the ability to reason.",
-    },
-    {
-      name: "Wisdom",
-      value: 11,
-      description: "Wisdom reflects how attuned you are to the world around you and represents perceptiveness and intuition.",
-    },
-    {
-      name: "Charisma",
-      value: 18,
-      description: "Charisma measures your ability to interact effectively with others. It includes such factors as confidence and eloquence, and it can represent a charming or commanding personality.",
-    }
-  ];
   spellSlots: Spellslot[] = [];
   characterForm: FormGroup;
   selectedCharType: number = 0;
 
-  constructor(private userService: UserService, private formBuilder: FormBuilder) {
+  constructor(
+    private userService: UserService, 
+    private statsService: StatsService,
+    private classService: ClassService,
+    private formBuilder: FormBuilder, 
+    public router: Router) {
+
     this.characterForm = this.formBuilder.group({
       characterNameForm: this.formBuilder.control('', [Validators.required, Validators.maxLength(30)]),
       classForm: this.formBuilder.control('', Validators.required),
@@ -81,6 +58,31 @@ export class CreateCharacterComponent {
     } else {
       return 1;
     }
+  }
+
+  public getSubclasses(): any {
+    if (this.characterForm.get('classForm')?.value) {
+      return this.characterForm.get('classForm')?.value.subclasses;
+    } else {
+      return [];
+    }
+  }
+
+  // Returns a string of HTML to populate the modal.
+  public getRaceTraitDescription(): string {
+    let desc = "In D&D 5e, each race has unique traits that are described in the Player's Handbook.<br><br>";
+
+    if (this.characterForm.get('raceForm')?.value) {
+      // Get the description of this race.
+      desc += this.characterForm.get('raceForm')?.value.name + ":<br>";
+      desc += "<list>";
+      desc += "<li>+2 Str</li>";
+      desc += "<li>+2 Str</li>";
+      desc += "<li>+2 Str</li>";
+      desc += "</list>";
+    }
+    // TODO: get the current race
+    return desc;
   }
 
   characterTypeFormUpdate(event: any) {
@@ -137,38 +139,7 @@ export class CreateCharacterComponent {
         value: 8
       }
     ];
-    this.clazzes = [
-      {
-        id: 1,
-        name: "Barbarian",
-        startingHp: 12,
-        description: "A fierce warrior of primitive background who can enter a battle rage",
-      },
-      {
-        id: 2,
-        name: "Bard",
-        startingHp: 8,
-        description: "An inspiring magician whose power echoes the music of creation",
-      },
-      {
-        id: 3,
-        name: "Cleric",
-        startingHp: 8,
-        description: "A priestly champion who wields divine magic in service of a higher power",
-      },
-      {
-        id: 4,
-        name: "Druid",
-        startingHp: 8,
-        description: "A priest of the Old Faith, wielding the powers of nature and adopting animal forms",
-      },
-      {
-        id: 5,
-        name: "Fighter",
-        startingHp: 10,
-        description: "A master of martial combat, skilled with a variety of weapons and armor",
-      }
-    ];
+    this.clazzes = this.classService.classes;
     this.spellSlots = [
       {
         tier: 3,

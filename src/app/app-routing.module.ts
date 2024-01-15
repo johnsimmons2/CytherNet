@@ -55,13 +55,13 @@ const routes: Routes = [
         component: CreateCharacterComponent
       },
       {
+        path: 'dmaster/characters/:id',
+        component: ManageCharactersComponent
+      },
+      {
         path: 'dmaster/users',
         component: ManageUsersComponent
       },
-      {
-        path: 'dmaster/users/:id/characters',
-        component: ManageCharactersComponent
-      }
     ]
   }
 ];

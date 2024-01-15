@@ -33,25 +33,19 @@ import { JournalComponent } from './journal/journal.component';
 import { CharactersComponent } from './characters/characters.component';
 import { CampaignComponent } from './campaign/campaign.component';
 import { CreateCharacterComponent } from './dmaster/create-character/create-character.component';
-import { DiceComponent } from './shared/dice-component/dice.component';
-import { SpellSlotComponent } from './shared/spell-slot/spell-slot.component';
-import { StatsFormComponent } from './shared/stats-form-component/stats-form.component';
 import { DungeonMasterComponent } from './dmaster/dmaster.component';
-import { HeaderButtonComponent } from './shared/toolbar/header-button/header-button.component';
-import { HealthComponent } from './shared/health-component/health.component';
-import { SubtleModalComponent } from './shared/subtle-modal/subtle-modal.component';
-import { ModalComponent } from './shared/subtle-modal/modal/modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCommonModule } from '@angular/material/core';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { ManageUsersComponent } from './dmaster/manage-users/manage-users.component';
-import { ConfirmationModal } from './shared/confirmation-modal/confirmation-modal.component';
 import { ManageCharactersComponent } from './dmaster/manage-characters/manage-characters.component';
-import { CharacterTableComponent } from './shared/character-table/character-table.component';
 import { RegisterComponent } from './login/register/register.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { ToolbarComponent } from './shared/toolbar/toolbar.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SharedModule } from './shared/shared.module';
+import { AppMaterialsModule } from './app-materials.module';
+
 
 @NgModule({
   declarations: [
@@ -63,49 +57,26 @@ import { ToolbarComponent } from './shared/toolbar/toolbar.component';
     CharactersComponent,
     CreateCharacterComponent,
     CampaignComponent,
-    DiceComponent,
-    SpellSlotComponent,
-    StatsFormComponent,
     DungeonMasterComponent,
-    ToolbarComponent,
-    HealthComponent,
-    SubtleModalComponent,
-    ModalComponent,
     ManageUsersComponent,
-    ConfirmationModal,
     ManageCharactersComponent,
-    CharacterTableComponent,
     RegisterComponent,
-    HeaderButtonComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    FormsModule,
     CommonModule,
-    AppRoutingModule,
-    MatTableModule,
     HttpClientModule,
-    MatCommonModule,
-    MatToolbarModule,
-    MatSidenavModule,
-    MatListModule,
-    MatIconModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatCardModule,
-    MatProgressBarModule,
-    MatSelectModule,
-    MatChipsModule,
-    MatBadgeModule,
-    MatExpansionModule,
-    MatGridListModule,
-    MatDialogModule,
+    FormsModule,
     FlexLayoutModule,
+    AppRoutingModule,
+
+    // Other modules
+    AppMaterialsModule,
+    SharedModule
   ],
-  providers: [HttpClient, MatIconRegistry],
+  providers: [HttpClient],
   bootstrap: [AppComponent],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

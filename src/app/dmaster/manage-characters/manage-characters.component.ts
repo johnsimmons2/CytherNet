@@ -10,7 +10,7 @@ import { UserService } from "src/app/services/user.service";
 })
 export class ManageCharactersComponent implements OnInit {
 
-  private userId: string = '';
+  userId: number = 0;
   
   selectedUsername: string = '';
   characters: Character[] = [];
@@ -27,14 +27,31 @@ export class ManageCharactersComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe((params: any) => {
-      this.userId = params['id'];
-      this.characterService.getPlayerCharacters(this.userId).subscribe((res: any) => {
-        this.characters = res.data;
-      });
+      let userId = params['id'];
+      if (userId) {
+        this.userId = -1;
+      } else {
+        this.userId = Number.parseInt(userId);
+      }
 
-      this.userService.getUser(Number.parseInt(this.userId)).subscribe((res: any) => {
-        this.selectedUsername = res.data.username;
-      });
+      // If we are passed a user ID, we are viewing their characters.
+      if (this.userId > 0) {
+        this.characterService.getPlayerCharacters(this.userId).subscribe((res: any) => {
+          this.characters = res.data;
+        });
+  
+        this.userService.getUser(this.userId).subscribe((res: any) => {
+          this.selectedUsername = res.data.username;
+        });
+      } else {
+        // Otherwise, we are viewing all characters. Which requires an admin role.
+        if (this.userService.hasRoleAdmin()) {
+          this.characterService.getAllCharacters().subscribe((res: any) => {
+            this.characters = res.data;
+          });
+        }
+      }
+
     });
   }
 }

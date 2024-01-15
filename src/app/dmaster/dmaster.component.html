@@ -6,11 +6,20 @@
     <mat-card class="button-holder">
       <mat-card-header>
         <mat-card-title>
-          Category 1
+          Global Data
         </mat-card-title>
       </mat-card-header>
-      <button mat-raised-button (click)="createCharacter()" color="primary" >Create Character</button>
-      <button mat-raised-button color="accent">Create Monster</button>
+      <mat-card-content>
+        <div fxLayout="row wrap" fxLayoutAlign="space-around none" fxLayoutGap="5px">
+          <button fxFlex="40" mat-raised-button (click)="navigateTo('/dmaster/characters/-1')" color="primary" >Manage Characters</button>
+          <button fxFlex="40" mat-raised-button color="accent">Manage Monsters</button>
+          <button fxFlex="40" mat-raised-button color="accent">Manage Items</button>
+          <button fxFlex="40" mat-raised-button color="accent">Manage Races</button>
+          <button fxFlex="40" mat-raised-button color="accent">Manage Classes</button>
+          <button fxFlex="40" mat-raised-button color="accent">Manage Feats</button>
+          <button fxFlex="40" mat-raised-button color="accent">Manage Spells / Abilities</button>
+        </div>
+      </mat-card-content>
     </mat-card>
   </div>
 
@@ -20,16 +29,18 @@
         <mat-card-title>Users and User interaction</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <button mat-raised-button color="primary" (click)="navigateTo('/dmaster/users')">Manage Users</button>
-        <button mat-raised-button color="accent">Manage Items</button>
-        <button mat-raised-button color="accent">Manage Knowledge</button>
-        <button mat-raised-button color="accent">Manage Spells</button>
-        <button mat-raised-button color="accent">Create Item</button>
-        <button mat-raised-button color="accent">Create Item</button>
-        <button mat-raised-button color="accent">Create Item</button>
-        <button mat-raised-button color="accent">Create Item</button>
-        <button mat-raised-button color="accent">Create Item</button>
-        <button mat-raised-button color="accent">Create Item</button>
+        <div fxLayout="row wrap" fxLayoutAlign="space-around none" fxLayoutGap="5px">
+          <button fxFlex="40" mat-raised-button color="primary" (click)="navigateTo('/dmaster/users')">Manage Users</button>
+          <button fxFlex="40" mat-raised-button color="accent">Manage Items</button>
+          <button fxFlex="40" mat-raised-button color="accent">Manage Knowledge</button>
+          <button fxFlex="40" mat-raised-button color="accent">Manage Spells</button>
+          <button fxFlex="40" mat-raised-button color="accent">Create Item</button>
+          <button fxFlex="40" mat-raised-button color="accent">Create Item</button>
+          <button fxFlex="40" mat-raised-button color="accent">Create Item</button>
+          <button fxFlex="40" mat-raised-button color="accent">Create Item</button>
+          <button fxFlex="40" mat-raised-button color="accent">Create Item</button>
+          <button fxFlex="40" mat-raised-button color="accent">Create Item</button>
+        </div>
       </mat-card-content>
     </mat-card>
   </div>
