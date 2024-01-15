@@ -2,15 +2,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserDto } from 'src/app/model/user';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
-  selector: 'app-create',
-  templateUrl: './create.component.html',
-  styleUrls: ['./create.component.scss']
+  selector: 'app-create-user',
+  templateUrl: './create-user.component.html',
 })
-export class CreateComponent implements OnInit {
+export class CreateUserComponent implements OnInit {
 
   /**
    * TODO: Actually set up the form to accept user info to add new users.

@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>{{data.title}} - {{data.subject}}</h2>
+<mat-dialog-content>
+    <mat-form-field style="width: 100%;">
+        <textarea cdkTextareaAutosize cdkAutosizeMinRows="5" [formControl]="contentForm" matInput [placeholder]="data.content" [(ngModel)]="content"></textarea>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button [mat-dialog-close]="undefined" color="warn">Cancel</button>
+    <button mat-button [mat-dialog-close]="content" cdkFocusInitial color="primary">Accept</button>
+</mat-dialog-actions>

@@ -9,47 +9,55 @@
     <table #usertable mat-table [dataSource]="dataSource" class="mat-elevation-z8">
       
       <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef> Id </th>
-        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        <th mat-header-cell *matHeaderCellDef><h3>Id</h3></th>
+        <td mat-cell *matCellDef="let element">
+          <h4>{{element.id}}</h4>
+        </td>
       </ng-container>
       
       <ng-container matColumnDef="username">
-        <th mat-header-cell *matHeaderCellDef> Username </th>
-        <td mat-cell *matCellDef="let element"> <b>{{element.username}}</b> </td>
+        <th mat-header-cell *matHeaderCellDef><h3>Username</h3></th>
+        <td mat-cell *matCellDef="let element">
+          <h4>{{element.username}}</h4>
+        </td>
       </ng-container>
       
       <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef> Email </th>
+        <th mat-header-cell *matHeaderCellDef><h3>Email</h3></th>
         <td mat-cell *matCellDef="let element">
-          <mat-form-field>
-            <input type="email" matInput (change)="updateEmailFor(element.id, $event)" [value]="element.email">
+          <mat-form-field appearance="outline">
+            <input  matInput
+                    placeholder="N/A"
+                    type="email"
+                    (change)="updateEmailFor(element.id, $event)" 
+                    [value]="element.email">
           </mat-form-field>
         </td>
       </ng-container>
       
       <ng-container matColumnDef="created">
-        <th mat-header-cell *matHeaderCellDef> Created </th>
-        <td mat-cell *matCellDef="let element"> {{element.created | date: "short"}} </td>
+        <th mat-header-cell *matHeaderCellDef><h3>Registered</h3></th>
+        <td mat-cell *matCellDef="let element"><h4>{{element.created | date: "short"}}</h4></td>
       </ng-container>
 
       <ng-container matColumnDef="lastOnline">
-        <th mat-header-cell *matHeaderCellDef> Last Online </th>
-        <td mat-cell *matCellDef="let element"> {{element.lastOnline | date: "short"}} </td>
+        <th mat-header-cell *matHeaderCellDef><h3>Last Online</h3></th>
+        <td mat-cell *matCellDef="let element"><h4>{{element.lastOnline | date: "short"}}</h4></td>
       </ng-container>
       
       <ng-container matColumnDef="roles">
-        <th mat-header-cell *matHeaderCellDef> Roles </th>
+        <th mat-header-cell *matHeaderCellDef><h3>Roles</h3></th>
         <td mat-cell *matCellDef="let element">
-          <mat-form-field>
+          <mat-form-field appearance="outline">
             <mat-select [compareWith]="compareRoles" multiple [(ngModel)]="element.roles" (ngModelChange)="updateRolesFor(element.id, $event)">
-              <mat-option *ngFor="let role of roles" [value]="role">{{role.roleName}}</mat-option>
+              <mat-option *ngFor="let role of roles" [value]="role"><h4>{{role.roleName}}</h4></mat-option>
             </mat-select>
           </mat-form-field>
         </td>
       </ng-container>
 
       <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <th mat-header-cell *matHeaderCellDef><h3>Actions</h3></th>
         <td mat-cell *matCellDef="let element">
           <button mat-icon-button (click)="deleteRow(element)" [disabled]="element.id==1">
             <mat-icon>delete</mat-icon>

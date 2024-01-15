@@ -33,7 +33,11 @@ const apiProxy = createProxyMiddleware('/api', {
 
     // Log the response body when it's complete
     proxyRes.on('end', () => {
-      console.log('Response Body:', responseData);
+      if (responseData.length > 64) {
+        console.log('Response Body:', responseData.slice(0, 64) + '...');
+      } else {
+        console.log('Response Body:', responseData);
+      }
       console.log('Response Status:', proxyRes.statusCode);
     });
   }

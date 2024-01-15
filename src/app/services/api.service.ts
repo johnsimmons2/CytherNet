@@ -61,13 +61,17 @@ export class ApiService {
       }
     });
   }
-
-  delete(endpoint: string, payload: any): Observable<any> {
-    return this.wrapper(this.http.delete, this.ROOT_URL + endpoint, { headers: this.getHeaders() });
+  
+  patch(endpoint: string, payload: any): Observable<any> {
+    return this.wrapper(this.http.patch, this.ROOT_URL + endpoint, { headers: this.getHeaders() }, payload);
   }
-
+  
   post(endpoint: string, payload: any): Observable<any> {
     return this.wrapper(this.http.post, this.ROOT_URL + endpoint, { headers: this.getHeaders() }, payload);
+  }
+  
+  delete(endpoint: string): Observable<any> {
+    return this.wrapper(this.http.delete, this.ROOT_URL + endpoint, { headers: this.getHeaders() });
   }
 
   get(endpoint: string, headers?: any): Observable<ApiResult> {

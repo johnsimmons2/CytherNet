@@ -100,7 +100,7 @@ export class UserService {
   }
 
   public deleteUser(userId: number): Observable<any> {
-    return this.apiService.delete('users/' + userId, null);
+    return this.apiService.delete('users/' + userId);
   }
 
   public getRolesForUser(userId: number): Observable<any> {

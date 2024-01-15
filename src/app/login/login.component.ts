@@ -7,7 +7,8 @@ import { ApiResult } from "../model/apiresult";
 
 @Component({
   selector: 'login',
-  templateUrl: './login.component.html'
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss',]
 })
 export class LoginComponent {
 
@@ -25,9 +26,11 @@ export class LoginComponent {
     });
   }
 
-  submit() {
-    console.log("Login form submitted");
+  forgotPassword() {
 
+  }
+
+  submit() {
     if (this.loginForm.valid) {
       var user: UserDto = {
         password: this.loginForm.value.password!,

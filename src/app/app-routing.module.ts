@@ -13,6 +13,8 @@ import { DungeonMasterComponent } from './dmaster/dmaster.component';
 import { ManageUsersComponent } from './dmaster/manage-users/manage-users.component';
 import { ManageCharactersComponent } from './dmaster/manage-characters/manage-characters.component';
 import { RegisterComponent } from './login/register/register.component';
+import { ManageClassesComponent } from './dmaster/manage-classes/manage-classes.component';
+import { ManageRacesComponent } from './dmaster/manage-races/manage-races.component';
 
 const routes: Routes = [
   {
@@ -61,6 +63,14 @@ const routes: Routes = [
       {
         path: 'dmaster/users',
         component: ManageUsersComponent
+      },
+      {
+        path: 'dmaster/races',
+        component: ManageRacesComponent
+      },
+      {
+        path: 'dmaster/classes',
+        component: ManageClassesComponent
       },
     ]
   }

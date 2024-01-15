@@ -27,6 +27,11 @@
   font-family: 'Roboto', sans-serif;
 }
 
+.fullscreen {
+  width: 65%;
+  margin: auto;
+}
+
 mat-sidenav {
   min-width: 30%;
   height: 100%;
@@ -37,8 +42,6 @@ mat-sidenav {
 }
 
 mat-sidenav-content {
-  margin-left: 10%;
-  margin-right: 10%;
   min-height: 800px;
 }
 
