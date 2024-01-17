@@ -1,43 +1,47 @@
 <mat-toolbar color="primary">
-    <mat-toolbar-row>
+    <mat-toolbar-row style="padding: 0">
       <button *ngIf="isLoggedIn" mat-icon-button (click)="toggleNav()">
         <mat-icon>menu</mat-icon>
       </button>
 
       <span fxLayout="row" fxLayoutGap.gt-sm="20px">
-        <div fxFlex class="nav-title" fxHide.lt-sm>{{currentTitle}}</div>
+        <div fxFlex class="nav-title" fxHide.lt-sm style="align-self: center; padding-left: 8px">{{currentTitle}}</div>
 
-        <app-header-button  fxFlex 
+        <!-- DO NOT HIDE -->
+        <app-header-button  fxFlex
                             buttonName="Home"
                             buttonRoute="/"
                             buttonIcon="home"
                             [isEnabled]="isLoggedIn">
         </app-header-button>
-  
-        <app-header-button  fxFlex 
+
+        <!-- DO NOT HIDE -->
+        <app-header-button  fxFlex
                             buttonName="Characters"
                             buttonRoute="/characters"
                             buttonIcon="person"
                             [isEnabled]="isLoggedIn">
         </app-header-button>
-  
-        <app-header-button  fxFlex 
+
+        <app-header-button  fxFlex
+                            fxHide.xs
                             buttonName="Campaigns"
                             buttonRoute="/campaign"
                             buttonIcon="map"
                             [isEnabled]="isLoggedIn">
         </app-header-button>
-  
-        <!-- <app-header-button  fxFlex 
+
+        <!-- <app-header-button  fxFlex
                             buttonName="Journal"
                             buttonRoute="/journal"
                             buttonIcon="bookmark_border"
                             buttonIconActive="bookmark"
                             [isEnabled]="isLoggedIn && isPlayer">
         </app-header-button> -->
-  
+
         <app-header-button  *ngIf="isLoggedIn && isAdmin"
-                            fxFlex 
+                            fxFlex
+                            fxHide.xs
                             buttonName="Dungeon Master"
                             buttonRoute="/dmaster"
                             buttonIcon="add_circle_outline"
@@ -45,9 +49,10 @@
                             [isEnabled]="isLoggedIn && isAdmin">
         </app-header-button>
       </span>
-  
+
       <div style="flex: 1 1 auto;"></div>
-  
+
+      <!-- DO NOT HIDE -->
       <app-header-button buttonName="Logout"
                         buttonIcon="logout"
                         (click)="logout()"

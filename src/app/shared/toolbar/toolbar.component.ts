@@ -8,11 +8,11 @@ import { UserService } from "src/app/services/user.service";
 })
 export class ToolbarComponent {
 
-    
+
     @Input() currentTitle: string = 'CytherNet';
     @Input() opened: boolean = false;
     @Output() navToggleChange = new EventEmitter<boolean>();
-   
+
     constructor(private userService: UserService, private router: Router) {}
 
     get isLoggedIn() {

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-header-button',
   templateUrl: './header-button.component.html',
+  styleUrls: ['./header-button.component.scss']
 })
 export class HeaderButtonComponent implements OnInit {
 
