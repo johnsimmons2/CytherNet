@@ -1,0 +1,42 @@
+<mat-card>
+    <mat-card-content>
+        <form [formGroup]="raceForm" (ngSubmit)="submit()" fxLayout="row wrap" fxLayoutAlign="space-between none">
+            <mat-form-field fxFlex>
+                <input matInput placeholder="Race Name" type="text" formControlName="nameForm"/>
+                <mat-error>
+                    <span *ngIf="raceForm.controls['nameForm'].hasError('required')">
+                        You must name the race.
+                    </span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field fxFlex>
+                <textarea matInput placeholder="Description" type="text" formControlName="descriptionForm">
+                </textarea>
+                <span *ngIf="raceForm.controls['descriptionForm'].hasError('required')">
+                    Race must have a description.
+                </span>
+            </mat-form-field>
+
+            <mat-form-field fxFlex>
+                <input matInput placeholder="Alignment" type="text" formControlName="nameForm"/>
+            </mat-form-field>
+
+            <mat-form-field fxFlex>
+                <input matInput placeholder="Languages" type="text" formControlName="nameForm"/>
+            </mat-form-field>
+
+            <mat-form-field fxFlex>
+                <mat-select>
+                    <input matInput (keyup)="search($event)"/>
+                    <mat-option *ngFor="let feat of filteredFeats" [value]="feat.id">
+                        {{feat.name}}
+                    </mat-option>
+                </mat-select>
+                <mat-hint>
+                    <a mat-button (click)="router.navigate(['dmaster/feats/create'])"><mat-icon>add</mat-icon>Create Feat</a>
+                </mat-hint>
+            </mat-form-field>
+        </form>
+    </mat-card-content>
+</mat-card>

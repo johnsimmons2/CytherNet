@@ -20,8 +20,9 @@ export class UserService {
   ) {}
   
   public login(user: UserDto): Observable<ApiResult> {
+    console.log("Sending login request");
     return this.apiService.post('auth/token', user).pipe(
-      tap((res: ApiResult) => {
+      map((res: ApiResult) => {
         if (res.success && res.data) {
           localStorage.clear();
           localStorage.setItem('jwtToken', res.data.token);
@@ -31,6 +32,18 @@ export class UserService {
           localStorage.setItem('rolesLastUpdate', Date.now().toString());
           localStorage.setItem('roles', JSON.stringify(decoded.roles));
         }
+        return res;
+      }));
+  }
+  
+  public register(user: UserDto): Observable<boolean> {
+    return this.apiService.post('auth/register', user).pipe(
+      map((res: any) => {
+        if (res.success && res.data) {
+          localStorage.setItem('jwtToken', res.data);
+          localStorage.setItem('username', user.username!);
+        }
+        return res;
       }));
   }
 
@@ -46,22 +59,6 @@ export class UserService {
       }
       return false;
     });
-  }
-
-  public register(user: UserDto): Observable<boolean> {
-      return this.apiService.post('auth/register', user).pipe(map(
-        (res: any) => {
-          if (res.success && res.data) {
-            localStorage.setItem('jwtToken', res.data);
-            localStorage.setItem('username', user.username!);
-          }
-          return res;
-        }
-      ),
-      catchError((err) => {
-        console.log(err);
-        throw(err);
-      }));
   }
 
   public refreshToken(): void {

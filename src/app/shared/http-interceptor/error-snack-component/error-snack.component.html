@@ -1,0 +1,8 @@
+<span fxLayout="row" fxLayout="space-between none" class="error-snack">
+    <span fxFlex="80" matSnackBarLabel class="error-snack">
+        {{data.message}}
+    </span>
+    <span fxFlex matSnackBarActions>
+        <button mat-stroked-button matSnackBarAction (click)="snackBarRef.dismissWithAction()" style="margin-right: 8px; color: white;" color="warn">Dismiss</button>
+    </span>
+</span>

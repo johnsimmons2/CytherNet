@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MatTable } from "@angular/material/table";
+import { Router } from "@angular/router";
 import { ApiResult } from "src/app/model/apiresult";
 import { Race } from "src/app/model/race";
 import { RaceService } from "src/app/services/race.service";
@@ -22,7 +23,9 @@ export class ManageRacesComponent implements AfterViewInit {
 
     @ViewChild(MatTable) table!: MatTable<Race>;
 
-    constructor(private raceService: RaceService, public dialog: MatDialog) {
+    constructor(private raceService: RaceService, 
+        public dialog: MatDialog,
+        public router: Router) {
     }
 
     public confirmNameChange(event: any, raceId: number): void {

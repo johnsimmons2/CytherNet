@@ -1,0 +1,16 @@
+@import 'src/themes.scss';
+
+.success-snack {
+    background-color: mat-color($cyther-app-primary, default) !important;
+
+    color: white !important;
+    overflow: auto;
+}
+
+:host ::ng-deep mat-snack-bar-container {
+    border: 0px !important;
+}
+
+:host ::ng-deep .mdc-snackbar__surface {
+    border: 0px !important;
+}

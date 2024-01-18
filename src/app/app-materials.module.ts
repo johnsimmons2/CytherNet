@@ -17,6 +17,8 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatTableModule } from "@angular/material/table";
 import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 
 @NgModule({
     exports: [
@@ -39,6 +41,8 @@ import { MatToolbarModule } from "@angular/material/toolbar";
         MatExpansionModule,
         MatGridListModule,
         MatProgressSpinnerModule,
+        MatPaginatorModule,
+        MatSnackBarModule,
     ]
 })
 export class AppMaterialsModule {}

@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { UserService } from "../../services/user.service";
+import { UserService } from "../../../services/user.service";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { Class } from "src/app/model/class";
 import { MatChip } from "@angular/material/chips";
