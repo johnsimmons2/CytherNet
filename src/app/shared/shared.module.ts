@@ -18,9 +18,8 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AppMaterialsModule } from "../app-materials.module";
 import { InputModalComponent } from "./input-modal/input-modal.component";
 import { ModalInputComponent } from "./input-modal/modal-input/modal-input.component";
-import { ErrorSnackComponent } from "./http-interceptor/error-snack-component/error-snack.component";
-import { SuccessSnackComponent } from "./http-interceptor/success-snack-component/success-snack.component";
-
+import { HttpSnackBarComponent } from "./http-interceptor/httpsnackbar-component/httpsnackbar.component";
+import { FilterableSelectComponent } from "./filterable-select/filterable-select.component";
 
 @NgModule({
     declarations: [
@@ -37,11 +36,10 @@ import { SuccessSnackComponent } from "./http-interceptor/success-snack-componen
         ModalComponent,
         InputModalComponent,
         ModalInputComponent,
-        ErrorSnackComponent,
-        SuccessSnackComponent
+        HttpSnackBarComponent,
+        FilterableSelectComponent
     ],
     imports: [
-        BrowserModule,
         BrowserAnimationsModule,
         ReactiveFormsModule,
         CommonModule,
@@ -63,8 +61,8 @@ import { SuccessSnackComponent } from "./http-interceptor/success-snack-componen
         HeaderButtonComponent,
         ModalComponent,
         InputModalComponent,
-        ErrorSnackComponent,
-        SuccessSnackComponent
+        HttpSnackBarComponent,
+        FilterableSelectComponent
     ],
     schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

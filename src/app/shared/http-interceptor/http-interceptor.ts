@@ -1,13 +1,12 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from "@angular/common/http";
-import { Injectable, NgZone, createComponent } from "@angular/core";
+import { Injectable, NgZone } from "@angular/core";
 import { Observable, catchError, tap, throwError } from "rxjs";
 import { SpinnerService } from "../loading-spinner/spinner.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { ErrorSnackComponent } from "./error-snack-component/error-snack.component";
-import { SuccessSnackComponent } from "./success-snack-component/success-snack.component";
+import { HttpSnackBarComponent } from "./httpsnackbar-component/httpsnackbar.component";
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class HttpInterceptorImplementation implements HttpInterceptor {
 
@@ -62,21 +61,23 @@ export class HttpInterceptorImplementation implements HttpInterceptor {
 
     private showSnackBar(message: string, error: boolean = false): void{
         if (error) {
-            this.snackBar.openFromComponent(ErrorSnackComponent, {
+            this.snackBar.openFromComponent(HttpSnackBarComponent, {
                 duration: 5000,
                 data: {
                     message: message
                 },
+                panelClass: ['error-snack']
             });
         } else {
-            this.snackBar.openFromComponent(SuccessSnackComponent, {
+            console.log("Posting success");
+            this.snackBar.openFromComponent(HttpSnackBarComponent, {
                 duration: 5000,
                 data: {
                     message: message
                 },
+                panelClass: ['success-snack']
             });
         }
-
     }
     
 }

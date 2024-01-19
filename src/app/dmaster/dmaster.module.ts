@@ -10,7 +10,6 @@ import { AppMaterialsModule } from "../app-materials.module";
 import { CommonModule } from "@angular/common";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { BrowserModule } from "@angular/platform-browser";
 import { SharedModule } from "../shared/shared.module";
 import { CreateRaceComponent } from "./create/create-race/create-race.component";
 import { ManageFeatComponent } from "./manage/manage-feat/manage-feat.component";
@@ -18,7 +17,6 @@ import { CreateFeatComponent } from "./create/create-feat/create-feat.component"
 
 @NgModule({
     imports: [
-        BrowserModule,
         CommonModule,
         FormsModule,
         ReactiveFormsModule,

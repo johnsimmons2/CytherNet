@@ -1,3 +1,4 @@
+import { Location } from "@angular/common";
 import { Component } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -12,7 +13,11 @@ export class CreateFeatComponent {
     createError: boolean = false;
     featForm: FormGroup;
 
-    constructor(private formBuilder: FormBuilder, private featService: FeatService, private router: Router) { 
+    constructor(
+            public location: Location,
+            private formBuilder: FormBuilder, 
+            private featService: FeatService, 
+            private router: Router) { 
         this.featForm = this.formBuilder.group({
             nameForm: this.formBuilder.control('', [Validators.required]),
             descriptionForm: this.formBuilder.control('', [Validators.required]),

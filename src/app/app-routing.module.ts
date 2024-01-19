@@ -18,6 +18,7 @@ import { ManageRacesComponent } from './dmaster/manage/manage-races/manage-races
 import { CreateRaceComponent } from './dmaster/create/create-race/create-race.component';
 import { ManageFeatComponent } from './dmaster/manage/manage-feat/manage-feat.component';
 import { CreateFeatComponent } from './dmaster/create/create-feat/create-feat.component';
+import { AboutComponent } from './about/about.component';
 
 const routes: Routes = [
   {
@@ -86,7 +87,11 @@ const routes: Routes = [
       {
         path: 'dmaster/feats/create',
         component: CreateFeatComponent,
-      }
+      },
+      {
+        path: 'about',
+        component: AboutComponent
+      },
     ]
   }
 ];

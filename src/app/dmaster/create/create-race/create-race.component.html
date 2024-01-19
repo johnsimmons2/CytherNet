@@ -1,42 +1,66 @@
-<mat-card>
+<mat-card style="margin: auto; max-width: 50%;">
+    <mat-card-header>
+        <mat-card-title>
+            Create a Race
+        </mat-card-title>
+    </mat-card-header>
     <mat-card-content>
-        <form [formGroup]="raceForm" (ngSubmit)="submit()" fxLayout="row wrap" fxLayoutAlign="space-between none">
+        <form [formGroup]="raceForm" fxLayout="column wrap" fxLayoutAlign="space-between none">
             <mat-form-field fxFlex>
-                <input matInput placeholder="Race Name" type="text" formControlName="nameForm"/>
-                <mat-error>
-                    <span *ngIf="raceForm.controls['nameForm'].hasError('required')">
-                        You must name the race.
-                    </span>
+                <mat-label>Race Name</mat-label>
+                <input matInput type="text" formControlName="nameForm"/>
+                <mat-error *ngIf="raceForm.controls['nameForm'].hasError('required')">
+                    You must name the race.
                 </mat-error>
             </mat-form-field>
 
             <mat-form-field fxFlex>
-                <textarea matInput placeholder="Description" type="text" formControlName="descriptionForm">
+                <mat-label>Description</mat-label>
+                <textarea matInput type="text" formControlName="descriptionForm">
                 </textarea>
-                <span *ngIf="raceForm.controls['descriptionForm'].hasError('required')">
+                <mat-error *ngIf="raceForm.controls['descriptionForm'].hasError('required')">
                     Race must have a description.
-                </span>
+                </mat-error>
             </mat-form-field>
 
             <mat-form-field fxFlex>
-                <input matInput placeholder="Alignment" type="text" formControlName="nameForm"/>
+                <mat-label>Alignment</mat-label>
+                <input matInput type="text" formControlName="alignmentForm"/>
+                <mat-error *ngIf="raceForm.controls['alignmentForm'].hasError('required')">
+                    Race must have an alignment.
+                </mat-error>
             </mat-form-field>
 
             <mat-form-field fxFlex>
-                <input matInput placeholder="Languages" type="text" formControlName="nameForm"/>
+                <mat-label>Languages</mat-label>
+                <input matInput type="text" formControlName="languagesForm"/>
+                <mat-error *ngIf="raceForm.controls['languagesForm'].hasError('required')">
+                    Race must have languages.
+                </mat-error>
             </mat-form-field>
 
             <mat-form-field fxFlex>
-                <mat-select>
-                    <input matInput (keyup)="search($event)"/>
-                    <mat-option *ngFor="let feat of filteredFeats" [value]="feat.id">
-                        {{feat.name}}
-                    </mat-option>
+                <mat-label>Size</mat-label>
+                <mat-select formControlName="sizeForm">
+                    <mat-option *ngFor="let size of sizes" [value]="size">{{size}}</mat-option>
                 </mat-select>
-                <mat-hint>
-                    <a mat-button (click)="router.navigate(['dmaster/feats/create'])"><mat-icon>add</mat-icon>Create Feat</a>
-                </mat-hint>
+                <mat-error *ngIf="raceForm.controls['sizeForm'].hasError('required')">
+                    Please select a size.
+                </mat-error>
             </mat-form-field>
+
+            <app-filterable-select label="Select Feats" 
+                                    routeTo="dmaster/feats/create" 
+                                    [multiple]="true" 
+                                    [dataSource]="feats"
+                                    (selected)="updateFeatSelection($event)"
+                                    fxFlex>
+            </app-filterable-select>
+
         </form>
     </mat-card-content>
+    <mat-card-actions align="end">
+        <button mat-raised-button color="primary" (click)="submit()">Create</button>
+        <button mat-raised-button color="warn" (click)="location.back()">Cancel</button>
+    </mat-card-actions>
 </mat-card>

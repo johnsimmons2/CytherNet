@@ -17,7 +17,7 @@ export class ManageRacesComponent implements AfterViewInit {
     races: Race[] = []
     racesColumns: string[] = ['id', 'name', 'description', 'size', 'alignment', 'languages', 'feats', 'actions']
 
-    sizes: string[] = ['Tiny', 'Small', 'Medium', 'Large', 'Huge', 'Gargantuan'];
+    sizes: string[] = ['Tiny', 'Small', 'Medium', 'Large', 'Huge', 'Gargantuan', 'Colossal'];
     previousNames: { [key: string]: string } = {};
     previousSizes: { [key: string]: string } = {};
 
@@ -143,13 +143,7 @@ export class ManageRacesComponent implements AfterViewInit {
                         size: x.size,
                         alignment: x.alignment,
                         languages: x.languages,
-                        feats: (x.feats && x.feats.length) > 0 ? x.feats.map((y: any) => {
-                            return {
-                                id: y.id,
-                                name: y.name,
-                                description: y.description
-                            }
-                        }) : [],
+                        feats: (x.feats && x.feats.length > 0) ? x.feats.map((y: any) => y.id) : [],
                     })
                 });
 

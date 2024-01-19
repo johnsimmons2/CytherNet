@@ -19,4 +19,8 @@ export class RaceService {
         return this.apiService.patch(`race/${race.id}`, race);
     }
 
+    public createRace(race: Race) {
+        return this.apiService.post('race', race);
+    }
+
 }

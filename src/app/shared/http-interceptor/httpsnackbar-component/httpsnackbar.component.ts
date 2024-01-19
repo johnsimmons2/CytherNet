@@ -2,18 +2,17 @@ import { Component, Inject, OnInit, ViewEncapsulation, inject } from "@angular/c
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from "@angular/material/snack-bar";
 
 @Component({
-    selector: 'error-snack',
-    templateUrl: './error-snack.component.html',
-    styleUrls: ['./error-snack.component.scss'],
+    selector: 'app-http-snack-bar',
+    templateUrl: './httpsnackbar.component.html',
+    styleUrls: ['./httpsnackbar.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
-export class ErrorSnackComponent implements OnInit {
+export class HttpSnackBarComponent implements OnInit {
 
-    snackBarRef = inject(MatSnackBarRef);
-
-    constructor(@Inject(MAT_SNACK_BAR_DATA) public data: any) {
-
-    }
+    constructor(
+        @Inject(MAT_SNACK_BAR_DATA) public data: any, 
+        public snackBarRef: MatSnackBarRef<HttpSnackBarComponent>) 
+    {}
 
     // Probable solution:
     // https://stackoverflow.com/questions/47763799/angular-material-overriding-default-style-of-snackbar-component

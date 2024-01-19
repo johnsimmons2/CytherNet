@@ -8,7 +8,7 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatGridListModule } from "@angular/material/grid-list";
-import { MatIconModule } from "@angular/material/icon";
+import { MatIconModule, MatIconRegistry } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatListModule } from "@angular/material/list";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
@@ -43,6 +43,9 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
         MatProgressSpinnerModule,
         MatPaginatorModule,
         MatSnackBarModule,
+    ],
+    providers: [
+        MatIconRegistry
     ]
 })
 export class AppMaterialsModule {}

@@ -1,47 +1,89 @@
-<h3>Dungeon Master Panel</h3>
-<hr/>
+<mat-card style="max-width: 85%; margin: auto;">
+  <mat-card-header>
+    <mat-card-title>
+      Dungeon Master Panel
+    </mat-card-title>
+  </mat-card-header>
 
-<div fxLayout="row">
-  <div fxFlex>
-    <mat-card class="button-holder">
-      <mat-card-header>
-        <mat-card-title>
-          Global Data
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div fxLayout="row wrap" fxLayoutAlign="space-around none" fxLayoutGap="5px">
-          <button fxFlex="40" mat-raised-button (click)="navigateTo('/dmaster/characters/-1')" color="primary" >Manage Characters</button>
-          <button fxFlex="40" mat-raised-button color="accent">Manage Monsters</button>
-          <button fxFlex="40" mat-raised-button color="accent">Manage Items</button>
-          <button fxFlex="40" mat-raised-button (click)="navigateTo('/dmaster/races')" color="accent">Manage Races</button>
-          <button fxFlex="40" mat-raised-button (click)="navigateTo('/dmaster/classes')" color="accent">Manage Classes</button>
-          <button fxFlex="40" mat-raised-button color="accent">Manage Feats</button>
-          <button fxFlex="40" mat-raised-button color="accent">Manage Spells / Abilities</button>
-        </div>
-      </mat-card-content>
-    </mat-card>
-  </div>
+  <mat-card-content>
+    <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-around">
+      <div fxFlex>
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>
+              View and Manage
+            </mat-card-title>
+          </mat-card-header>
 
-  <div fxFlex>
-    <mat-card class="button-holder">
-      <mat-card-header>
-        <mat-card-title>Users and User interaction</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div fxLayout="row wrap" fxLayoutAlign="space-around none" fxLayoutGap="5px">
-          <button fxFlex="40" mat-raised-button color="primary" (click)="navigateTo('/dmaster/users')">Manage Users</button>
-          <button fxFlex="40" mat-raised-button color="accent">Manage Items</button>
-          <button fxFlex="40" mat-raised-button color="accent">Manage Knowledge</button>
-          <button fxFlex="40" mat-raised-button color="accent">Manage Spells</button>
-          <button fxFlex="40" mat-raised-button color="accent">Create Item</button>
-          <button fxFlex="40" mat-raised-button color="accent">Create Item</button>
-          <button fxFlex="40" mat-raised-button color="accent">Create Item</button>
-          <button fxFlex="40" mat-raised-button color="accent">Create Item</button>
-          <button fxFlex="40" mat-raised-button color="accent">Create Item</button>
-          <button fxFlex="40" mat-raised-button color="accent">Create Item</button>
-        </div>
-      </mat-card-content>
-    </mat-card>
-  </div>
-</div>
+          <mat-divider></mat-divider>
+
+          <mat-card-content>
+            <div fxLayout="column">
+              <div #column1 fxFlex fxLayout="row" fxLayoutAlign="space-between">
+                <div fxFlex="10">
+                  <h4>View</h4>
+                </div>
+  
+                <div fxFlex="90" style="padding: 20px;">
+                  <div fxLayout="row wrap" fxLayoutAlign="space-between none" fxLayoutGap="8px">
+                    <button fxFlex mat-stroked-button (click)="navigateTo('/dmaster/characters')">Characters</button>
+                    <!-- <button fxFlex mat-stroked-button>View Monsters</button>
+                    <button fxFlex mat-stroked-button>View Items</button> -->
+                    <button fxFlex mat-stroked-button (click)="navigateTo('/dmaster/races')">Races</button>
+                    <button fxFlex mat-stroked-button (click)="navigateTo('/dmaster/classes')">Classes</button>
+                    <button fxFlex mat-stroked-button (click)="navigateTo('/dmaster/feats')">Feats</button>
+                    <!-- <button fxFlex mat-stroked-button>Spells &amp; Abilities</button> -->
+                  </div>
+                </div>
+              </div>
+
+              <mat-divider></mat-divider>
+
+              <div #column2 fxFlex fxLayout="row" fxLayoutAlign="space-between">
+                <div fxFlex="10">
+                  <h4>Create</h4>
+                </div>
+  
+                <div fxFlex="90" style="padding: 24px;">
+                  <div fxLayout="row wrap" fxLayoutAlign="space-between none" fxLayoutGap="8px">
+                    <button fxFlex mat-stroked-button (click)="navigateTo('dmaster/characters/create')">Character</button>
+                    <button fxFlex mat-stroked-button (click)="navigateTo('dmaster/races/create')">Race</button>
+                    <button fxFlex mat-stroked-button (click)="navigateTo('dmaster/feats/create')">Feat</button>
+                    <!-- <button fxFlex mat-stroked-button>View Monsters</button>
+                    <button fxFlex mat-stroked-button>View Items</button> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div fxFlex>
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Users and User interaction</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div fxLayout="column">
+              <div #column1 fxFlex fxLayout="row" fxLayoutAlign="space-between">
+                <div fxFlex style="padding: 20px;">
+                  <div fxLayout="row wrap" fxLayoutAlign="space-between none" fxLayoutGap="8px">
+                    <button fxFlex mat-stroked-button (click)="navigateTo('/dmaster/users')">Users</button>
+                    <!-- Pull up a list of users, select them, create a reset password code -->
+                    <!-- Send the code to user, they will use it to reset their password. -->
+                    <button fxFlex mat-stroked-button disabled>Reset Password</button>
+                    <!-- View and manage campaigns along with their settings. -->
+                    <button fxFlex mat-stroked-button disabled>Campaigns</button>
+                    <!-- Check messages sent to users or users sent to admins. -->
+                    <button fxFlex mat-stroked-button disabled>Message Queue</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

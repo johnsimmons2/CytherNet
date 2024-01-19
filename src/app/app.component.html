@@ -6,8 +6,10 @@
     <mat-sidenav mode="over" [(opened)]="opened">
       <mat-nav-list>
         <!-- Basic universal routes -->
-        <a mat-list-item (click)="routeTo('profile')" routerLinkActive="active">Welcome, <h3>{{username}}</h3></a>
-        <a mat-list-item (click)="routeTo('profile')" routerLinkActive="active">Profile</a>
+        <a mat-list-item (click)="routeTo('profile')" routerLinkActive="active">
+          Welcome <h3 style="display: inline;">{{username}}</h3>
+        </a>
+        <!-- <a mat-list-item (click)="routeTo('profile')" routerLinkActive="active">Profile</a> -->
         <a mat-list-item (click)="routeTo('campaign')" routerLinkActive="active">My Campaigns</a>
         <a mat-list-item (click)="routeTo('characters')" routerLinkActive="active">My Characters</a>
         
@@ -30,9 +32,6 @@
                 <mat-panel-title>
                   Manage
                 </mat-panel-title>
-                <mat-panel-description>
-                  Manage, view, and edit content.
-                </mat-panel-description>
               </mat-expansion-panel-header>
               <mat-nav-list dense>
                 <a mat-list-item (click)="routeTo('dmaster/users')">Users</a>
@@ -47,9 +46,6 @@
                 <mat-panel-title>
                   Create
                 </mat-panel-title>
-                <mat-panel-description>
-                  Add new content
-                </mat-panel-description>
               </mat-expansion-panel-header>
               <mat-nav-list dense>
                 <a mat-list-item (click)="routeTo('dmaster/characters/create')">Character</a>
@@ -62,6 +58,8 @@
             </mat-expansion-panel>
           </mat-accordion>
 
+          <a mat-list-item (click)="routeTo('about')" routerLinkActive="active"><sub>About CytherNet</sub></a>
+
         </div>
       </mat-nav-list>
     </mat-sidenav>
@@ -69,3 +67,11 @@
       <router-outlet></router-outlet>
     </mat-sidenav-content>
 </mat-sidenav-container>
+
+<footer>
+  <div style="padding: 18px; color: gray;">
+    <a (click)="routeTo('about')" style="cursor: pointer;">
+      <sub>CytherNet version {{cytherVersion}}</sub>
+    </a>
+  </div>
+</footer>

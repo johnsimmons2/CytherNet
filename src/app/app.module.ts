@@ -21,7 +21,7 @@ import { DmasterModule } from './dmaster/dmaster.module';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpInterceptorImplementation } from './shared/http-interceptor/http-interceptor';
 import { SpinnerService } from './shared/loading-spinner/spinner.service';
-import { MatIconRegistry } from '@angular/material/icon';
+import { AboutComponent } from './about/about.component';
 
 
 @NgModule({
@@ -34,6 +34,7 @@ import { MatIconRegistry } from '@angular/material/icon';
     CharactersComponent,
     CampaignComponent,
     RegisterComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
@@ -54,7 +55,6 @@ import { MatIconRegistry } from '@angular/material/icon';
   ],
   providers: [
     HttpClient,
-    MatIconRegistry,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpInterceptorImplementation,
