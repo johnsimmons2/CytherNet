@@ -1,5 +1,5 @@
+<mat-card [ngClass.gt-sm]="'fullscreen'">
   <form [formGroup]="loginForm" (ngSubmit)="submit()">
-    <mat-card [ngClass.gt-sm]="'fullscreen'">
       <mat-card-header>
         <mat-card-title>
           <h2>Login to an existing account</h2>
@@ -37,5 +37,5 @@
         <button mat-raised-button color="primary" class="form-row-item" type="submit" [disabled]="!loginForm.valid">Login</button>
         <button mat-raised-button color="accent" class="form-row-item" type="button" (click)="registerUser()">Register</button>
       </mat-card-actions>
-    </mat-card>
-  </form>
+    </form>
+</mat-card>

@@ -14,6 +14,7 @@ import { SharedModule } from "../shared/shared.module";
 import { CreateRaceComponent } from "./create/create-race/create-race.component";
 import { ManageFeatComponent } from "./manage/manage-feat/manage-feat.component";
 import { CreateFeatComponent } from "./create/create-feat/create-feat.component";
+import { CreateClassComponent } from "./create/create-class/create-class.component";
 
 @NgModule({
     imports: [
@@ -30,6 +31,7 @@ import { CreateFeatComponent } from "./create/create-feat/create-feat.component"
         CreateUserComponent,
         CreateRaceComponent,
         CreateFeatComponent,
+        CreateClassComponent,
         ManageCharactersComponent,
         ManageClassesComponent,
         ManageRacesComponent,
@@ -42,6 +44,7 @@ import { CreateFeatComponent } from "./create/create-feat/create-feat.component"
         CreateUserComponent,
         CreateRaceComponent,
         CreateFeatComponent,
+        CreateClassComponent,
         ManageCharactersComponent,
         ManageClassesComponent,
         ManageRacesComponent,

@@ -2,9 +2,10 @@
   <div>
     <mat-card>
       <mat-card-content>
-        <form [formGroup]="characterForm" (ngSubmit)="submit()" fxLayout="row wrap" fxLayoutAlign="space-between none">
+        <form [formGroup]="characterForm" (ngSubmit)="submit()" fxLayout="row wrap" fxLayoutAlign="space-around none" fxLayoutGap="10px">
 
-          <mat-form-field fxFlex="60">
+          <!-- NAME -->
+          <mat-form-field fxFlex="45">
             <input matInput placeholder="Character Name" type="text" formControlName="characterNameForm" />
             <mat-error>
               <span *ngIf="characterForm.controls['characterNameForm'].hasError('required')">Character name is required.</span>
@@ -12,73 +13,137 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field fxFlex="30">
-            <input matInput
-                    type="number"
-                    value="1"
-                    formControlName="levelForm"/>
-            <span matPrefix>&nbsp;&nbsp;Level</span>
-            <mat-error>
-              <span *ngIf="characterForm.controls['levelForm'].hasError('max')">Level cap is 20!</span>
-              <span *ngIf="characterForm.controls['levelForm'].hasError('min')">Minimum level is 1.</span>
-            </mat-error>
-          </mat-form-field>
+          <!-- LEVEL -->
+          <div fxFlex="45">
+            <div fxLayout="column">
+              <mat-label fxFlex>
+                Level: {{characterForm.controls['levelForm'].value!}}
+              </mat-label>
 
-          <mat-form-field>
-            <mat-label>Race</mat-label>
-            <mat-select formControlName="raceForm">
-              <mat-option *ngFor="let clazz of clazzes" [value]="clazz">
-                {{clazz.name}}
-              </mat-option>
-            </mat-select>
-            <mat-hint>
-              <!-- Eventually, grab the race traits and append to this list via method -->
-              <app-subtle-modal title="Race Traits" [text]="getRaceTraitDescription()">
-              </app-subtle-modal>
-            </mat-hint>
-          </mat-form-field>
+              <span fxFlex>
+                <mat-slider style="width: 100%" ngDefaultControl formControlName="levelForm" step="1" min="1" max="20" value="1" discrete="false" showTickMarks="true">
+                  <input matSliderThumb/>
+                </mat-slider>
+              </span>
+            </div>
+          </div>
 
-          <mat-form-field>
-            <mat-label>Class</mat-label>
-            <mat-select>
-              <mat-option *ngFor="let clazz of clazzes" [value]="clazz">
-                {{clazz.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+          <!-- RACE -->
+          <span fxFlex="32" fxLayout="column">
+            <app-filterable-select label="Select Race" 
+                                  [multiple]="false" 
+                                  [dataSource]="races"
+                                  (selected)="characterForm.controls['raceIdForm'].setValue($event)"
+                                  fxFlex
+                                  #raceFilterSelect>
+            </app-filterable-select>
+            <div fxLayout="row" fxLayoutAlign="start none" fxFlex>
+              <button fxFlex mat-button (click)="router.navigate(['dmaster/races/create'])">+ Create Race</button>
+              <span fxFlex>
+                <app-subtle-modal [title]="getRaceModalTitle()" [text]="getRaceTraitDescription()">
+                </app-subtle-modal>
+              </span>
+              <span fxFlex="50">
+              </span>
+            </div>
+          </span>
 
-          <mat-form-field>
-            <mat-label>Sub-Class</mat-label>
-            <mat-select>
-              <mat-option *ngFor="let clazz of getSubclasses()" [value]="clazz">
-                {{clazz.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+          <!-- CLASS -->
+          <span fxFlex="32" fxLayout="column">
+            <app-filterable-select label="Select a Class" 
+                                  [multiple]="false" 
+                                  [dataSource]="clazzes"
+                                  (selectionsChange)="updateClassSelection($event)"
+                                  fxFlex>
+            </app-filterable-select>
 
-            <!-- <mat-grid-tile #characterType [colspan]="3">
-              <mat-chip-list [selectable]="true" id="character-opts" (change)="characterTypeFormUpdate($event)" formControlName="characterTypeForm">
-                <mat-chip id="pc-option"
-                          #pcOption="matChip"
-                          [selected]="selectedCharType === 0"
-                          (click)="characterTypeSelect(pcOption)">PC</mat-chip>
-                <mat-chip id="npc-option"
-                          #npcOption="matChip"
-                          [selected]="selectedCharType === 1"
-                          (click)="characterTypeSelect(npcOption)">NPC</mat-chip>
-                <mat-chip id="m-option"
-                          #mOption="matChip"
-                          [selected]="selectedCharType === 2"
-                          (click)="characterTypeSelect(mOption)">Monster</mat-chip>
-              </mat-chip-list>
-            </mat-grid-tile> -->
+            <div fxLayout="row" fxLayoutAlign="start none" fxFlex>
+              <button fxFlex mat-button (click)="router.navigate(['dmaster/classes/create'])">+ Create Class</button>
+              <span fxFlex>
+                <app-subtle-modal title="Class Traits" [text]="getClassTraitDescription()">
+                </app-subtle-modal>
+              </span>
+              <span fxFlex="50">
+              </span>
+            </div>
+          </span>
+
+          <!-- SUBCLASS -->
+          <span fxFlex="32" fxLayout="column">
+            <app-filterable-select label="Choose a Subclass"
+                                  [disabled]="characterForm.controls['classIdForm'].value < 0" 
+                                  [multiple]="false" 
+                                  [dataSource]="subclasses"
+                                  (selectionsChange)="characterForm.controls['classIdForm'].setValue($event)"
+                                  fxFlex>
+            </app-filterable-select>
+            <div fxLayout="row" fxLayoutAlign="start none" fxFlex>
+              <button fxFlex mat-button (click)="router.navigate(['dmaster/classes/create'])">+ Create Subclass</button>
+            </div>
+          </span>
+
+          <stats-form-app statName="Strength" 
+                          statDescription="How strong are ye?"  
+                          (changed)="characterForm.get('statsForm.strengthForm')!.setValue($event)"
+                          [statValue]="10">
+          </stats-form-app>
+
+          <stats-form-app statName="Dexterity" 
+                          statDescription="How strong are ye?"  
+                          (changed)="characterForm.get('statsForm.dexterityForm')!.setValue($event)"
+                          [statValue]="10">
+          </stats-form-app>
+
+          <stats-form-app statName="Constitution" 
+                          statDescription="How strong are ye?"  
+                          (changed)="characterForm.get('statsForm.constitutionForm')!.setValue($event)"
+                          [statValue]="10">
+          </stats-form-app>
+
+          <stats-form-app statName="Wisdom" 
+                          statDescription="How strong are ye?"  
+                          (changed)="characterForm.get('statsForm.wisdomForm')!.setValue($event)"
+                          [statValue]="10">
+          </stats-form-app>
+
+          <stats-form-app statName="Charisma" 
+                          statDescription="How strong are ye?"  
+                          (changed)="characterForm.get('statsForm.charismaForm')!.setValue($event)"
+                          [statValue]="10">
+          </stats-form-app>
+
+          <stats-form-app statName="Intelligence" 
+                          statDescription="How strong are ye?"  
+                          (changed)="characterForm.get('statsForm.intelligenceForm')!.setValue($event)"
+                          [statValue]="10">
+          </stats-form-app>
 
 
-          <app-health [dice]="hitDice">
-          </app-health>
+
+          <!-- ALL I NEED IS: 
+            forms to manually add
+            - stats [1-20] (str, dex, con, int, wis, cha)
+            - Spell slots
+            - Hit dice
+
+
+            TO MAKE IT WORK WITH LIVE PLAY:
+            - a menu to edit individual users
+            - edits push as a message to a table
+            - the message pushes a websocket update to users logged in
+            - reflects change
+          -->
+
+          <!-- <mat-slide-toggle [checked]="isPC">
+            <span *ngIf="isPC">PC</span>
+            <span *ngIf="!isPC">NPC</span>
+          </mat-slide-toggle> -->
+          
+          <!-- <app-health [dice]="hitDice">
+          </app-health> -->
 
           <!-- modal selectors that let the players pick their spells and cantrips, or type up their background / pick background. -->
-          <a>Spells</a>
+          <!-- <a>Spells</a>
           <a>Cantrips</a>
           <a>Background</a>
           <a>Personality</a>
@@ -90,7 +155,7 @@
           <ng-container *ngFor="let d of spellSlots">
             <spell-slot-app [amount]="d.amount" [tier]="d.tier" [displayOnly]="true" style="margin: 4px;">
             </spell-slot-app>
-          </ng-container>
+          </ng-container> -->
 
         </form>
       </mat-card-content>

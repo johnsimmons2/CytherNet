@@ -19,6 +19,9 @@ import { MatTableModule } from "@angular/material/table";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { MatSliderModule } from "@angular/material/slider";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+
 
 @NgModule({
     exports: [
@@ -43,6 +46,8 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
         MatProgressSpinnerModule,
         MatPaginatorModule,
         MatSnackBarModule,
+        MatSliderModule,
+        MatSlideToggleModule
     ],
     providers: [
         MatIconRegistry

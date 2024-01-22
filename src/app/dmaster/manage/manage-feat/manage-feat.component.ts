@@ -56,24 +56,15 @@ export class ManageFeatComponent implements OnInit, AfterViewInit {
     }
 
     public resetTable(): void {
-        this.featService.getFeats().subscribe((res: any) => {
-            if (res.success) {
-                this.feats = [];
-                this.featDataSource.data = [];
+        this.featService.getFeats().subscribe((feats: Feat[]) => {
+            this.feats = feats;
+            this.featDataSource.data = [];
 
-                res.data.forEach((feat: any) => {
-                    this.feats.push({
-                        id: feat.id,
-                        description: feat.description,
-                        name: feat.name,
-                    });
-                });
-                this.feats = this.feats.sort((a: any, b: any) => {
-                    return a.id - b.id;
-                });
-                this.featDataSource.data = this.feats;
-                this.table.renderRows();
-            }
+            this.feats = this.feats.sort((a: any, b: any) => {
+                return a.id - b.id;
+            });
+            this.featDataSource.data = this.feats;
+            this.table.renderRows();
         });
     }
 

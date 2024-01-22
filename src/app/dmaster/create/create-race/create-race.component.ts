@@ -38,22 +38,16 @@ export class CreateRaceComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.featService.getFeats().subscribe((res: any) => {
-            if (res.success) {
-                res.data.forEach((feat: any) => {
-                    this.feats.push({
-                        id: feat.id,
-                        description: feat.description,
-                        name: feat.name,
-                    });
-                });
-                this.feats.sort((a, b) => a.name.localeCompare(b.name));
-            }
+        this.featService.getFeats().subscribe((feats: Feat[]) => {
+            this.feats = feats
+            this.feats.sort((a, b) => a.name.localeCompare(b.name));
         });
     }
 
-    updateFeatSelection(selection: any[]) {
+    updateFeatSelection(selection: any) {
+        console.log(selection);
         if (selection !== undefined && selection instanceof Array) {
+            console.log(selection);
             this.raceForm.controls['featsForm'].setValue(selection);
         }
     }
@@ -70,7 +64,7 @@ export class CreateRaceComponent implements OnInit {
                 size: this.raceForm.get('sizeForm')?.value,
                 languages: this.raceForm.get('languagesForm')?.value,
                 alignment: this.raceForm.get('alignmentForm')?.value,
-                feats: this.raceForm.get('featsForm')?.value,
+                featIds: this.raceForm.get('featsForm')?.value,
             }
             
             this.raceService.createRace(raceDto).subscribe((res: ApiResult) => {

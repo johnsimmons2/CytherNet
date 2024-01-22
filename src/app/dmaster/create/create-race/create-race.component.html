@@ -53,7 +53,7 @@
                                     routeTo="dmaster/feats/create" 
                                     [multiple]="true" 
                                     [dataSource]="feats"
-                                    (selected)="updateFeatSelection($event)"
+                                    (selectionsChange)="updateFeatSelection($event)"
                                     fxFlex>
             </app-filterable-select>
 

@@ -5,5 +5,5 @@ export interface Class {
   name: string;
   description: string;
   startingHp?: number;
-  subclasses?: Class[];
+  subclassIds?: number[];
 }

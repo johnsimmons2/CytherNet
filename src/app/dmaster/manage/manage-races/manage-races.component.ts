@@ -1,9 +1,12 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MatTable } from "@angular/material/table";
 import { Router } from "@angular/router";
+import { lastValueFrom } from "rxjs";
 import { ApiResult } from "src/app/model/apiresult";
+import { Feat } from "src/app/model/feat";
 import { Race } from "src/app/model/race";
+import { FeatService } from "src/app/services/feat.service";
 import { RaceService } from "src/app/services/race.service";
 import { ModalComponent } from "src/app/shared/subtle-modal/modal/modal.component";
 
@@ -14,18 +17,50 @@ import { ModalComponent } from "src/app/shared/subtle-modal/modal/modal.componen
     styleUrls: ['./manage-races.component.scss']
 })
 export class ManageRacesComponent implements AfterViewInit {
-    races: Race[] = []
-    racesColumns: string[] = ['id', 'name', 'description', 'size', 'alignment', 'languages', 'feats', 'actions']
+    races: Race[] = [];
+    feats: Feat[] = [];
+    racesColumns: string[] = ['id', 'name', 'description', 'size', 'alignment', 'languages', 'feats', 'actions'];
 
     sizes: string[] = ['Tiny', 'Small', 'Medium', 'Large', 'Huge', 'Gargantuan', 'Colossal'];
     previousNames: { [key: string]: string } = {};
     previousSizes: { [key: string]: string } = {};
 
     @ViewChild(MatTable) table!: MatTable<Race>;
+    @ViewChild('featmodal') featModalTemplate!: TemplateRef<any>;
 
     constructor(private raceService: RaceService, 
+        private featService: FeatService,
         public dialog: MatDialog,
         public router: Router) {
+    }
+
+    public getFeatName(featId: number): string {
+        return this.feats.find(x => x.id === featId)?.name ?? '';
+    }
+
+    public async openFeatModal(id: number, name: string): Promise<void> {
+        const feats: Feat[] = await lastValueFrom(this.featService.getRacialFeatsFor(id));
+        const featIds: number[] = feats.map(x => x.id!);
+
+        const modalRef = this.dialog.open(this.featModalTemplate, {
+            width: '800px',
+            data: {
+                id: id,
+                name: name,
+                description: name,
+                currentFeatIds: featIds,
+                allFeats: this.feats
+            }
+        });
+
+        modalRef.afterClosed().subscribe((result: any) => {
+            if (result !== undefined) {
+                const race = this.races.find(x => x.id === id);
+                race!.featIds = result as number[]; 
+    
+                this.updateTableIfSucceeded(true, race!);
+            }
+        });
     }
 
     public confirmNameChange(event: any, raceId: number): void {
@@ -97,7 +132,9 @@ export class ManageRacesComponent implements AfterViewInit {
     public updateRacialFeats(event: any, raceId: number): void {
         if (event !== undefined) {
             const race = this.races.find(x => x.id === raceId);
-            console.log(event);
+            race!.featIds = event as number[];
+
+            this.updateTableIfSucceeded(true, race!)
         }
     }
 
@@ -110,10 +147,35 @@ export class ManageRacesComponent implements AfterViewInit {
         }
     }
     
-    deleteRow(raceId: number): void {
-        this.raceService.delete(raceId).subscribe((res: ApiResult) => {
-            if (res.success) {
-                this.getInitialRaces();
+    public deselectFeat(featId: number, allFeats: Feat[]): Feat[] {
+        // Find the index of the featId in the array
+        const index = allFeats.findIndex(x => x.id === featId);
+        console.log(featId);
+        // If the featId is found, remove it from the array
+        if (index !== -1) {
+            return allFeats.splice(index, 1);
+        }
+
+        return allFeats;
+    }
+
+    deleteRow(raceId: number, rowName: string): void {
+        const modalRef = this.dialog.open(ModalComponent, {
+            data: {
+                title: "Delete?",
+                cancel: true,
+                content: `Are you sure you want to delete ${rowName}?`
+            }
+        });
+
+        modalRef.afterClosed().subscribe((result: any) => {
+            if (result) {
+                this.raceService.delete(raceId).subscribe((res: ApiResult) => {
+                    if (res.success) {
+                        this.getInitialRaces();
+                        this.resetTable();
+                    }
+                });
             }
         });
     }
@@ -122,6 +184,7 @@ export class ManageRacesComponent implements AfterViewInit {
         this.races = this.races.sort((a: any, b: any) => {
             return a.id - b.id;
         });
+        this.feats.sort((a: any, b: any) => a.name.localeCompare(b.name));
         this.races.forEach((x: any) => {
             x.size = this.previousSizes[x.name];
             x.name = this.previousNames[x.id];
@@ -130,31 +193,14 @@ export class ManageRacesComponent implements AfterViewInit {
     }
 
     getInitialRaces(): void {
-        this.raceService.getRaces().subscribe((res: ApiResult) => {  
-            if (res.success && res.data) {
+        this.raceService.getRaces().subscribe((races: Race[]) => this.races = races);
+        this.featService.getFeats().subscribe((feats: Feat[]) => this.feats = feats);
 
-                this.races = [];
-
-                res.data.forEach((x: any) => {
-                    this.races.push({
-                        id: x.id,
-                        name: x.name,
-                        description: x.description,
-                        size: x.size,
-                        alignment: x.alignment,
-                        languages: x.languages,
-                        feats: (x.feats && x.feats.length > 0) ? x.feats.map((y: any) => y.id) : [],
-                    })
-                });
-
-                this.races.forEach((x: any) => {
-                    this.previousSizes[x.name] = x.size;
-                    this.previousNames[x.id] = x.name;
-                });
-        
-                this.resetTable();
-            }
+        this.races.forEach((x: any) => {
+            this.previousSizes[x.name] = x.size;
+            this.previousNames[x.id] = x.name;
         });
+        this.resetTable();
     }
 
     ngAfterViewInit(): void {

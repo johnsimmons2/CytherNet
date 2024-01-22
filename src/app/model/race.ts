@@ -8,5 +8,5 @@ export interface Race {
     size: string;
     languages: string;
     alignment: string;
-    feats: number[];
+    featIds: number[];
 }

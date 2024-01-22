@@ -1,74 +1,60 @@
 import { Injectable } from "@angular/core";
 import { Class } from "../model/class";
+import { MapperService } from "./mapper.service";
+import { ApiService } from "./api.service";
+import { Observable, map } from "rxjs";
+import { ApiResult } from "../model/apiresult";
 
 @Injectable({ providedIn: 'root' })
 export class ClassService {
-    private readonly CLASSES: Class[] = [
-        {
-            id: 1,
-            name: "Barbarian",
-            startingHp: 12,
-            description: "A fierce warrior of primitive background who can enter a battle rage",
-            subclasses: [
-                {
-                    name: "Path of Athe Ancestral Guardian",
-                    description: "",
-                }
-            ]
-          },
-          {
-            id: 2,
-            name: "Bard",
-            startingHp: 8,
-            description: "An inspiring magician whose power echoes the music of creation",
-            subclasses: [
-                {
-                    name: "College of Creation",
-                    description: "",
-                }
-            ]
-          },
-          {
-            id: 3,
-            name: "Cleric",
-            startingHp: 8,
-            description: "A priestly champion who wields divine magic in service of a higher power",
-            subclasses: [
-                {
-                    name: "Twilight Domain",
-                    description: "",
-                }
-            ]
-          },
-          {
-            id: 4,
-            name: "Druid",
-            startingHp: 8,
-            description: "A priest of the Old Faith, wielding the powers of nature and adopting animal forms",
-            subclasses: [
-                {
-                    name: "Circle of the Moon",
-                    description: "",
-                }
-            ]
-          },
-          {
-            id: 5,
-            name: "Fighter",
-            startingHp: 10,
-            description: "A master of martial combat, skilled with a variety of weapons and armor",
-            subclasses: [
-                {
-                    name: "Path of FUCK",
-                    description: "",
-                }
-            ]
-          }
-    ]
+    constructor(private mapper: MapperService, private apiService: ApiService) { }
 
-    constructor() { }
-
-    get classes() {
-        return this.CLASSES;
+    public delete(id: number) {
+        return this.apiService.delete(`classes/${id}`);
     }
+
+    public update(clazz: Class): Observable<ApiResult> {
+        return this.apiService.patch(`classes/${clazz.id}`, clazz);
+    }
+
+    public createSubclasses(classId: number, subclasses: Class[]): Observable<ApiResult> {
+        return this.apiService.post(`classes/${classId}/subclasses`, subclasses);
+    }
+
+    public create(clazz: Class): Observable<ApiResult> {
+        return this.apiService.post(`classes`, clazz);
+    }
+
+    public getClasses(): Observable<Class[]> {
+        return this.apiService.get("classes").pipe(
+            map((res: ApiResult) => {
+                if (res.success) {
+                    return res.data.reduce((classesAcc: Class[], classResult: any) => {
+                        let classDto = this.mapper.asClassDto(classResult);
+                        if (classDto !== null) {
+                            classesAcc.push(classDto);
+                        }
+                        return classesAcc;
+                    }, []);
+                }
+            })
+        );
+    }
+
+    public getClassSubclasses(id: number): Observable<Class[]> {
+        return this.apiService.get(`classes/${id}/subclasses`).pipe(
+            map((res: ApiResult) => {
+                if (res.success) {
+                    return res.data.reduce((classesAcc: Class[], classResult: any) => {
+                        let classDto = this.mapper.asClassDto(classResult);
+                        if (classDto !== null) {
+                            classesAcc.push(classDto);
+                        }
+                        return classesAcc;
+                    }, []);
+                }
+            })
+        );
+    }
+
 }

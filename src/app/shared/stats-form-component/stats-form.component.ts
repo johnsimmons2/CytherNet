@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { UserService } from "src/app/services/user.service";
 
@@ -12,7 +12,9 @@ export class StatsFormComponent {
 
   @Input() statName: string = '';
   @Input() statDescription: string = '';
-  @Input() statValue: string = '';
+  @Input() statValue: number = 1;
+
+  @Output() changed: EventEmitter<string> = new EventEmitter<string>();
 
   statForm: FormGroup;
 
@@ -23,7 +25,7 @@ export class StatsFormComponent {
   }
 
   get bonus(): string {
-    const statBonus = Math.floor((Number.parseInt(this.statValue) - 10) / 2);
+    const statBonus = Math.floor((this.statValue - 10) / 2);
     if (statBonus >= 1) {
       return `+${statBonus}`;
     } else if (statBonus < 0) {
@@ -43,15 +45,16 @@ export class StatsFormComponent {
 
   iChanged(event: any) {
     if (event.target.value > 20) {
-      this.statValue = '20';
+      this.statValue = 20;
       this.statForm.get('statValueControl')!.setValue(this.statValue);
     } else if (event.target.value < 1) {
-      this.statValue = '1';
+      this.statValue = 1;
       this.statForm.get('statValueControl')!.setValue(this.statValue);
     } else {
       this.statValue = event.target.value;
       this.statForm.get('statValueControl')!.setValue(this.statValue);
     }
+    this.changed.emit(event.target.value);
   }
 
   ngOnInit() {

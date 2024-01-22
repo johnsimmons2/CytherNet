@@ -1,7 +1,7 @@
-<mat-form-field *ngIf="dataSource.length > 0" style="width: 100%; margin-bottom: 12px;">
+<mat-form-field *ngIf="dataSource" style="width: 100%; margin-bottom: 12px;">
     <mat-label>{{label}}</mat-label>
 
-    <mat-select [multiple]="multiple" style="width: 100%;" (selectionChange)="selectionChange($event)" [(value)]="selections">
+    <mat-select [disabled]="disabled" [multiple]="multiple" style="width: 100%;" (selectionChange)="selectionChange($event)" [(value)]="selections">
         <mat-form-field appearance="outline" style="width: 100%;">
             <input matInput placeholder="Filter" (keyup)="search($event)"/>
             <span>

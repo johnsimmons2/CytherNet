@@ -1,28 +1,36 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from "@angular/core";
 import { Router } from "@angular/router";
 
 @Component({
     selector: 'app-filterable-select',
     templateUrl: './filterable-select.component.html',
 })
-export class FilterableSelectComponent implements OnInit {
+export class FilterableSelectComponent implements OnInit, OnChanges {
     
     @Input() label: string = '';
     @Input() multiple: boolean = false;
     @Input() routeTo: string = '';
+    @Input() disabled: boolean = false;
     
     @Input() dataSource!: any[];
     filteredDataSource: any[] = [];
 
-    selections: any[] = [];
+    @Input() selections: number[] = [];
+    @Output() selectionsChange: EventEmitter<any[]> = new EventEmitter<any[]>();
 
-    @Output() selected: EventEmitter<any[]> = new EventEmitter<any[]>();
-
-    constructor(public router: Router) {
+    constructor(public router: Router, private cdr: ChangeDetectorRef) {
     }
 
     ngOnInit(): void {
         this.filteredDataSource = this.dataSource;
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['dataSource'] !== undefined) {
+            this.dataSource = changes['dataSource'].currentValue;
+            this.filteredDataSource = changes['dataSource'].currentValue;
+        }
+        this.cdr.detectChanges();
     }
 
     search(event: any) {
@@ -44,12 +52,12 @@ export class FilterableSelectComponent implements OnInit {
     }
 
     selectionChange(event: any) {
-        this.selected.emit(event.value);
+        this.selectionsChange.emit(event.value);
     }
 
     clearSelection(): void {
         this.selections = [];
         this.search({ target: { value: '' } })
-        this.selected.emit([]);
+        this.selectionsChange.emit([]);
     }
 }

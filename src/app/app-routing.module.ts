@@ -19,6 +19,7 @@ import { CreateRaceComponent } from './dmaster/create/create-race/create-race.co
 import { ManageFeatComponent } from './dmaster/manage/manage-feat/manage-feat.component';
 import { CreateFeatComponent } from './dmaster/create/create-feat/create-feat.component';
 import { AboutComponent } from './about/about.component';
+import { CreateClassComponent } from './dmaster/create/create-class/create-class.component';
 
 const routes: Routes = [
   {
@@ -29,6 +30,10 @@ const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent
+  },
+  {
+    path: 'about',
+    component: AboutComponent
   },
   {
     path: '',
@@ -89,9 +94,13 @@ const routes: Routes = [
         component: CreateFeatComponent,
       },
       {
-        path: 'about',
-        component: AboutComponent
+        path: 'dmaster/classes',
+        component: ManageClassesComponent
       },
+      {
+        path: 'dmaster/classes/create',
+        component: CreateClassComponent
+      }
     ]
   }
 ];
