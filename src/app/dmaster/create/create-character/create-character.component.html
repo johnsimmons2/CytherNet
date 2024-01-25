@@ -1,125 +1,132 @@
-<div class="cyther-page">
+<div class="fullscreen">
   <div>
     <mat-card>
-      <mat-card-content>
-        <form [formGroup]="characterForm" (ngSubmit)="submit()" fxLayout="row wrap" fxLayoutAlign="space-around none" fxLayoutGap="10px">
+      <mat-card-header>
+        <mat-card-title>
+          <h1>Create Character</h1>
+        </mat-card-title>
+      </mat-card-header>
+      <form [formGroup]="characterForm" (ngSubmit)="submit()">
+        <mat-card-content style="padding: 20px">
+          <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="10px">
+            <!-- NAME -->
+            <mat-form-field fxFlex="30">
+              <input matInput placeholder="Character Name" type="text" formControlName="characterNameForm" />
+              <mat-error>
+                <span *ngIf="characterForm.controls['characterNameForm'].hasError('required')">Character name is required.</span>
+                <span *ngIf="characterForm.controls['characterNameForm'].hasError('maxlength')">Character name cannot be longer than 20 characters. ({{characterForm.controls['characterNameForm'].value!.toString().length}})</span>
+              </mat-error>
+            </mat-form-field>
+            
+            <!-- RACE -->
+            <span fxFlex="30" fxLayout="column">
+              <app-filterable-select label="Select Race" 
+                                    [multiple]="false" 
+                                    [dataSource]="races"
+                                    (selected)="characterForm.controls['raceIdForm'].setValue($event)"
+                                    fxFlex
+                                    #raceFilterSelect>
+              </app-filterable-select>
+              <div fxLayout="row" fxLayoutAlign="start none" fxFlex>
+                <button fxFlex mat-button (click)="router.navigate(['dmaster/races/create'])">+ Create Race</button>
+                <span fxFlex>
+                  <app-subtle-modal [title]="getRaceModalTitle()" [text]="getRaceTraitDescription()">
+                  </app-subtle-modal>
+                </span>
+              </div>
+            </span>
 
-          <!-- NAME -->
-          <mat-form-field fxFlex="45">
-            <input matInput placeholder="Character Name" type="text" formControlName="characterNameForm" />
-            <mat-error>
-              <span *ngIf="characterForm.controls['characterNameForm'].hasError('required')">Character name is required.</span>
-              <span *ngIf="characterForm.controls['characterNameForm'].hasError('maxlength')">Character name cannot be longer than 20 characters. ({{characterForm.controls['characterNameForm'].value!.toString().length}})</span>
-            </mat-error>
-          </mat-form-field>
-
-          <!-- LEVEL -->
-          <div fxFlex="45">
-            <div fxLayout="column">
-              <mat-label fxFlex>
-                Level: {{characterForm.controls['levelForm'].value!}}
-              </mat-label>
-
-              <span fxFlex>
-                <mat-slider style="width: 100%" ngDefaultControl formControlName="levelForm" step="1" min="1" max="20" value="1" discrete="false" showTickMarks="true">
-                  <input matSliderThumb/>
-                </mat-slider>
-              </span>
+            <!-- LEVEL -->
+            <div fxFlex="15">
+              <div fxLayout="column">
+                <mat-label fxFlex>
+                  Level: {{characterForm.controls['levelForm'].value!}}
+                </mat-label>
+                
+                <div fxFlex>
+                  <mat-slider style="width: 100%" ngDefaultControl formControlName="levelForm" step="1" min="1" max="20" value="1" discrete="false" showTickMarks="true">
+                    <input matSliderThumb/>
+                  </mat-slider>
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- RACE -->
-          <span fxFlex="32" fxLayout="column">
-            <app-filterable-select label="Select Race" 
-                                  [multiple]="false" 
-                                  [dataSource]="races"
-                                  (selected)="characterForm.controls['raceIdForm'].setValue($event)"
-                                  fxFlex
-                                  #raceFilterSelect>
-            </app-filterable-select>
-            <div fxLayout="row" fxLayoutAlign="start none" fxFlex>
-              <button fxFlex mat-button (click)="router.navigate(['dmaster/races/create'])">+ Create Race</button>
-              <span fxFlex>
-                <app-subtle-modal [title]="getRaceModalTitle()" [text]="getRaceTraitDescription()">
-                </app-subtle-modal>
-              </span>
-              <span fxFlex="50">
-              </span>
-            </div>
-          </span>
+          <div fxLayout="row wrap" fxLayoutAlign="space-between start" fxLayoutGap="10px">
 
-          <!-- CLASS -->
-          <span fxFlex="32" fxLayout="column">
-            <app-filterable-select label="Select a Class" 
-                                  [multiple]="false" 
-                                  [dataSource]="clazzes"
-                                  (selectionsChange)="updateClassSelection($event)"
-                                  fxFlex>
-            </app-filterable-select>
+            <!-- CLASS -->
+            <span fxFlex="32" fxLayout="column">
+              <app-filterable-select label="Select a Class" 
+                                    [multiple]="false" 
+                                    [dataSource]="clazzes"
+                                    (selectionsChange)="updateClassSelection($event)"
+                                    fxFlex>
+              </app-filterable-select>
 
-            <div fxLayout="row" fxLayoutAlign="start none" fxFlex>
-              <button fxFlex mat-button (click)="router.navigate(['dmaster/classes/create'])">+ Create Class</button>
-              <span fxFlex>
-                <app-subtle-modal title="Class Traits" [text]="getClassTraitDescription()">
-                </app-subtle-modal>
-              </span>
-              <span fxFlex="50">
-              </span>
-            </div>
-          </span>
+              <div fxLayout="row" fxLayoutAlign="start none" fxFlex>
+                <button fxFlex mat-button (click)="router.navigate(['dmaster/classes/create'])">+ Create Class</button>
+                <span fxFlex>
+                  <app-subtle-modal title="Class Traits" [text]="getClassTraitDescription()">
+                  </app-subtle-modal>
+                </span>
+              </div>
+            </span>
 
-          <!-- SUBCLASS -->
-          <span fxFlex="32" fxLayout="column">
-            <app-filterable-select label="Choose a Subclass"
-                                  [disabled]="characterForm.controls['classIdForm'].value < 0" 
-                                  [multiple]="false" 
-                                  [dataSource]="subclasses"
-                                  (selectionsChange)="characterForm.controls['classIdForm'].setValue($event)"
-                                  fxFlex>
-            </app-filterable-select>
-            <div fxLayout="row" fxLayoutAlign="start none" fxFlex>
-              <button fxFlex mat-button (click)="router.navigate(['dmaster/classes/create'])">+ Create Subclass</button>
-            </div>
-          </span>
+            <!-- SUBCLASS -->
+            <span fxFlex="32" fxLayout="column">
+              <app-filterable-select label="Choose a Subclass"
+                                    [disabled]="characterForm.controls['classIdForm'].value < 0" 
+                                    [multiple]="false" 
+                                    [dataSource]="subclasses"
+                                    (selectionsChange)="characterForm.controls['classIdForm'].setValue($event)"
+                                    fxFlex>
+              </app-filterable-select>
+              <div fxLayout="row" fxLayoutAlign="start none" fxFlex>
+                <button fxFlex mat-button (click)="router.navigate(['dmaster/classes/create'])">+ Create Subclass</button>
+              </div>
+            </span>
+          </div>
 
-          <stats-form-app statName="Strength" 
-                          statDescription="How strong are ye?"  
-                          (changed)="characterForm.get('statsForm.strengthForm')!.setValue($event)"
-                          [statValue]="10">
-          </stats-form-app>
+          <mat-divider></mat-divider>
+          <h2>Stats</h2>
+          <div fxLayout="row wrap" fxLayoutAlign="space-between none" fxLayoutGap="20px">
+            <stats-form-app stat="str"
+                            fxFlex
+                            (changed)="characterForm.get('statsForm.strengthForm')!.setValue($event)"
+                            [statValue]="10">
+            </stats-form-app>
 
-          <stats-form-app statName="Dexterity" 
-                          statDescription="How strong are ye?"  
-                          (changed)="characterForm.get('statsForm.dexterityForm')!.setValue($event)"
-                          [statValue]="10">
-          </stats-form-app>
+            <stats-form-app stat="con"
+                            fxFlex
+                            (changed)="characterForm.get('statsForm.constitutionForm')!.setValue($event)"
+                            [statValue]="10">
+            </stats-form-app>
 
-          <stats-form-app statName="Constitution" 
-                          statDescription="How strong are ye?"  
-                          (changed)="characterForm.get('statsForm.constitutionForm')!.setValue($event)"
-                          [statValue]="10">
-          </stats-form-app>
+            <stats-form-app stat="dex"
+                            fxFlex
+                            (changed)="characterForm.get('statsForm.dexterityForm')!.setValue($event)"
+                            [statValue]="10">
+            </stats-form-app>
 
-          <stats-form-app statName="Wisdom" 
-                          statDescription="How strong are ye?"  
-                          (changed)="characterForm.get('statsForm.wisdomForm')!.setValue($event)"
-                          [statValue]="10">
-          </stats-form-app>
+            <stats-form-app stat="cha"
+                            fxFlex
+                            (changed)="characterForm.get('statsForm.charismaForm')!.setValue($event)"
+                            [statValue]="10">
+            </stats-form-app>
 
-          <stats-form-app statName="Charisma" 
-                          statDescription="How strong are ye?"  
-                          (changed)="characterForm.get('statsForm.charismaForm')!.setValue($event)"
-                          [statValue]="10">
-          </stats-form-app>
+            <stats-form-app stat="wis"
+                            fxFlex
+                            (changed)="characterForm.get('statsForm.wisdomForm')!.setValue($event)"
+                            [statValue]="10">
+            </stats-form-app>
 
-          <stats-form-app statName="Intelligence" 
-                          statDescription="How strong are ye?"  
-                          (changed)="characterForm.get('statsForm.intelligenceForm')!.setValue($event)"
-                          [statValue]="10">
-          </stats-form-app>
+            <stats-form-app stat="int"
+                            fxFlex
+                            (changed)="characterForm.get('statsForm.intelligenceForm')!.setValue($event)"
+                            [statValue]="10">
+            </stats-form-app>
 
-
-
+          </div>
           <!-- ALL I NEED IS: 
             forms to manually add
             - stats [1-20] (str, dex, con, int, wis, cha)
@@ -157,19 +164,12 @@
             </spell-slot-app>
           </ng-container> -->
 
-        </form>
-      </mat-card-content>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button mat-raised-button color="primary" type="submit" [disabled]="!characterForm.valid">Create</button>
+          <button mat-raised-button color="warn" type="button" (click)="router.navigate(['dmaster'])">Cancel</button>
+        </mat-card-actions>
+      </form>
     </mat-card>
-    <div class="form-row">
-      <div fxFlex="column" fxLayoutGap="20px">
-          <div fxFlex class="form-row-item">
-              <button mat-raised-button type="submit" color="primary" [disabled]="!characterForm.valid">Create</button>
-          </div>
-          <div fxFlex="0.5" fxHide.lt-md></div>
-          <div fxFlex class="form-row-item">
-              <button mat-raised-button type="button" color="warn" (click)="router.navigate(['/'])">Cancel</button>
-          </div>
-      </div>
-  </div>
   </div>
 </div>

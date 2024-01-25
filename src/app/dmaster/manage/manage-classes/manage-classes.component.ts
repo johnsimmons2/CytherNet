@@ -15,7 +15,7 @@ import { ModalComponent } from "src/app/shared/subtle-modal/modal/modal.componen
 })
 export class ManageClassesComponent implements OnInit, AfterViewInit {
 
-    xcolumns: string[] = ["id", "name", "description", "actions"];
+    xcolumns: string[] = ["id", "name", "spellcasting", "description", "actions"];
     classes: Class[] = [];
     classesDataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
@@ -30,6 +30,21 @@ export class ManageClassesComponent implements OnInit, AfterViewInit {
 
     ngAfterViewInit(): void {
         this.classesDataSource.paginator = this.paginator;
+    }
+
+    public updateRow(row: any): void {
+        console.log(row);
+        if (row !== undefined) {
+            const clazz = this.classes.find(x => x.id === row.id);
+
+            console.log(clazz);
+
+            this.classService.update(clazz!).subscribe((res: ApiResult) => {
+                if (res.success) {
+                    this.resetTable();
+                }
+            });
+        }
     }
 
     public updateDescription(event: any, featId: number): void {
@@ -47,6 +62,7 @@ export class ManageClassesComponent implements OnInit, AfterViewInit {
 
     public resetTable(): void {
         this.classService.getClasses().subscribe((classes: Class[]) => {
+            console.log(classes);
             this.classes = classes;
             this.classes.sort((a, b) => a.name.localeCompare(b.name));
             this.classesDataSource.data = classes;

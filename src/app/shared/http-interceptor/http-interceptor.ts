@@ -34,6 +34,8 @@ export class HttpInterceptorImplementation implements HttpInterceptor {
             catchError((error: any) => {
                 if (error instanceof HttpErrorResponse) {
                     let message = '';
+                    console.log(error.status);
+                    console.log(error.error);
                     switch(error.status) {
                         case 401:
                             message = "Could not authenticate you.";

@@ -55,7 +55,8 @@ export class MapperService {
                 id: result.id,
                 name: result.name,
                 description: result.description,
-                subclassIds: subclassIds
+                subclassIds: subclassIds,
+                spellCastingAbility: result.spellCastingAbility,
             };
         } catch (error) {
             console.error(error);

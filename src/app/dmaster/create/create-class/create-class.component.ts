@@ -5,6 +5,7 @@ import { from, map } from "rxjs";
 import { ApiResult } from "src/app/model/apiresult";
 import { Class } from "src/app/model/class";
 import { ClassService } from "src/app/services/class.service";
+import { StatsService } from "src/app/services/stats.service";
 
 @Component({
     selector: 'create-class-app',
@@ -15,11 +16,18 @@ export class CreateClassComponent implements OnInit {
     classForm: FormGroup;
     subclassForm: FormGroup;
 
+    spellcaster: boolean = false;
+    spellcastingAbility: string = '';
+
     subclasses: Class[] = [];
     selectedClass: number = 0;
     classes: Class[] = [];
+    stats: any[] = [];
 
-    constructor(private classService: ClassService, private formBuilder: FormBuilder, public location: Location) {
+    constructor(private classService: ClassService, 
+                private statService: StatsService,
+                private formBuilder: FormBuilder, 
+                public location: Location) {
         this.classForm = new FormGroup({
             nameForm: this.formBuilder.control('', [Validators.required]),
             descriptionForm: this.formBuilder.control('', [Validators.required]),
@@ -39,6 +47,7 @@ export class CreateClassComponent implements OnInit {
             this.classes = classes;
             this.classes.sort((a, b) => a.name.localeCompare(b.name));
         });
+        this.stats = this.statService.statDescriptions;
     }
 
     public selectClass(event: any): void {
@@ -83,6 +92,7 @@ export class CreateClassComponent implements OnInit {
             const clazz: Class = {
                 name: this.classForm.controls['nameForm'].value,
                 description: this.classForm.controls['descriptionForm'].value,
+                spellCastingAbility: this.spellcastingAbility,
             };
 
             this.classService.create(clazz).subscribe((classRes: ApiResult) => {

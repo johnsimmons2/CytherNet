@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { StatsService } from "src/app/services/stats.service";
 import { UserService } from "src/app/services/user.service";
 
 @Component({
@@ -10,18 +11,15 @@ import { UserService } from "src/app/services/user.service";
 export class StatsFormComponent {
   descriptionOpen: boolean = false;
 
+  @Input() stat: string = '';
   @Input() statName: string = '';
   @Input() statDescription: string = '';
   @Input() statValue: number = 1;
+  @Input() disabled: boolean = false;
 
-  @Output() changed: EventEmitter<string> = new EventEmitter<string>();
+  @Output() changed: EventEmitter<number> = new EventEmitter<number>();
 
-  statForm: FormGroup;
-
-  constructor(private userService: UserService, private formBuilder: FormBuilder) {
-    this.statForm = this.formBuilder.group({
-      statValueControl: this.formBuilder.control(this.statValue, [Validators.max(20), Validators.min(1)]),
-    });
+  constructor(private userService: UserService, private statsService: StatsService) {
   }
 
   get bonus(): string {
@@ -31,12 +29,12 @@ export class StatsFormComponent {
     } else if (statBonus < 0) {
       return `${statBonus}`;
     } else {
-      return '';
+      return '+0';
     }
   }
 
   get isNegativeBonus(): boolean {
-    return this.bonus.startsWith('-');
+    return Math.floor((this.statValue - 10) / 2) < 0;
   }
 
   get isAdmin(): boolean {
@@ -46,19 +44,21 @@ export class StatsFormComponent {
   iChanged(event: any) {
     if (event.target.value > 20) {
       this.statValue = 20;
-      this.statForm.get('statValueControl')!.setValue(this.statValue);
     } else if (event.target.value < 1) {
       this.statValue = 1;
-      this.statForm.get('statValueControl')!.setValue(this.statValue);
     } else {
-      this.statValue = event.target.value;
-      this.statForm.get('statValueControl')!.setValue(this.statValue);
+      console.log(event.target.value);
+      console.log(typeof event.target.value);
+      this.statValue = Number.parseInt(event.target.value);
     }
-    this.changed.emit(event.target.value);
+    this.changed.emit(Number.parseInt(event.target.value));
   }
 
   ngOnInit() {
-    this.statForm.get('statValueControl')!.setValue(this.statValue);
+    if (this.stat !== '') {
+      this.statName = this.statsService.getStatName(this.stat) ?? '???';
+      this.statDescription = this.statsService.getStatDescription(this.stat) ?? '???';
+    }
   }
 
 }

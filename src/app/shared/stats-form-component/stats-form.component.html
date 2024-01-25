@@ -1,31 +1,12 @@
-<div matBadgePosition="above after"
-    [matBadge]="bonus"
-    [matBadgeOverlap]="true"
-    matBadgeSize="large"
-    style="left: -16px;"
-    [matBadgeColor]="isNegativeBonus ? 'warn' : 'accent'">
+<div style="width: 150px; margin: 2px; border-style: double;" fxLayout="column" fxLayoutAlign="center">
+  <h2 fxFlex style="margin-bottom: 2px; text-align: center;">{{statName}}</h2>
+  <mat-form-field fxFlex style="width: 100%; padding: 0px 12px;">
+    <input matInput type="number" [value]="statValue" (change)="iChanged($event)" [disabled]="disabled"/>
+  </mat-form-field>
+  <div fxFlex style="padding-bottom: 12px; align-self: center;">
+    <mat-chip-listbox>
+      <mat-chip [highlighted]="bonus !== '+0'" [color]="isNegativeBonus ? 'warn' : 'primary'"><b>{{bonus}}</b></mat-chip>
+    </mat-chip-listbox>
+  </div>
 </div>
-  <mat-expansion-panel
-      (opened)="descriptionOpen = true"
-      (closed)="descriptionOpen = false"
-      >
-      <mat-expansion-panel-header [collapsedHeight]="'46px'" [expandedHeight]="'46px'">
-        <mat-panel-title>
-          {{statName}}
-    </mat-panel-title>
-    <mat-panel-description style="justify-content: right;">
-      <h3 style="margin:0; padding:0;">
-        {{statValue}}
-      </h3>
-    </mat-panel-description>
-    </mat-expansion-panel-header>
-  {{statDescription}}
-  <form [formGroup]="statForm" *ngIf="isAdmin">
-    <mat-form-field style="width:70%;">
-      <span *ngIf="statValue !== undefined">
-        <input  matInput type="number" (change)="iChanged($event)" value="statValue" style="margin-top: 10px;"
-        formControlName="statValueControl"/>
-      </span>
-    </mat-form-field>
-  </form>
-  </mat-expansion-panel>
+
