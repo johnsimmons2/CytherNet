@@ -3,6 +3,7 @@
 @use '@angular/material' as mat;
 @import '@angular/material/theming';
 
+
 $cyther-app-primary: mat-palette($mat-green, 600);
 $cyther-app-accent:  mat-palette($mat-yellow, 400, 300, 700);
 
@@ -18,3 +19,4 @@ $cyther-app-theme: mat-light-theme((
   typography: mat.define-typography-config(),
   density: 0,
 ));
+

@@ -5,21 +5,61 @@
 <mat-sidenav-container>
     <mat-sidenav mode="over" [(opened)]="opened">
       <mat-nav-list>
-        <a mat-list-item><h3>{{username}}</h3></a>
-        <a mat-list-item (click)="routeTo('profile')" routerLinkActive="active">Profile</a>
+        <!-- Basic universal routes -->
+        <a mat-list-item (click)="routeTo('profile')" routerLinkActive="active">
+          Welcome <h3 style="display: inline;">{{username}}</h3>
+        </a>
+        <!-- <a mat-list-item (click)="routeTo('profile')" routerLinkActive="active">Profile</a> -->
         <a mat-list-item (click)="routeTo('campaign')" routerLinkActive="active">My Campaigns</a>
         <a mat-list-item (click)="routeTo('characters')" routerLinkActive="active">My Characters</a>
-        <hr/>
+        
+        <mat-divider></mat-divider>
+
+        <!-- Campaign specific -->
         <div *ngIf="selectedCampaign !== ''">
-          <a mat-list-item><h3>{{selectedCampaign}}</h3></a>
-          <a mat-list-item (click)="routeTo('campaign')" routerLinkActive="active">Summary</a>
+          <a mat-list-item (click)="routeTo('campaign')" routerLinkActive="active"><h3>{{selectedCampaign}}</h3></a>
           <a mat-list-item (click)="routeTo('journal')" routerLinkActive="active">Journal</a>
           <a mat-list-item (click)="routeTo('characters')" routerLinkActive="active">Characters</a>
         </div>
+
+        <!-- Dungeon Master Panel -->
         <div *ngIf="isAdmin">
-          <a mat-list-item><h3>Dungeon Master</h3></a>
-          <a mat-list-item (click)="routeTo('dmaster')">Management</a>
-          <a mat-list-item (click)="routeTo('dmaster/users')">Users</a>
+          <a mat-list-item (click)="routeTo('dmaster')"><h3>Dungeon Master</h3></a>
+
+          <mat-accordion mat-list-item displayMode="flat">
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Manage
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <mat-nav-list dense>
+                <a mat-list-item (click)="routeTo('dmaster/users')">Users</a>
+                <a mat-list-item (click)="routeTo('dmaster/races')">Races</a>
+                <a mat-list-item (click)="routeTo('dmaster/feats')">Feat</a>
+                <a mat-list-item (click)="routeTo('dmaster/classes')">Classes</a>
+              </mat-nav-list>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Create
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <mat-nav-list dense>
+                <a mat-list-item (click)="routeTo('dmaster/characters/create')">Character</a>
+                <a mat-list-item (click)="routeTo('dmaster/races/create')">Race</a>
+                <a mat-list-item (click)="routeTo('dmaster/feats/create')">Feat</a>
+                <a mat-list-item (click)="routeTo('dmaster')">Class / Subclass</a>
+                <a mat-list-item (click)="routeTo('dmaster')">Item</a>
+                <a mat-list-item (click)="routeTo('dmaster')">Monster</a>
+              </mat-nav-list>
+            </mat-expansion-panel>
+          </mat-accordion>
+
+          <a mat-list-item (click)="routeTo('about')" routerLinkActive="active"><sub>About CytherNet</sub></a>
+
         </div>
       </mat-nav-list>
     </mat-sidenav>
@@ -27,3 +67,11 @@
       <router-outlet></router-outlet>
     </mat-sidenav-content>
 </mat-sidenav-container>
+
+<footer>
+  <div style="padding: 18px; color: gray;">
+    <a (click)="routeTo('about')" style="cursor: pointer;">
+      <sub>CytherNet version {{cytherVersion}}</sub>
+    </a>
+  </div>
+</footer>

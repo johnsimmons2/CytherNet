@@ -1,0 +1,22 @@
+<mat-form-field *ngIf="dataSource" style="width: 100%; margin-bottom: 12px;">
+    <mat-label>{{label}}</mat-label>
+
+    <mat-select [disabled]="disabled" [multiple]="multiple" style="width: 100%;" (selectionChange)="selectionChange($event)" [(value)]="selections">
+        <mat-form-field appearance="outline" style="width: 100%;">
+            <input matInput placeholder="Filter" (keyup)="search($event)"/>
+            <span>
+                <sub style="color: gray">{{filteredDataSource.length}} results</sub>
+            </span>
+        </mat-form-field>
+        
+        <mat-option *ngFor="let feat of dataSource" [value]="feat.id" [ngStyle]="{ display : !inFilter(feat.id!) ? 'none' : 'block' }">
+            {{feat.name}}
+            <mat-divider></mat-divider>
+        </mat-option>
+    </mat-select>
+
+    <mat-hint *ngIf="routeTo !== ''">
+        <a mat-button (click)="router.navigate([routeTo])"><mat-icon>add</mat-icon>Create</a>
+        <button *ngIf="selections.length > 0" mat-button (click)="clearSelection()" [disabled]="selections.length === 0"><mat-icon>cancel</mat-icon>Clear selection</button>
+    </mat-hint>
+</mat-form-field>

@@ -8,14 +8,19 @@ import { ProfileComponent } from './profile/profile.component';
 import { JournalComponent } from './journal/journal.component';
 import { CharactersComponent } from './characters/characters.component';
 import { CampaignComponent } from './campaign/campaign.component';
-import { CreateCharacterComponent } from './dmaster/create-character/create-character.component';
+import { CreateCharacterComponent } from './dmaster/create/create-character/create-character.component';
 import { DungeonMasterComponent } from './dmaster/dmaster.component';
-import { ManageUsersComponent } from './dmaster/manage-users/manage-users.component';
-import { ManageCharactersComponent } from './dmaster/manage-characters/manage-characters.component';
+import { ManageUsersComponent } from './dmaster/manage/manage-users/manage-users.component';
+import { ManageCharactersComponent } from './dmaster/manage/manage-characters/manage-characters.component';
 import { RegisterComponent } from './login/register/register.component';
-import { ManageClassesComponent } from './dmaster/manage-classes/manage-classes.component';
-import { ManageRacesComponent } from './dmaster/manage-races/manage-races.component';
-import { ManageSpellsComponent } from './dmaster/manage-spells/manage-spells.component';
+import { ManageClassesComponent } from './dmaster/manage/manage-classes/manage-classes.component';
+import { ManageRacesComponent } from './dmaster/manage/manage-races/manage-races.component';
+import { ManageSpellsComponent } from './dmaster/manage/manage-spells/manage-spells.component';
+import { CreateRaceComponent } from './dmaster/create/create-race/create-race.component';
+import { ManageFeatComponent } from './dmaster/manage/manage-feat/manage-feat.component';
+import { CreateFeatComponent } from './dmaster/create/create-feat/create-feat.component';
+import { AboutComponent } from './about/about.component';
+import { CreateClassComponent } from './dmaster/create/create-class/create-class.component';
 
 
 const routes: Routes = [
@@ -27,6 +32,10 @@ const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent
+  },
+  {
+    path: 'about',
+    component: AboutComponent
   },
   {
     path: '',
@@ -71,12 +80,32 @@ const routes: Routes = [
         component: ManageRacesComponent
       },
       {
+        path: 'dmaster/races/create',
+        component: CreateRaceComponent
+      },
+      {
         path: 'dmaster/classes',
         component: ManageClassesComponent
       },
       {
         path: 'dmaster/spells',
         component: ManageSpellsComponent
+      },
+      {
+        path: 'dmaster/feats',
+        component: ManageFeatComponent
+      },
+      {
+        path: 'dmaster/feats/create',
+        component: CreateFeatComponent,
+      },
+      {
+        path: 'dmaster/classes',
+        component: ManageClassesComponent
+      },
+      {
+        path: 'dmaster/classes/create',
+        component: CreateClassComponent
       }
     ]
   }

@@ -23,4 +23,20 @@ export class ClassService {
     return this.apiService.get("classes");
   }
 
+  public delete(id: number) {
+      return this.apiService.delete(`classes/${id}`);
+  }
+
+  public update(clazz: Class): Observable<ApiResult> {
+      return this.apiService.patch(`classes/${clazz.id}`, clazz);
+  }
+
+  public createSubclasses(classId: number, subclasses: Class[]): Observable<ApiResult> {
+      return this.apiService.post(`classes/${classId}/subclasses`, subclasses);
+  }
+
+  public create(clazz: Class): Observable<ApiResult> {
+      return this.apiService.post(`classes`, clazz);
+  }
+
 }

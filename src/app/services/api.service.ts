@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ApiResult } from '../model/apiresult';
 
@@ -49,14 +49,24 @@ export class ApiService {
         actualConductedAction = action.call(this.http, path, payload, headers);
       }
 
+      /**
+       * Try to subscribe to the action, and pass the result
+       * as an ApiResult object to the observer.
+       */
       try {
-        actualConductedAction.subscribe((res: ApiResult) => {
-          observer.next(res);
-          observer.complete();
-        }, (err: any) => {
-          observer.error(err);
+        actualConductedAction.subscribe({
+          next: (res: any): void => {
+            observer.next(res);
+            observer.complete();
+          },
+          error: (err: any): void => {
+            observer.next(err);
+            observer.complete();
+          }
         });
       } catch (err: any) {
+        console.error('An unknown error has occurred.');
+        console.error(err);
         observer.error(err);
       }
     });

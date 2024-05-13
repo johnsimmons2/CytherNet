@@ -5,6 +5,7 @@
   style="left: -16px;"
   [matBadgeColor]="isNegativeBonus ? 'warn' : 'accent'">
 </div>
+
 <mat-expansion-panel (opened)="descriptionOpen = true" (closed)="descriptionOpen = false">
   <mat-expansion-panel-header [collapsedHeight]="'46px'" [expandedHeight]="'46px'">
     <mat-panel-title>{{stat}}</mat-panel-title>

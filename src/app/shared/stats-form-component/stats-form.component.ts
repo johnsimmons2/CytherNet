@@ -46,12 +46,12 @@ export class StatsFormComponent implements ControlValueAccessor {
     } else if (statBonus < 0) {
       return `${statBonus}`;
     } else {
-      return '';
+      return '+0';
     }
   }
 
   get isNegativeBonus(): boolean {
-    return this.bonus.startsWith('-');
+    return Math.floor((this.statValue - 10) / 2) < 0;
   }
 
   get isAdmin(): boolean {

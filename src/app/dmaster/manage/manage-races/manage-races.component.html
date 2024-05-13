@@ -1,14 +1,14 @@
 <mat-card>
   <mat-card-header>
-      <mat-card-title>
-        Races
-      </mat-card-title>
-      <mat-card-subtitle>
-        View, Edit, or Add Races
-      </mat-card-subtitle>
+    <mat-card-title>
+      Races
+    </mat-card-title>
+    <mat-card-subtitle>
+      {{races.length}} Races
+    </mat-card-subtitle>
   </mat-card-header>
   <mat-card-actions align="end">
-    <button mat-button><mat-icon>add</mat-icon>Add a Race</button>
+    <button mat-button (click)="router.navigate(['dmaster/races/create'])"><mat-icon>add</mat-icon>Add a Race</button>
   </mat-card-actions>
 </mat-card>
 
@@ -69,21 +69,45 @@
     </td>
   </ng-container>
 
-  <ng-container matColumnDef="feats">
-    <th mat-header-cell *matHeaderCellDef><h3>Racial Feats</h3></th>
-    <td mat-cell *matCellDef="let element">
-      <app-input-modal [text]="element.name + ' feats'" [subject]="element.name" (submit)="updateRacialFeats($event, element.id)"></app-input-modal>
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="feats">
+        <th mat-header-cell *matHeaderCellDef><h3>Racial Feats</h3></th>
+        <td mat-cell *matCellDef="let element">
+            <button mat-icon-button (click)="openFeatModal(element.id, element.name)">
+                <mat-icon>edit</mat-icon>
+            </button>
+        </td>
+    </ng-container>
 
-  <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef><h3>Actions</h3></th>
-    <td mat-cell *matCellDef="let element">
-      <button mat-icon-button (click)="deleteRow(element.id)">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </td>
-  </ng-container>
+    <ng-template #featmodal let-data>
+        <h2 mat-dialog-title>Racial Feats</h2>
+        <mat-dialog-content fxLayout="column">
+            <app-filterable-select label="Manage Race Feats"
+                                    [multiple]="true"
+                                    [dataSource]="data.allFeats"
+                                    [(selections)]="data.currentFeatIds"
+                                    (selected)="updateRacialFeats($event, 1)">
+            </app-filterable-select>
+            <mat-chip-list fxFlex>
+                <mat-chip *ngFor="let featId of data.currentFeatIds">
+                    {{getFeatName(featId)}}
+                    <mat-icon matChipRemove (click)="data.currentFeatIds = deselectFeat(featId, data.currentFeatIds)">cancel</mat-icon>
+                </mat-chip>
+            </mat-chip-list>
+        </mat-dialog-content>
+        <mat-dialog-actions align="end">
+            <button mat-button [mat-dialog-close]="undefined" color="warn">Cancel</button>
+            <button mat-button [mat-dialog-close]="data.currentFeatIds" cdkFocusInitial color="primary">Accept</button>
+        </mat-dialog-actions>
+    </ng-template>
+
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef><h3>Actions</h3></th>
+        <td mat-cell *matCellDef="let element">
+            <button mat-icon-button (click)="deleteRow(element.id, element.name)">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </td>
+    </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="racesColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: racesColumns;"></tr>

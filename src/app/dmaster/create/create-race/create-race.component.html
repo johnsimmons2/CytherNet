@@ -1,0 +1,66 @@
+<mat-card style="margin: auto; max-width: 50%;">
+    <mat-card-header>
+        <mat-card-title>
+            Create a Race
+        </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <form [formGroup]="raceForm" fxLayout="column wrap" fxLayoutAlign="space-between none">
+            <mat-form-field fxFlex>
+                <mat-label>Race Name</mat-label>
+                <input matInput type="text" formControlName="nameForm"/>
+                <mat-error *ngIf="raceForm.controls['nameForm'].hasError('required')">
+                    You must name the race.
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field fxFlex>
+                <mat-label>Description</mat-label>
+                <textarea matInput type="text" formControlName="descriptionForm">
+                </textarea>
+                <mat-error *ngIf="raceForm.controls['descriptionForm'].hasError('required')">
+                    Race must have a description.
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field fxFlex>
+                <mat-label>Alignment</mat-label>
+                <input matInput type="text" formControlName="alignmentForm"/>
+                <mat-error *ngIf="raceForm.controls['alignmentForm'].hasError('required')">
+                    Race must have an alignment.
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field fxFlex>
+                <mat-label>Languages</mat-label>
+                <input matInput type="text" formControlName="languagesForm"/>
+                <mat-error *ngIf="raceForm.controls['languagesForm'].hasError('required')">
+                    Race must have languages.
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field fxFlex>
+                <mat-label>Size</mat-label>
+                <mat-select formControlName="sizeForm">
+                    <mat-option *ngFor="let size of sizes" [value]="size">{{size}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="raceForm.controls['sizeForm'].hasError('required')">
+                    Please select a size.
+                </mat-error>
+            </mat-form-field>
+
+            <app-filterable-select label="Select Feats" 
+                                    routeTo="dmaster/feats/create" 
+                                    [multiple]="true" 
+                                    [dataSource]="feats"
+                                    (selectionsChange)="updateFeatSelection($event)"
+                                    fxFlex>
+            </app-filterable-select>
+
+        </form>
+    </mat-card-content>
+    <mat-card-actions align="end">
+        <button mat-raised-button color="primary" (click)="submit()">Create</button>
+        <button mat-raised-button color="warn" (click)="location.back()">Cancel</button>
+    </mat-card-actions>
+</mat-card>

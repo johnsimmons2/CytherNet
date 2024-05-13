@@ -1,0 +1,59 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>
+            Classes
+        </mat-card-title>
+        <mat-card-subtitle>
+            {{classes.length}} Classes
+            <button mat-button (click)="router.navigate(['dmaster/classes/create'])"><mat-icon>add</mat-icon>Add</button>
+        </mat-card-subtitle>
+    </mat-card-header>
+    <table mat-table #classesTable [dataSource]="classesDataSource">
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef><h3>Id</h3></th>
+            <td mat-cell *matCellDef="let element"><h4>{{element.id}}</h4></td>
+        </ng-container>
+    
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef><h3>Name</h3></th>
+            <td mat-cell *matCellDef="let element">
+                <mat-form-field appearance="outline">
+                    <input type="text" matInput [(ngModel)]="element.name" (keydown.enter)="updateRow(element)">
+                </mat-form-field>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="spellcasting">
+            <th mat-header-cell *matHeaderCellDef><h3>Spellcasting Ability</h3></th>
+            <td mat-cell *matCellDef="let element">
+                <mat-form-field appearance="outline">
+                    <input type="text" matInput [(ngModel)]="element.spellCastingAbility" (keydown.enter)="updateRow(element)">
+                </mat-form-field>
+            </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef><h3>Description</h3></th>
+            <td mat-cell *matCellDef="let element">
+                <mat-form-field appearance="outline">
+                    <input type="text" matInput readonly [value]="(element.description | slice:0:16)+'...'">
+                    <app-input-modal matSuffix [text]="element.description" [subject]="element.name" (submit)="updateDescription($event, element.id)"></app-input-modal>
+                </mat-form-field>
+            </td>
+        </ng-container>
+   
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-icon-button (click)="confirmDelete(element.id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+        </ng-container>
+    
+        <tr mat-header-row *matHeaderRowDef="xcolumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: xcolumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+</mat-card>
+

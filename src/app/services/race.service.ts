@@ -3,11 +3,13 @@ import { ApiService } from "./api.service";
 import { Race } from "../model/race";
 import { BehaviorSubject, Observable, map, tap } from "rxjs";
 import { ApiResult } from "../model/apiresult";
+import { MapperService } from "./mapper.service";
+
 
 @Injectable({ providedIn: 'root' })
 export class RaceService {
 
-  constructor(private apiService: ApiService) { }
+    constructor(private apiService: ApiService, private mapper: MapperService) { }
 
   races: BehaviorSubject<Race[]> = new BehaviorSubject<Race[]>([]);
 
@@ -29,6 +31,10 @@ export class RaceService {
 
   public updateRace(race: Race) {
     return this.apiService.patch(`race/${race.id}`, race);
+  }
+
+  public createRace(race: Race) {
+      return this.apiService.post('race', race);
   }
 
 }

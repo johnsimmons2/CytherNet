@@ -1,0 +1,166 @@
+<div class="fullscreen">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>
+                Create a Class
+            </mat-card-title>
+            <mat-card-subtitle>
+                A class on its own does not do much, but you may add feats and other options throughout the app to bring the class to life.
+            </mat-card-subtitle>
+        </mat-card-header>
+        <form [formGroup]="classForm" (ngSubmit)="submit()">
+            <mat-card-content fxLayout="column wrap" fxLayoutAlign="space-between">
+                <mat-form-field fxFlex>
+                    <mat-label>
+                        Class Name
+                    </mat-label>
+                    <input matInput type="text" formControlName="nameForm"/>
+                    <mat-error>
+                        <span *ngIf="classForm.controls['nameForm'].hasError('required')">
+                            Feat name is required
+                        </span>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field fxFlex>
+                    <mat-label>
+                        Class Description
+                    </mat-label>
+                    <textarea matInput type="text" formControlName="descriptionForm">
+                    </textarea>
+                    <mat-error>
+                        <span *ngIf="classForm.controls['descriptionForm'].hasError('required')">
+                            Feat must have a description.
+                        </span>
+                    </mat-error>
+                </mat-form-field>
+
+                <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+                    <mat-checkbox [checked]="spellcaster" (change)="spellcaster = !spellcaster">Spellcasting</mat-checkbox>
+                    <mat-form-field *ngIf="spellcaster">
+                        <mat-label>Select a Stat</mat-label>
+                        <mat-select [value]="spellcastingAbility" (selectionChange)="spellcastingAbility = $event.value!" [ngModelOptions]="{standalone: true}">
+                            <mat-option *ngFor="let stat of stats" [value]="stat.name">{{stat.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <br/>
+                
+                <mat-accordion fxFlex>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <p>Subclasses</p> <i>(Optional)</i>
+                            </mat-panel-title>
+
+                            <mat-panel-description>
+                                <mat-chip-set>
+                                    <mat-chip *ngFor="let sub of subclasses" [removable]="true" (removed)="removeSubclass(sub)" color="accent">
+                                        {{sub.name}}
+                                        <mat-icon matChipRemove>cancel</mat-icon>
+                                    </mat-chip>
+                                </mat-chip-set>
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <div fxLayout="row" fxLayoutAlign="space-between none" fxLayoutGap="8px">
+                            <mat-form-field fxFlex>
+                                <mat-label>
+                                    Subclass Name
+                                </mat-label>
+                                
+                                <input matInput type="text" formControlName="subclassNameForm"/>
+                                <mat-error>
+                                    <span *ngIf="classForm.controls['subclassNameForm'].hasError('incorrect')">
+                                        Name is required.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                            
+                            <mat-form-field fxFlex>
+                                <mat-label>
+                                    Description
+                                </mat-label>
+                                
+                                <textarea matInput type="text" formControlName="subclassDescForm">
+                                </textarea>
+                                <mat-error>
+                                    <span *ngIf="classForm.controls['subclassNameForm'].hasError('incorrect')">
+                                        Description is required.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <button mat-button type="button" color="primary" (click)="addSubclass()"><mat-icon>add</mat-icon> Add</button>
+                        </div>
+                        <mat-divider></mat-divider>
+                        <mat-hint>
+                            You will be able to edit the subclass details later.
+                        </mat-hint>
+                    </mat-expansion-panel>
+                </mat-accordion>
+
+            </mat-card-content>
+            <mat-card-actions align="end">
+                <button mat-raised-button color="primary" type="submit">Create</button>
+                <button mat-raised-button color="warn" (click)="location.back()" type="button">Cancel</button>
+            </mat-card-actions>
+        </form>
+    </mat-card>
+
+    <br>
+
+    <!-- Subclass -->
+
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>
+                Create a Subclass
+            </mat-card-title>
+            <mat-card-subtitle>
+                Create a subclass for a class you have already created.
+            </mat-card-subtitle>
+        </mat-card-header>
+
+        <form [formGroup]="subclassForm" (ngSubmit)="submitSubclass()">
+            <mat-card-content fxLayout="column wrap" fxLayoutAlign="space-between">
+
+                <app-filterable-select label="Select Class" 
+                                        [multiple]="false" 
+                                        [dataSource]="classes"
+                                        (selected)="selectClass($event)"
+                                        fxFlex>
+                </app-filterable-select>
+
+                <mat-form-field fxFlex>
+                    <mat-label>
+                        Subclass Name
+                    </mat-label>
+                    <input matInput type="text" formControlName="subNameForm"/>
+                    <mat-error>
+                        <span *ngIf="subclassForm.controls['subNameForm'].hasError('required')">
+                            Subclass name is required
+                        </span>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field fxFlex>
+                    <mat-label>
+                        Subclass Description
+                    </mat-label>
+                    <textarea matInput type="text" formControlName="subDescForm">
+                    </textarea>
+                    <mat-error>
+                        <span *ngIf="subclassForm.controls['subDescForm'].hasError('required')">
+                            Subclass must have a description.
+                        </span>
+                    </mat-error>
+                </mat-form-field>
+            </mat-card-content>
+            <mat-card-actions align="end">
+                <button mat-raised-button color="primary" type="submit">Create</button>
+                <button mat-raised-button color="warn" (click)="location.back()" type="button">Cancel</button>
+            </mat-card-actions>
+        </form>
+    </mat-card>
+</div>

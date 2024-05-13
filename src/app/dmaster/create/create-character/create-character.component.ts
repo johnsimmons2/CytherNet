@@ -1,20 +1,18 @@
 import { Component } from "@angular/core";
-import { UserService } from "../../services/user.service";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { Class } from "src/app/model/class";
 import { MatChip } from "@angular/material/chips";
 import { Dice } from "src/app/model/dice";
 import { Spellslot } from "src/app/model/spellslot";
-import { StatsFormComponent } from "src/app/shared/stats-form-component/stats-form.component";
 import { Router } from "@angular/router";
 import { StatsService } from "src/app/services/stats.service";
 import { ClassService } from "src/app/services/class.service";
 import { Race } from "src/app/model/race";
 import { Stat } from "src/app/model/enum/statsenum";
 import { RaceService } from "src/app/services/race.service";
-import { ApiResult } from "src/app/model/apiresult";
 import { skills as SKILLS } from "src/app/model/readonly/skills";
 import { languages as LANGUAGES } from "src/app/model/readonly/languages";
+import { UserService } from "src/app/services/user.service";
 
 
 @Component({
@@ -82,7 +80,6 @@ export class CreateCharacterComponent {
 
     this.characterFormOptional = this.formBuilder.group({
       personalityTraitsForm: this.formBuilder.control('', []),
-      alliesAndOrgsForm: this.formBuilder.control('', []),
       idealsForm: this.formBuilder.control('', []),
       bondsForm: this.formBuilder.control('', []),
       flawsForm: this.formBuilder.control('', []),
