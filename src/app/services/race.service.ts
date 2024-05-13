@@ -9,7 +9,7 @@ import { MapperService } from "./mapper.service";
 @Injectable({ providedIn: 'root' })
 export class RaceService {
 
-    constructor(private apiService: ApiService, private mapper: MapperService) { }
+  constructor(private apiService: ApiService, private mapper: MapperService) { }
 
   races: BehaviorSubject<Race[]> = new BehaviorSubject<Race[]>([]);
 

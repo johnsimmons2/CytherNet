@@ -47,9 +47,9 @@ import { SpinnerService } from './shared/loading-spinner/spinner.service';
 })
 export class AppComponent {
   title = 'Cythernet';
-  
+
   // Update on significant changes
-  cytherVersion = '0.0.1';
+  cytherVersion = '0.0.2';
   opened: boolean = false;
 
   get showSpinner() {
@@ -77,7 +77,7 @@ export class AppComponent {
     if (campaign) {
       return campaign;
     }
-    
+
     return 'CytherNet';
   }
 

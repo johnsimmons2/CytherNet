@@ -8,7 +8,7 @@
     </mat-card-subtitle>
   </mat-card-header>
   <mat-card-actions align="end">
-      <button mat-button><mat-icon>add</mat-icon>Add a Spell</button>
+      <button mat-button (click)="router.navigate(['dmaster/spells/create'])"><mat-icon>add</mat-icon>Add a Spell</button>
   </mat-card-actions>
 </mat-card>
 
@@ -50,6 +50,9 @@
     <td mat-cell *matCellDef="let element">
       <button mat-icon-button>
         <mat-icon>delete</mat-icon>
+      </button>
+      <button mat-icon-button>
+        <mat-icon>edit</mat-icon>
       </button>
     </td>
   </ng-container>

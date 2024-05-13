@@ -32,7 +32,7 @@ export class StatsFormComponent implements ControlValueAccessor {
   onTouched: any = () => { };
 
   @Input() stat!: Stat;
-  @Input() control!: FormControl | null;
+  @Input() statControl!: FormControl | null;
 
   statValue: number = 10;
 
@@ -88,14 +88,14 @@ export class StatsFormComponent implements ControlValueAccessor {
   }
 
   ngOnInit() {
-    this.statValue = this.control?.value;
-    this.control?.valueChanges.subscribe((value) => {
+    this.statValue = this.statControl?.value;
+    this.statControl?.valueChanges.subscribe((value) => {
       if (value > 20) {
         this.statValue = 20;
-        this.control?.setValue(20);
+        this.statControl?.setValue(20);
       } else if (value < 1) {
         this.statValue = 1;
-        this.control?.setValue(1);
+        this.statControl?.setValue(1);
       } else {
         this.statValue = value;
       }

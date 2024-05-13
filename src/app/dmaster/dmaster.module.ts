@@ -16,6 +16,7 @@ import { CreateRaceComponent } from "./create/create-race/create-race.component"
 import { ManageFeatComponent } from "./manage/manage-feat/manage-feat.component";
 import { CreateFeatComponent } from "./create/create-feat/create-feat.component";
 import { CreateClassComponent } from "./create/create-class/create-class.component";
+import { CreateSpellComponent } from "./create/create-spell/create-spell.component";
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { CreateClassComponent } from "./create/create-class/create-class.compone
         CreateRaceComponent,
         CreateFeatComponent,
         CreateClassComponent,
+        CreateSpellComponent,
         ManageCharactersComponent,
         ManageClassesComponent,
         ManageRacesComponent,

@@ -13,6 +13,8 @@ import { RaceService } from "src/app/services/race.service";
 import { skills as SKILLS } from "src/app/model/readonly/skills";
 import { languages as LANGUAGES } from "src/app/model/readonly/languages";
 import { UserService } from "src/app/services/user.service";
+import { Spell } from "src/app/model/spell";
+import { SpellService } from "src/app/services/spell.service";
 
 
 @Component({
@@ -28,6 +30,7 @@ export class CreateCharacterComponent {
   readonly languages = LANGUAGES;
 
   clazzes: Class[] = [];
+  spells: Spell[] = [];
   races: Race[] = [];
   hitDice: Dice[] = [];
   spellSlots: Spellslot[] = [];
@@ -45,6 +48,7 @@ export class CreateCharacterComponent {
     private raceService: RaceService,
     private classService: ClassService,
     private formBuilder: FormBuilder,
+    private spellService: SpellService,
     public router: Router) {
 
     this.characterFormOne = this.formBuilder.group({
@@ -79,12 +83,13 @@ export class CreateCharacterComponent {
     });
 
     this.characterFormOptional = this.formBuilder.group({
+      appearanceForm: this.formBuilder.control('', [Validators.required]),
+      backstoryForm: this.formBuilder.control('', [Validators.required]),
       personalityTraitsForm: this.formBuilder.control('', []),
       idealsForm: this.formBuilder.control('', []),
       bondsForm: this.formBuilder.control('', []),
       flawsForm: this.formBuilder.control('', []),
-      appearanceForm: this.formBuilder.control('', [Validators.required]),
-      backstoryForm: this.formBuilder.control('', [Validators.required]),
+      alliesAndOrgsForm: this.formBuilder.control('', []),
       additionalInfoForm: this.formBuilder.control('', []),
     });
   }
@@ -104,6 +109,7 @@ export class CreateCharacterComponent {
   public testMethod() {
     console.log(this.characterFormOne);
     console.log(this.characterFormTwo);
+    console.log(this.characterFormThree);
   }
 
   public getFormControl(path: string, group: FormGroup) {
@@ -202,6 +208,10 @@ export class CreateCharacterComponent {
         value: 8
       }
     ];
+
+    this.spellService.spells$.subscribe((spells: Spell[]) => {
+      this.spells = spells;
+    });
 
     this.classService.classes$.subscribe((classes: Class[]) => {
       this.clazzes = classes;

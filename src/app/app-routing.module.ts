@@ -21,6 +21,7 @@ import { ManageFeatComponent } from './dmaster/manage/manage-feat/manage-feat.co
 import { CreateFeatComponent } from './dmaster/create/create-feat/create-feat.component';
 import { AboutComponent } from './about/about.component';
 import { CreateClassComponent } from './dmaster/create/create-class/create-class.component';
+import { CreateSpellComponent } from './dmaster/create/create-spell/create-spell.component';
 
 
 const routes: Routes = [
@@ -90,6 +91,10 @@ const routes: Routes = [
       {
         path: 'dmaster/spells',
         component: ManageSpellsComponent
+      },
+      {
+        path: 'dmaster/spells/create',
+        component: CreateSpellComponent
       },
       {
         path: 'dmaster/feats',

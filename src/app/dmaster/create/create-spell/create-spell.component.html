@@ -1,0 +1,88 @@
+<div class="cyther-page">
+  <mat-card>
+      <mat-card-header>
+          <mat-card-title>
+              Create a Spell or Cantrip
+          </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-vertical-stepper #spellStepper>
+          <mat-step [stepControl]="spellForm">
+            <form [formGroup]="spellForm">
+              <ng-template matStepLabel>Spell Details</ng-template>
+              <br/>
+              <h2>Spell Name</h2>
+              <mat-form-field style="display: block">
+                <mat-label>Name</mat-label>
+                <input matInput type="text" formControlName="nameForm"/>
+              </mat-form-field>
+
+              <h2>Spell Level</h2>
+              <mat-form-field style="display: block">
+                <mat-label>Level (0 for Cantrip)</mat-label>
+                <input matInput type="number" formControlName="levelForm"/>
+              </mat-form-field>
+
+              <h2>Description</h2>
+              <mat-form-field style="display: block">
+                <mat-label>Spell Description</mat-label>
+                <input matInput type="text" formControlName="descriptionForm"/>
+              </mat-form-field>
+
+              <h2>Casting</h2>
+              <mat-form-field style="display: block">
+                <mat-label>Casting Time</mat-label>
+                <input matInput type="text" formControlName="castingTimeForm"/>
+              </mat-form-field>
+              <mat-form-field style="display: block">
+                <mat-label>Duration</mat-label>
+                <input matInput type="text" formControlName="durationForm"/>
+              </mat-form-field>
+              <mat-form-field style="display: block">
+                <mat-label>Range</mat-label>
+                <input matInput type="text" formControlName="rangeForm"/>
+              </mat-form-field>
+
+              <mat-checkbox formControlName="concentrationForm">Concentration</mat-checkbox>
+              <mat-checkbox formControlName="somaticForm">Somatic</mat-checkbox>
+              <mat-checkbox formControlName="verbalForm">Verbal</mat-checkbox>
+              <mat-checkbox formControlName="materialForm">Material</mat-checkbox>
+
+              <br/>
+              <button mat-button matStepperNext *ngIf="spellForm.get('materialForm')!.value! === true">Next</button>
+            </form>
+          </mat-step>
+
+          <mat-step [stepControl]="spellComponentsForm" *ngIf="spellForm.get('materialForm')!.value! === true">
+
+            <form [formGroup]="spellComponentsForm">
+              <ng-template matStepLabel>Spell Components</ng-template>
+              <br/>
+              <h2>Item</h2>
+              <mat-form-field style="display: block">
+                <mat-label>Item ID</mat-label>
+                <input matInput type="number" formControlName="itemIdForm"/>
+              </mat-form-field>
+              <mat-form-field style="display: block">
+                <mat-label>Item Quantity</mat-label>
+                <input matInput type="number" formControlName="quantityForm"/>
+              </mat-form-field>
+
+              <h2>Equivalent Gold Value</h2>
+              <mat-form-field style="display: block">
+                <mat-label>Gold Value</mat-label>
+                <input matInput type="number" formControlName="goldValueForm"/>
+              </mat-form-field>
+
+              <button mat-button matStepperPrevious>Back</button>
+            </form>
+
+          </mat-step>
+        </mat-vertical-stepper>
+      </mat-card-content>
+      <mat-card-actions align="end">
+          <button mat-raised-button color="primary" (click)="submit()">Create</button>
+          <button mat-raised-button color="warn" (click)="location.back()">Cancel</button>
+      </mat-card-actions>
+  </mat-card>
+</div>

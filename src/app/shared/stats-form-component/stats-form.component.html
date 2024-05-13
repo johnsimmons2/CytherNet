@@ -19,11 +19,11 @@
   {{statDescriptions[stat]}}
 
   <mat-form-field style="width:70%;">
-    <span *ngIf="control === null">
+    <span *ngIf="statControl === null">
       <input matInput type="number" [ngModel]="statValue" #statInput="ngModel" (ngModelChange)="iChanged($event, statInput)" style="margin-top: 10px;"/>
     </span>
-    <span *ngIf="control !== null">
-      <input matInput type="number" [formControl]="control" style="margin-top: 10px;"/>
+    <span *ngIf="statControl !== null">
+      <input matInput type="number" [formControl]="statControl" style="margin-top: 10px;"/>
     </span>
   </mat-form-field>
 </mat-expansion-panel>

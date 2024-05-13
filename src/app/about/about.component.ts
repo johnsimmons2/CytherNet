@@ -6,6 +6,6 @@ import { Component } from "@angular/core";
 })
 export class AboutComponent {
     //TODO Version control service
-    version: string = '0.0.1';
-    
+    version: string = '0.0.2';
+
 }
