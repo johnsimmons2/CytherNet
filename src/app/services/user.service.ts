@@ -18,7 +18,7 @@ export class UserService {
       private router: Router,
       private apiService: ApiService
   ) {}
-  
+
   public login(user: UserDto): Observable<ApiResult> {
     return this.apiService.post('auth/token', user).pipe(
       tap((res: ApiResult) => {
@@ -80,7 +80,7 @@ export class UserService {
       }
     }
   }
-  
+
   // PLAYER :-> 1
   public hasRolePlayer(): boolean {
     return this.hasRoleLevel(1);
@@ -173,7 +173,7 @@ export class UserService {
       if (lastUpdate && roles) {
         if (Date.now() - Number.parseInt(lastUpdate) > this.adjustmentPeriod) {
           console.log('validating user roles, the period is outside acceptable period: ' + this.adjustmentPeriod + 'ms, it is: ' + (Date.now() - Number.parseInt(lastUpdate)) + 'ms');
-          
+
           localStorage.setItem('rolesLastUpdate', Date.now().toString());
           return this.getUserRoles();
         } else {

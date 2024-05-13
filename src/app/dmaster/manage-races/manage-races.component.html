@@ -1,91 +1,91 @@
 <mat-card>
-    <mat-card-header>
-        <mat-card-title>
-            Races
-        </mat-card-title>
-        <mat-card-subtitle>
-            View, Edit, or Add Races
-        </mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-actions align="end">
-        <button mat-button><mat-icon>add</mat-icon>Add a Race</button>
-    </mat-card-actions>
+  <mat-card-header>
+      <mat-card-title>
+        Races
+      </mat-card-title>
+      <mat-card-subtitle>
+        View, Edit, or Add Races
+      </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-actions align="end">
+    <button mat-button><mat-icon>add</mat-icon>Add a Race</button>
+  </mat-card-actions>
 </mat-card>
 
-<br>
+<br/>
 
 <table #racetable mat-table [dataSource]="races">
-    <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef><h3>Id</h3></th>
-        <td mat-cell *matCellDef="let element"><h4>{{element.id}}</h4></td>
-    </ng-container>
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef><h3>Id</h3></th>
+    <td mat-cell *matCellDef="let element"><h4>{{element.id}}</h4></td>
+  </ng-container>
 
-    <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef><h3>Name</h3></th>
-        <td mat-cell *matCellDef="let element">
-            <mat-form-field appearance="outline">
-                <input type="text" matInput (change)="confirmNameChange($event, element.id)" [(ngModel)]="element.name">
-            </mat-form-field>
-        </td>
-    </ng-container>
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef><h3>Name</h3></th>
+    <td mat-cell *matCellDef="let element">
+      <mat-form-field appearance="outline">
+        <input type="text" matInput (change)="confirmNameChange($event, element.id)" [(ngModel)]="element.name">
+      </mat-form-field>
+    </td>
+  </ng-container>
 
-    <ng-container matColumnDef="description">
-        <th mat-header-cell *matHeaderCellDef><h3>Description</h3></th>
-        <td mat-cell *matCellDef="let element">
-            <mat-form-field appearance="outline">
-                <input type="text" matInput readonly [value]="(element.description | slice:0:16)+'...'">
-                <app-input-modal matSuffix [text]="element.description" [subject]="element.name" (submit)="updateRaceDesc($event, element.id)"></app-input-modal>
-            </mat-form-field>
-        </td>
-    </ng-container>
+  <ng-container matColumnDef="description">
+    <th mat-header-cell *matHeaderCellDef><h3>Description</h3></th>
+    <td mat-cell *matCellDef="let element">
+      <mat-form-field appearance="outline">
+        <input type="text" matInput readonly [value]="(element.description | slice:0:16)+'...'">
+        <app-input-modal matSuffix [text]="element.description" [subject]="element.name" (submit)="updateRaceDesc($event, element.id)"></app-input-modal>
+      </mat-form-field>
+    </td>
+  </ng-container>
 
-    <ng-container matColumnDef="size">
-        <th mat-header-cell *matHeaderCellDef><h3>Size</h3></th>
-        <td mat-cell *matCellDef="let element">
-            <mat-form-field appearance="outline" style="width: 100%">
-                <mat-select [(ngModel)]="element.size" (selectionChange)="confirmSizeChange($event, element.name)">
-                    <mat-option *ngFor="let size of sizes" [value]="size">
-                        <h4>{{size}}</h4>
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-        </td>
-    </ng-container>
+  <ng-container matColumnDef="size">
+    <th mat-header-cell *matHeaderCellDef><h3>Size</h3></th>
+    <td mat-cell *matCellDef="let element">
+      <mat-form-field appearance="outline" style="width: 100%">
+        <mat-select [(ngModel)]="element.size" (selectionChange)="confirmSizeChange($event, element.name)">
+          <mat-option *ngFor="let size of sizes" [value]="size">
+            <h4>{{size}}</h4>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </td>
+  </ng-container>
 
-    <ng-container matColumnDef="alignment">
-        <th mat-header-cell *matHeaderCellDef><h3>Alignment</h3></th>
-        <td mat-cell *matCellDef="let element">
-            <mat-form-field appearance="outline">
-                <input type="text" matInput readonly [value]="(element.alignment | slice:0:16)+'...'">
-                <app-input-modal matSuffix [text]="element.alignment" [subject]="element.name" (submit)="updateAlignment($event, element.id)"></app-input-modal>
-            </mat-form-field>
-        </td>
-    </ng-container>
+  <ng-container matColumnDef="alignment">
+    <th mat-header-cell *matHeaderCellDef><h3>Alignment</h3></th>
+    <td mat-cell *matCellDef="let element">
+      <mat-form-field appearance="outline">
+        <input type="text" matInput readonly [value]="(element.alignment | slice:0:16)+'...'">
+        <app-input-modal matSuffix [text]="element.alignment" [subject]="element.name" (submit)="updateAlignment($event, element.id)"></app-input-modal>
+      </mat-form-field>
+    </td>
+  </ng-container>
 
-    <ng-container matColumnDef="languages">
-        <th mat-header-cell *matHeaderCellDef><h3>Languages</h3></th>
-        <td mat-cell *matCellDef="let element">
-            <app-input-modal [text]="element.languages" [subject]="element.name" (submit)="updateLanguages($event, element.id)"></app-input-modal>
-        </td>
-    </ng-container>
+  <ng-container matColumnDef="languages">
+    <th mat-header-cell *matHeaderCellDef><h3>Languages</h3></th>
+    <td mat-cell *matCellDef="let element">
+      <app-input-modal [text]="element.languages" [subject]="element.name" (submit)="updateLanguages($event, element.id)"></app-input-modal>
+    </td>
+  </ng-container>
 
-    <ng-container matColumnDef="feats">
-        <th mat-header-cell *matHeaderCellDef><h3>Racial Feats</h3></th>
-        <td mat-cell *matCellDef="let element">
-            <app-input-modal [text]="element.name + ' feats'" [subject]="element.name" (submit)="updateRacialFeats($event, element.id)"></app-input-modal>
-        </td>
-    </ng-container>
+  <ng-container matColumnDef="feats">
+    <th mat-header-cell *matHeaderCellDef><h3>Racial Feats</h3></th>
+    <td mat-cell *matCellDef="let element">
+      <app-input-modal [text]="element.name + ' feats'" [subject]="element.name" (submit)="updateRacialFeats($event, element.id)"></app-input-modal>
+    </td>
+  </ng-container>
 
-    <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef><h3>Actions</h3></th>
-        <td mat-cell *matCellDef="let element">
-            <button mat-icon-button (click)="deleteRow(element.id)">
-                <mat-icon>delete</mat-icon>
-            </button>
-        </td>
-    </ng-container>
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef><h3>Actions</h3></th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-icon-button (click)="deleteRow(element.id)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="racesColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: racesColumns;"></tr>
+  <tr mat-header-row *matHeaderRowDef="racesColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: racesColumns;"></tr>
 
 </table>

@@ -1,0 +1,59 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+        Spells
+    </mat-card-title>
+    <mat-card-subtitle>
+        View, Edit, or Add Spells
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-actions align="end">
+      <button mat-button><mat-icon>add</mat-icon>Add a Spell</button>
+  </mat-card-actions>
+</mat-card>
+
+<br/>
+
+<table #spellstable mat-table [dataSource]="spells">
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef><h3>Id</h3></th>
+    <td mat-cell *matCellDef="let element"><h4>{{element.id}}</h4></td>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef><h3>Name</h3></th>
+    <td mat-cell *matCellDef="let element"><h4>{{element.name}}</h4></td>
+  </ng-container>
+
+  <ng-container matColumnDef="level">
+    <th mat-header-cell *matHeaderCellDef><h3>Level</h3></th>
+    <td mat-cell *matCellDef="let element"><h4>{{element.level}}</h4></td>
+  </ng-container>
+
+  <ng-container matColumnDef="components">
+    <th mat-header-cell *matHeaderCellDef><h3>Components</h3></th>
+    <td mat-cell *matCellDef="let element"><h4>{{element.components}}</h4></td>
+  </ng-container>
+
+  <ng-container matColumnDef="castingTime">
+    <th mat-header-cell *matHeaderCellDef><h3>Casting Time</h3></th>
+    <td mat-cell *matCellDef="let element"><h4>{{element.castingTime}}</h4></td>
+  </ng-container>
+
+  <ng-container matColumnDef="types">
+    <th mat-header-cell *matHeaderCellDef><h3>Type</h3></th>
+    <td mat-cell *matCellDef="let element"><h4>{{element.type}}</h4></td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef><h3>Actions</h3></th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-icon-button>
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="spellsColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: spellsColumns;"></tr>
+</table>

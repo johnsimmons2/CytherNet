@@ -1,22 +1,34 @@
 import { Injectable } from "@angular/core";
 import { ApiService } from "./api.service";
 import { Race } from "../model/race";
+import { BehaviorSubject, Observable, map, tap } from "rxjs";
+import { ApiResult } from "../model/apiresult";
 
 @Injectable({ providedIn: 'root' })
 export class RaceService {
 
-    constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService) { }
 
-    public delete(id: number) {
-        return this.apiService.delete(`race/${id}`);
-    }
+  races: BehaviorSubject<Race[]> = new BehaviorSubject<Race[]>([]);
 
-    public getRaces() {
-        return this.apiService.get("race");
-    }
+  get races$(): Observable<Race[]> {
+    return (this.races.getValue() && this.races.getValue().length > 0) ? this.races.asObservable() : this.getRaces().pipe(
+      map((x: ApiResult) => x.data as Race[]),
+      tap(mappedRaces => {
+        this.races.next(mappedRaces);
+      }));
+  }
 
-    public updateRace(race: Race) {
-        return this.apiService.patch(`race/${race.id}`, race);
-    }
+  public delete(id: number) {
+    return this.apiService.delete(`race/${id}`);
+  }
+
+  public getRaces() {
+    return this.apiService.get("race");
+  }
+
+  public updateRace(race: Race) {
+    return this.apiService.patch(`race/${race.id}`, race);
+  }
 
 }

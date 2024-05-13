@@ -15,6 +15,7 @@ import { BrowserModule } from "@angular/platform-browser";
 import { SharedModule } from "../shared/shared.module";
 import { MatIconRegistry } from "@angular/material/icon";
 import { HttpInterceptorImplementation } from "../shared/http-interceptor/http-interceptor";
+import { ManageSpellsComponent } from "./manage-spells/manage-spells.component";
 
 @NgModule({
     imports: [
@@ -34,6 +35,7 @@ import { HttpInterceptorImplementation } from "../shared/http-interceptor/http-i
         ManageClassesComponent,
         ManageRacesComponent,
         ManageUsersComponent,
+        ManageSpellsComponent,
         DungeonMasterComponent
     ],
     exports: [

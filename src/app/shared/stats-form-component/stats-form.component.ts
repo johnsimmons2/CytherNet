@@ -1,29 +1,46 @@
-import { Component, Input } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Component, Input, forwardRef } from "@angular/core";
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, NgModel } from "@angular/forms";
+import { Stat } from "src/app/model/enum/statsenum";
 import { UserService } from "src/app/services/user.service";
 
 @Component({
   selector: 'stats-form-app',
   templateUrl: './stats-form.component.html',
-  styleUrls: ['./stats-form.component.scss']
+  styleUrls: ['./stats-form.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => StatsFormComponent),
+      multi: true
+    }
+  ]
 })
-export class StatsFormComponent {
+export class StatsFormComponent implements ControlValueAccessor {
+
+  readonly statDescriptions: { [key in Stat]: string } = {
+    [Stat.Strength]: 'Strength measures your character’s physical power, affecting how well they perform tasks that require brute force, such as lifting heavy objects, breaking things, and determining the damage of most melee attacks.',
+    [Stat.Dexterity]: 'Dexterity assesses agility, reflexes, and balance, playing a crucial role in ranged attacks, dodging threats, stealth, and any activity requiring careful movements or quick reactions.',
+    [Stat.Constitution]: 'Constitution represents your character’s health and stamina, determining how resilient they are to injury and illness and directly influencing their total hit points and endurance.',
+    [Stat.Intelligence]: 'Intelligence indicates the acuity of mind, knowledge, and reasoning, key for solving puzzles, recalling information, understanding complex languages and codes, and influencing the effectiveness of many magical spells.',
+    [Stat.Wisdom]: 'Wisdom measures perceptiveness and intuition, critical for noticing hidden objects or underlying truths, resisting mental influence, and being effective in many clerical spells and nature-related abilities.',
+    [Stat.Charisma]: 'Charisma gauges your character’s force of personality, charm, and ability to lead or influence others, important for persuading, deceiving, or performing and essential for casters who channel magic through force of will.',
+  }
+
   descriptionOpen: boolean = false;
 
-  @Input() statName: string = '';
-  @Input() statDescription: string = '';
-  @Input() statValue: string = '';
+  onChange: any = () => { };
+  onTouched: any = () => { };
 
-  statForm: FormGroup;
+  @Input() stat!: Stat;
+  @Input() control!: FormControl | null;
 
-  constructor(private userService: UserService, private formBuilder: FormBuilder) {
-    this.statForm = this.formBuilder.group({
-      statValueControl: this.formBuilder.control(this.statValue, [Validators.max(20), Validators.min(1)]),
-    });
+  statValue: number = 10;
+
+  constructor(private userService: UserService) {
   }
 
   get bonus(): string {
-    const statBonus = Math.floor((Number.parseInt(this.statValue) - 10) / 2);
+    const statBonus = Math.floor((this.statValue - 10) / 2);
     if (statBonus >= 1) {
       return `+${statBonus}`;
     } else if (statBonus < 0) {
@@ -41,21 +58,47 @@ export class StatsFormComponent {
     return this.userService.hasRoleAdmin();
   }
 
-  iChanged(event: any) {
-    if (event.target.value > 20) {
-      this.statValue = '20';
-      this.statForm.get('statValueControl')!.setValue(this.statValue);
-    } else if (event.target.value < 1) {
-      this.statValue = '1';
-      this.statForm.get('statValueControl')!.setValue(this.statValue);
+  writeValue(obj: number): void {
+    this.statValue = obj;
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  updateChanges() {
+    this.onChange(this.statValue);
+  }
+
+  iChanged(event: any, statInput: NgModel) {
+    if (event > 20) {
+      this.statValue = 20;
+      statInput.control.setValue(20);
+    } else if (event < 1) {
+      this.statValue = 1;
+      statInput.control.setValue(1);
     } else {
-      this.statValue = event.target.value;
-      this.statForm.get('statValueControl')!.setValue(this.statValue);
+      this.statValue = event;
     }
+    this.updateChanges();
   }
 
   ngOnInit() {
-    this.statForm.get('statValueControl')!.setValue(this.statValue);
+    this.statValue = this.control?.value;
+    this.control?.valueChanges.subscribe((value) => {
+      if (value > 20) {
+        this.statValue = 20;
+        this.control?.setValue(20);
+      } else if (value < 1) {
+        this.statValue = 1;
+        this.control?.setValue(1);
+      } else {
+        this.statValue = value;
+      }
+    });
   }
-
 }

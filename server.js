@@ -48,3 +48,5 @@ app.route('/*').get(function(req, res) {
   res.sendFile(path.join(__dirname + '/dist/app/index.html'));
 });
 app.listen(process.env.PORT || 8080);
+
+console.log(`Listening to web on port ${process.env.PORT || 8080}, open browser to http://localhost:${process.env.PORT || 8080}`);

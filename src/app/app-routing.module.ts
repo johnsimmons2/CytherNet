@@ -15,6 +15,8 @@ import { ManageCharactersComponent } from './dmaster/manage-characters/manage-ch
 import { RegisterComponent } from './login/register/register.component';
 import { ManageClassesComponent } from './dmaster/manage-classes/manage-classes.component';
 import { ManageRacesComponent } from './dmaster/manage-races/manage-races.component';
+import { ManageSpellsComponent } from './dmaster/manage-spells/manage-spells.component';
+
 
 const routes: Routes = [
   {
@@ -72,6 +74,10 @@ const routes: Routes = [
         path: 'dmaster/classes',
         component: ManageClassesComponent
       },
+      {
+        path: 'dmaster/spells',
+        component: ManageSpellsComponent
+      }
     ]
   }
 ];
