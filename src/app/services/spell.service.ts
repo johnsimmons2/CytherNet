@@ -27,4 +27,16 @@ export class SpellService {
   getSpells() {
     return this.apiService.get('spells');
   }
+
+  get(id: number) {
+    return this.apiService.get(`spells/${id}`);
+  }
+
+  update(id: number, spell: Spell) {
+    return this.apiService.patch(`spells/${id}`, spell);
+  }
+
+  create(spell: Spell) {
+    return this.apiService.post('spells', spell);
+  }
 }

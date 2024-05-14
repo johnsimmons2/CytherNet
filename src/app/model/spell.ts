@@ -1,5 +1,5 @@
 export interface SpellComponent {
-  id: number;
+  id?: number;
   spellId: number;
   itemId: number;
   quantity: number;
@@ -8,16 +8,19 @@ export interface SpellComponent {
 
 export interface Spell {
   id: number;
-  spellComponentId: number;
   name: string;
   castingTime: string;
-
-  //DEPRECATED
-  type: number;
-  ritual: boolean;
-
+  description: string;
+  duration: string;
+  school: string;
+  range: string;
   level: number;
+
+  ritual: boolean;
   verbal: boolean;
   somatic: boolean;
   material: boolean;
+  concentration: boolean;
+
+  components: SpellComponent;
 }

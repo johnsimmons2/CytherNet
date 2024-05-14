@@ -44,16 +44,16 @@ export class LoginComponent {
             this.router.navigate(['/']);
           } else {
             if (res.status === 401) {
-              this.loginForm.controls.username.setErrors({'loginError': true});
+              this.loginForm.controls.username.setErrors({ 'loginError': true });
             } else {
-              this.loginForm.controls.username.setErrors({'genericError': true});
+              this.loginForm.controls.username.setErrors({ 'genericError': true });
             }
           }
         },
 
         error: (err: any) => {
           console.log(err);
-          this.loginForm.controls.username.setErrors({'genericError': true});
+          this.loginForm.controls.username.setErrors({ 'genericError': true });
         }
       });
     }

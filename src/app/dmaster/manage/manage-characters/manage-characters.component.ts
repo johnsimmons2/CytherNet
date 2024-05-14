@@ -11,12 +11,12 @@ import { UserService } from "src/app/services/user.service";
 export class ManageCharactersComponent implements OnInit {
 
   userId: number = 0;
-  
+
   selectedUsername: string = '';
   characters: Character[] = [];
 
-  constructor(private router: Router, 
-    private route: ActivatedRoute, 
+  constructor(private router: Router,
+    private route: ActivatedRoute,
     private characterService: CharacterService,
     private userService: UserService) {
   }
@@ -39,7 +39,7 @@ export class ManageCharactersComponent implements OnInit {
         this.characterService.getPlayerCharacters(this.userId).subscribe((res: any) => {
           this.characters = res.data;
         });
-  
+
         this.userService.getUser(this.userId).subscribe((res: any) => {
           this.selectedUsername = res.data.username;
         });

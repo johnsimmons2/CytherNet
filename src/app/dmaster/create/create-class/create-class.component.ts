@@ -8,8 +8,8 @@ import { ClassService } from "src/app/services/class.service";
 import { StatsService } from "src/app/services/stats.service";
 
 @Component({
-    selector: 'create-class-app',
-    templateUrl: './create-class.component.html',
+  selector: 'create-class-app',
+  templateUrl: './create-class.component.html',
 })
 export class CreateClassComponent implements OnInit {
 
@@ -25,9 +25,9 @@ export class CreateClassComponent implements OnInit {
   stats: any[] = [];
 
   constructor(private classService: ClassService,
-              private statService: StatsService,
-              private formBuilder: FormBuilder,
-              public location: Location) {
+    private statService: StatsService,
+    private formBuilder: FormBuilder,
+    public location: Location) {
     this.classForm = new FormGroup({
       nameForm: this.formBuilder.control('', [Validators.required]),
       descriptionForm: this.formBuilder.control('', [Validators.required]),
@@ -69,8 +69,8 @@ export class CreateClassComponent implements OnInit {
 
     if (subclassName !== '' && subclassDesc !== '') {
       this.subclasses.push({
-          name: subclassName,
-          description: subclassDesc
+        name: subclassName,
+        description: subclassDesc
       });
 
       this.classForm.controls['subclassesForm'].setValue(this.subclasses);
@@ -82,7 +82,7 @@ export class CreateClassComponent implements OnInit {
   }
 
   public setSelectedClass(event: any): void {
-      console.log(event);
+    console.log(event);
   }
 
   submit() {
@@ -119,7 +119,7 @@ export class CreateClassComponent implements OnInit {
 
       this.classService.createSubclasses(classId, [subclass]).subscribe((res: ApiResult) => {
         if (res.success) {
-            this.location.back();
+          this.location.back();
         }
       });
     }

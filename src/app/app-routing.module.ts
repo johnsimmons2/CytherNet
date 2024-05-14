@@ -97,6 +97,10 @@ const routes: Routes = [
         component: CreateSpellComponent
       },
       {
+        path: 'dmaster/spells/create/:id',
+        component: CreateSpellComponent
+      },
+      {
         path: 'dmaster/feats',
         component: ManageFeatComponent
       },

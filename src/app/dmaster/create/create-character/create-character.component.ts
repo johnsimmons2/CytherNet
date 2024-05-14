@@ -31,6 +31,7 @@ export class CreateCharacterComponent {
 
   clazzes: Class[] = [];
   spells: Spell[] = [];
+  cantrips: Spell[] = [];
   races: Race[] = [];
   hitDice: Dice[] = [];
   spellSlots: Spellslot[] = [];
@@ -53,10 +54,10 @@ export class CreateCharacterComponent {
 
     this.characterFormOne = this.formBuilder.group({
       characterNameForm: this.formBuilder.control('', [Validators.required, Validators.maxLength(30)]),
-      levelForm: this.formBuilder.control({value: 1, disabled: true}, [Validators.max(20), Validators.min(1)]),
+      levelForm: this.formBuilder.control({ value: 1, disabled: true }, [Validators.max(20), Validators.min(1)]),
       characterTypeForm: this.formBuilder.control(0),
       classForm: this.formBuilder.control('', [Validators.required]),
-      subclassForm: this.formBuilder.control({value: '', disabled: true}),
+      subclassForm: this.formBuilder.control({ value: '', disabled: true }),
       raceForm: this.formBuilder.control('', [Validators.required]),
     });
 
@@ -211,6 +212,7 @@ export class CreateCharacterComponent {
 
     this.spellService.spells$.subscribe((spells: Spell[]) => {
       this.spells = spells;
+      this.cantrips = spells.filter(spell => spell.level === 0);
     });
 
     this.classService.classes$.subscribe((classes: Class[]) => {

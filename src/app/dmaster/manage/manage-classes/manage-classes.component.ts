@@ -9,89 +9,89 @@ import { ClassService } from "src/app/services/class.service";
 import { ModalComponent } from "src/app/shared/subtle-modal/modal/modal.component";
 
 @Component({
-    selector: 'app-manage-classes',
-    templateUrl: './manage-classes.component.html',
-    styleUrls: ['./manage-classes.component.scss']
+  selector: 'app-manage-classes',
+  templateUrl: './manage-classes.component.html',
+  styleUrls: ['./manage-classes.component.scss']
 })
 export class ManageClassesComponent implements OnInit, AfterViewInit {
 
-    xcolumns: string[] = ["id", "name", "spellcasting", "description", "actions"];
-    classes: Class[] = [];
-    classesDataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
+  xcolumns: string[] = ["id", "name", "spellcasting", "description", "actions"];
+  classes: Class[] = [];
+  classesDataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
-    @ViewChild(MatTable) table!: MatTable<Class>;
-    @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatTable) table!: MatTable<Class>;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-    constructor(private classService: ClassService, private dialog: MatDialog, public router: Router) { }
+  constructor(private classService: ClassService, private dialog: MatDialog, public router: Router) { }
 
-    ngOnInit(): void {
+  ngOnInit(): void {
+    this.resetTable();
+  }
+
+  ngAfterViewInit(): void {
+    this.classesDataSource.paginator = this.paginator;
+  }
+
+  public updateRow(row: any): void {
+    console.log(row);
+    if (row !== undefined) {
+      const clazz = this.classes.find(x => x.id === row.id);
+
+      console.log(clazz);
+
+      this.classService.update(clazz!).subscribe((res: ApiResult) => {
+        if (res.success) {
+          this.resetTable();
+        }
+      });
+    }
+  }
+
+  public updateDescription(event: any, featId: number): void {
+    if (event !== undefined) {
+      const clazz = this.classes.find(x => x.id === featId);
+      clazz!.description = event as string;
+
+      this.classService.update(clazz!).subscribe((res: ApiResult) => {
+        if (res.success) {
+          this.resetTable();
+        }
+      });
+    }
+  }
+
+  public resetTable(): void {
+    this.classService.classes$.subscribe((classes: Class[]) => {
+      console.log(classes);
+      this.classes = classes;
+      this.classes.sort((a, b) => a.name.localeCompare(b.name));
+      this.classesDataSource.data = classes;
+      this.table.renderRows();
+    });
+  }
+
+  public confirmDelete(event: any): void {
+    const modalRef = this.dialog.open(ModalComponent, {
+      data: {
+        title: "Delete?",
+        cancel: true,
+      }
+    });
+
+    modalRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        this.deleteClass(event);
         this.resetTable();
-    }
+      }
+    });
+  }
 
-    ngAfterViewInit(): void {
-        this.classesDataSource.paginator = this.paginator;
-    }
-
-    public updateRow(row: any): void {
-        console.log(row);
-        if (row !== undefined) {
-            const clazz = this.classes.find(x => x.id === row.id);
-
-            console.log(clazz);
-
-            this.classService.update(clazz!).subscribe((res: ApiResult) => {
-                if (res.success) {
-                    this.resetTable();
-                }
-            });
-        }
-    }
-
-    public updateDescription(event: any, featId: number): void {
-        if (event !== undefined) {
-            const clazz = this.classes.find(x => x.id === featId);
-            clazz!.description = event as string;
-
-            this.classService.update(clazz!).subscribe((res: ApiResult) => {
-                if (res.success) {
-                    this.resetTable();
-                }
-            });
-        }
-    }
-
-    public resetTable(): void {
-        this.classService.classes$.subscribe((classes: Class[]) => {
-            console.log(classes);
-            this.classes = classes;
-            this.classes.sort((a, b) => a.name.localeCompare(b.name));
-            this.classesDataSource.data = classes;
-            this.table.renderRows();
-        });
-    }
-
-    public confirmDelete(event: any): void {
-        const modalRef = this.dialog.open(ModalComponent, {
-            data: {
-                title: "Delete?",
-                cancel: true,
-            }
-        });
-
-        modalRef.afterClosed().subscribe((result: any) => {
-            if (result) {
-                this.deleteClass(event);
-                this.resetTable();
-            }
-        });
-    }
-
-    public deleteClass(classId: number): void {
-        this.classService.delete(classId).subscribe((res: any) => {
-            if (res.success) {
-                this.resetTable();
-            }
-        });
-    }
+  public deleteClass(classId: number): void {
+    this.classService.delete(classId).subscribe((res: any) => {
+      if (res.success) {
+        this.resetTable();
+      }
+    });
+  }
 
 }

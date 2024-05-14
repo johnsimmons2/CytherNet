@@ -10,7 +10,7 @@ export class LoginGuard implements CanActivate {
   constructor(
     private router: Router,
     private accountService: UserService,
-  ) {}
+  ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const auth = this.accountService.isAuthenticated();

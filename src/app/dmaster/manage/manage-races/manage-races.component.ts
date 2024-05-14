@@ -12,9 +12,9 @@ import { ModalComponent } from "src/app/shared/subtle-modal/modal/modal.componen
 
 
 @Component({
-    selector: 'app-manage-races',
-    templateUrl: './manage-races.component.html',
-    styleUrls: ['./manage-races.component.scss']
+  selector: 'app-manage-races',
+  templateUrl: './manage-races.component.html',
+  styleUrls: ['./manage-races.component.scss']
 })
 export class ManageRacesComponent implements AfterViewInit {
   races: Race[] = [];
@@ -108,7 +108,8 @@ export class ManageRacesComponent implements AfterViewInit {
     }
   }
 
-  public updateTableIfSucceeded(result: boolean | undefined, race: Race): void {;
+  public updateTableIfSucceeded(result: boolean | undefined, race: Race): void {
+    ;
     if (result && result === true) {
       this.raceService.updateRace(race).subscribe((res: ApiResult) => {
         if (!res.success) {
@@ -162,9 +163,9 @@ export class ManageRacesComponent implements AfterViewInit {
   deleteRow(raceId: number, rowName: string): void {
     const modalRef = this.dialog.open(ModalComponent, {
       data: {
-          title: "Delete?",
-          cancel: true,
-          content: `Are you sure you want to delete ${rowName}?`
+        title: "Delete?",
+        cancel: true,
+        content: `Are you sure you want to delete ${rowName}?`
       }
     });
 
@@ -172,8 +173,8 @@ export class ManageRacesComponent implements AfterViewInit {
       if (result) {
         this.raceService.delete(raceId).subscribe((res: ApiResult) => {
           if (res.success) {
-              this.getInitialRaces();
-              this.resetTable();
+            this.getInitialRaces();
+            this.resetTable();
           }
         });
       }

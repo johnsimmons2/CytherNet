@@ -20,43 +20,43 @@ import { CreateSpellComponent } from "./create/create-spell/create-spell.compone
 
 
 @NgModule({
-    imports: [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        FlexLayoutModule,
-        AppMaterialsModule,
-        SharedModule
-    ],
-    declarations: [
-        CreateCharacterComponent,
-        CreateUserComponent,
-        CreateRaceComponent,
-        CreateFeatComponent,
-        CreateClassComponent,
-        CreateSpellComponent,
-        ManageCharactersComponent,
-        ManageClassesComponent,
-        ManageRacesComponent,
-        ManageUsersComponent,
-        ManageSpellsComponent,
-        ManageFeatComponent,
-        DungeonMasterComponent,
-    ],
-    exports: [
-        CreateCharacterComponent,
-        CreateUserComponent,
-        CreateRaceComponent,
-        CreateFeatComponent,
-        CreateClassComponent,
-        ManageCharactersComponent,
-        ManageClassesComponent,
-        ManageRacesComponent,
-        ManageUsersComponent,
-        ManageFeatComponent,
-        DungeonMasterComponent,
-    ],
-    schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    FlexLayoutModule,
+    AppMaterialsModule,
+    SharedModule
+  ],
+  declarations: [
+    CreateCharacterComponent,
+    CreateUserComponent,
+    CreateRaceComponent,
+    CreateFeatComponent,
+    CreateClassComponent,
+    CreateSpellComponent,
+    ManageCharactersComponent,
+    ManageClassesComponent,
+    ManageRacesComponent,
+    ManageUsersComponent,
+    ManageSpellsComponent,
+    ManageFeatComponent,
+    DungeonMasterComponent,
+  ],
+  exports: [
+    CreateCharacterComponent,
+    CreateUserComponent,
+    CreateRaceComponent,
+    CreateFeatComponent,
+    CreateClassComponent,
+    ManageCharactersComponent,
+    ManageClassesComponent,
+    ManageRacesComponent,
+    ManageUsersComponent,
+    ManageFeatComponent,
+    DungeonMasterComponent,
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class DmasterModule {
 }

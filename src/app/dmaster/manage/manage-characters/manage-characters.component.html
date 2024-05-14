@@ -1,22 +1,22 @@
 <mat-card>
-    <mat-card-header>
-        <mat-card-title>
-            <div *ngIf="userId > 0; else allCharacters">
-                Character Manager for {{selectedUsername}}
-            </div>
-            <ng-template #allCharacters>
-                Character Manager
-            </ng-template>
-        </mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-        <character-table [dataSource]="characters">
-        </character-table>
-    </mat-card-content>
-    <mat-card-actions>
-        <button mat-raised-button color="primary" (click)="routeTo('dmaster/characters/create')">
-            <!-- Create a character for this user. -->
-            Create Character
-        </button>
-    </mat-card-actions>
+  <mat-card-header>
+    <mat-card-title>
+      <div *ngIf="userId > 0; else allCharacters">
+        Character Manager for {{selectedUsername}}
+      </div>
+      <ng-template #allCharacters>
+        Character Manager
+      </ng-template>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <character-table [dataSource]="characters">
+    </character-table>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="primary" (click)="routeTo('dmaster/characters/create')">
+      <!-- Create a character for this user. -->
+      Create Character
+    </button>
+  </mat-card-actions>
 </mat-card>

@@ -86,7 +86,7 @@ export class ManageUsersComponent implements OnInit, AfterViewInit {
         action: row.id,
       },
     });
-    
+
     modal.componentInstance.title = 'Delete User';
     modal.componentInstance.content = `Are you sure you want to delete ${row.username}?`;
     modal.componentInstance.action = 'Delete';

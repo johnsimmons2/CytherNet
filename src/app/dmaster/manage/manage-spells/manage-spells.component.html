@@ -27,12 +27,26 @@
 
   <ng-container matColumnDef="level">
     <th mat-header-cell *matHeaderCellDef><h3>Level</h3></th>
-    <td mat-cell *matCellDef="let element"><h4>{{element.level}}</h4></td>
+    <td mat-cell *matCellDef="let element">
+      <h4 *ngIf="element.level > 0; else cantrip">{{element.level}}</h4>
+      <ng-template #cantrip>
+        <h4>Cantrip</h4>
+      </ng-template>
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="components">
     <th mat-header-cell *matHeaderCellDef><h3>Components</h3></th>
-    <td mat-cell *matCellDef="let element"><h4>{{element.components}}</h4></td>
+    <td mat-cell *matCellDef="let element">
+      <span *ngIf="element.components; else noComponents">
+        <div *ngIf="element.components.goldValue > 0">{{element.components.goldValue}}gp</div>
+        <div *ngIf="element.components.itemId > 0"><i *ngIf="element.components.quantity > 0">({{element.components.quantity}}) </i>item name</div>
+      </span>
+
+      <ng-template #noComponents>
+        <i>None</i>
+      </ng-template>
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="castingTime">
@@ -51,7 +65,7 @@
       <button mat-icon-button>
         <mat-icon>delete</mat-icon>
       </button>
-      <button mat-icon-button>
+      <button mat-icon-button (click)="router.navigate(['dmaster/spells/create/' + element.id])">
         <mat-icon>edit</mat-icon>
       </button>
     </td>
