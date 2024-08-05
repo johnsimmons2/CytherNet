@@ -54,6 +54,12 @@ export class CreateClassComponent implements OnInit {
     this.selectedClass = event;
   }
 
+  public selectSubclassClass(event: any): void {
+    this.subclassForm.controls['subSelectedClassForm'].setValue(event);
+    console.log(this.subclassForm.controls['subSelectedClassForm'].value);
+    console.log(event);
+  }
+
   public removeSubclass(subclass: Class): void {
     const index = this.subclasses.indexOf(subclass);
     if (index > -1) {
@@ -107,9 +113,6 @@ export class CreateClassComponent implements OnInit {
   }
 
   submitSubclass() {
-    console.log(this.selectedClass);
-    console.log(this.subclassForm);
-
     if (this.subclassForm.valid) {
       const subclass: Class = {
         name: this.subclassForm.controls['subNameForm'].value,

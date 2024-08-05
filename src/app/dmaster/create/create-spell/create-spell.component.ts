@@ -65,17 +65,22 @@ export class CreateSpellComponent implements OnInit {
     if (this.isEditMode) {
       this.spellService.update(this.spellId, this.getFormAsSpell()).subscribe((x: ApiResult) => {
         if (x.success) {
-          this.router.navigate(['dmaster/spells']);
+          this.routeToSpells();
         }
       });
     } else {
       this.spellService.create(this.getFormAsSpell()).subscribe((x: ApiResult) => {
         if (x.success) {
-          this.router.navigate(['dmaster/spells']);
+          this.routeToSpells();
         }
       });
     }
+  }
 
+  public routeToSpells(): void {
+    this.router.navigate(['dmaster/spells']).then(() => {
+      window.location.reload();
+    });
   }
 
   public getFormAsSpell(): Spell {

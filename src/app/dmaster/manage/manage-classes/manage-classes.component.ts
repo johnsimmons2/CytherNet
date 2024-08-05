@@ -15,7 +15,7 @@ import { ModalComponent } from "src/app/shared/subtle-modal/modal/modal.componen
 })
 export class ManageClassesComponent implements OnInit, AfterViewInit {
 
-  xcolumns: string[] = ["id", "name", "spellcasting", "description", "actions"];
+  xcolumns: string[] = ["id", "name", "spellcasting", "description", "subclasses", "actions"];
   classes: Class[] = [];
   classesDataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 

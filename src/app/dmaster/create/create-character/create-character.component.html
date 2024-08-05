@@ -38,7 +38,7 @@
             <mat-form-field style="display: block">
               <mat-label>Class</mat-label>
               <mat-select formControlName="classForm">
-                <mat-option *ngFor="let clazz of clazzes" [value]="clazz">
+                <mat-option *ngFor="let clazz of clazzes" [value]="clazz.id">
                   {{clazz.name}}
                 </mat-option>
               </mat-select>
@@ -46,9 +46,9 @@
 
             <mat-form-field style="display: block">
               <mat-label>Sub-Class</mat-label>
-              <mat-select formControlName="subclassForm" [disabled]="!characterFormOne.get('classForm')!.value">
-                <mat-option *ngFor="let clazz of getSubclasses()" [value]="clazz">
-                  {{clazz.name}}
+              <mat-select formControlName="subclassIdForm" [disabled]="!characterFormOne.get('classForm')!.value">
+                <mat-option *ngFor="let subclazz of getSubclasses()" [value]="subclazz.id">
+                  {{subclazz.name}}
                 </mat-option>
               </mat-select>
             </mat-form-field>

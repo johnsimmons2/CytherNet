@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { Class } from "src/app/model/class";
+import { Class, Subclass } from "src/app/model/class";
 import { MatChip } from "@angular/material/chips";
 import { Dice } from "src/app/model/dice";
 import { Spellslot } from "src/app/model/spellslot";
@@ -56,8 +56,8 @@ export class CreateCharacterComponent {
       characterNameForm: this.formBuilder.control('', [Validators.required, Validators.maxLength(30)]),
       levelForm: this.formBuilder.control({ value: 1, disabled: true }, [Validators.max(20), Validators.min(1)]),
       characterTypeForm: this.formBuilder.control(0),
-      classForm: this.formBuilder.control('', [Validators.required]),
-      subclassForm: this.formBuilder.control({ value: '', disabled: true }),
+      classForm: this.formBuilder.control(null),
+      subclassIdForm: this.formBuilder.control({ value: '', disabled: true }),
       raceForm: this.formBuilder.control('', [Validators.required]),
     });
 
@@ -127,9 +127,18 @@ export class CreateCharacterComponent {
     console.log(stat);
   }
 
-  public getSubclasses(): any {
+  public getSubclasses(): Subclass[] {
     if (this.characterFormOne.get('classForm')?.value) {
-      return this.characterFormOne.get('classForm')?.value.subclasses;
+      const selectedClass = this.clazzes.find(x => x.id === this.characterFormOne.get('classForm')!.value);
+      const subclasses: Subclass[] = [];
+      if (selectedClass) {
+        console.log(selectedClass);
+        selectedClass.subclasses?.forEach(subclass => {
+          subclasses.push(subclass);
+        });
+      }
+      console.log(subclasses);
+      return subclasses;
     } else {
       return [];
     }
@@ -217,6 +226,7 @@ export class CreateCharacterComponent {
 
     this.classService.classes$.subscribe((classes: Class[]) => {
       this.clazzes = classes;
+      console.log(this.clazzes)
     });
 
     this.raceService.races$.subscribe((races: Race[]) => {

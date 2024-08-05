@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Feat } from "../model/feat";
 import { Race } from "../model/race";
-import { Class } from "../model/class";
+import { Class, Subclass } from "../model/class";
 
 @Injectable({ providedIn: 'root' })
 export class MapperService {
@@ -25,7 +25,7 @@ export class MapperService {
         }
     }
 
-    public asFeatDto(result: any): Feat | null {
+    public asFeatDto(result: Feat): Feat | null {
         try {
             let dto = {
                 id: result.id,
@@ -40,22 +40,15 @@ export class MapperService {
         }
     }
 
-    public asClassDto(result: any): Class | null {
+    public asClassDto(result: Class): Class | null {
         try {
             const subclasses = result.subclasses;
-            const subclassIds: number[] = [];
-
-            if (subclasses !== undefined && subclasses !== null) {
-                subclasses.forEach((subclass: any) => {
-                    subclassIds.push(subclass.id);
-                });
-            }
 
             return {
                 id: result.id,
                 name: result.name,
                 description: result.description,
-                subclassIds: subclassIds,
+                subclasses: subclasses,
                 spellCastingAbility: result.spellCastingAbility,
             };
         } catch (error) {
