@@ -5,7 +5,7 @@ import { Component } from "@angular/core";
     templateUrl: './about.component.html',
 })
 export class AboutComponent {
-    //TODO Version control service
-    version: string = '0.0.2';
+    //TODO get the version from the package.json
+    version: string = '0.0.3';
 
 }

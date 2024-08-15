@@ -1,10 +1,9 @@
-import { Component, TemplateRef, ViewChild } from "@angular/core";
+import { Component } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { UserDto } from "../model/user";
 import { UserService } from "../services/user.service";
 import { Router } from "@angular/router";
 import { ApiResult } from "../model/apiresult";
-import { catchError, map, tap } from "rxjs";
 
 @Component({
   selector: 'login',
@@ -35,9 +34,6 @@ export class LoginComponent {
 
   resetPassword() {
     if (this.passwordFormGroup.valid) {
-      console.log("Gonna send a password request!");
-
-      console.log(this.passwordFormGroup.value.email!);
       this.loginService.getPasswordResetToken(this.passwordFormGroup.value.email!).subscribe(res => {
         console.log(res);
       });
