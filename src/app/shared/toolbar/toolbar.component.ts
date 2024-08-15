@@ -8,7 +8,7 @@ import { UserService } from "src/app/services/user.service";
 })
 export class ToolbarComponent {
 
-    @Input() currentTitle: string = 'CytherNet';
+    @Input() currentTitle: string = 'Cyther.online';
     @Input() opened: boolean = false;
     @Output() navToggleChange = new EventEmitter<boolean>();
 

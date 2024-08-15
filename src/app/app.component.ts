@@ -78,7 +78,7 @@ export class AppComponent {
       return campaign;
     }
 
-    return 'CytherNet';
+    return this.title;
   }
 
   constructor(
