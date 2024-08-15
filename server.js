@@ -24,6 +24,7 @@ app.use(express.static(__dirname + '/dist/app'));
 
 const apiUrl = process.env.API_URL || 'http://127.0.0.1:5000/';
 const apiHost = new URL(apiUrl).hostname;
+const port = process.env.API_PORT || 5000;
 
 console.log(`Proxying API requests to (url: ${apiUrl})`);
 
@@ -71,7 +72,7 @@ app.post('/password-request', (req, res) => {
   const { email } = req.body;
   const options = {
     host: apiHost,
-    port: 5000,
+    port: port,
     path: '/auth/email-password-request',
     method: 'POST',
     headers: {
