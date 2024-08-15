@@ -58,5 +58,11 @@
                         (click)="logout()"
                         [isEnabled]="isLoggedIn">
       </app-header-button>
+
+      <app-header-button buttonName="Login"
+                        buttonIcon="login"
+                        (click)="routeTo('login')"
+                        [isEnabled]="!isLoggedIn">
+      </app-header-button>
     </mat-toolbar-row>
   </mat-toolbar>

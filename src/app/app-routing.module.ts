@@ -22,6 +22,8 @@ import { CreateFeatComponent } from './dmaster/create/create-feat/create-feat.co
 import { AboutComponent } from './about/about.component';
 import { CreateClassComponent } from './dmaster/create/create-class/create-class.component';
 import { CreateSpellComponent } from './dmaster/create/create-spell/create-spell.component';
+import { NotFoundComponent } from './notfound/notfound.component';
+import { ResetPasswordComponent } from './login/reset-password/reset-password.component';
 
 
 const routes: Routes = [
@@ -29,6 +31,10 @@ const routes: Routes = [
     path: 'login',
     component: LoginComponent,
     canActivate: [LoginGuard]
+  },
+  {
+    path: 'reset-password',
+    component: ResetPasswordComponent
   },
   {
     path: 'register',
@@ -117,6 +123,11 @@ const routes: Routes = [
         component: CreateClassComponent
       }
     ]
+  },
+  {
+    path: '**',
+    pathMatch: 'full',
+    component: NotFoundComponent
   }
 ];
 

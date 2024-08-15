@@ -1,9 +1,15 @@
-<h2 mat-dialog-title>{{data.title}}</h2>
-<mat-dialog-content>
-  <p [innerHtml]="content">
-  </p>
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button *ngIf="cancel" mat-dialog-close="false" mat-button cdkFocusInitial color="warn">Cancel</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial color="primary">Confirm</button>
-</mat-dialog-actions>
+<span *ngIf="template === null; else customTemplate">
+  <h2 mat-dialog-title>{{data.title}}</h2>
+  <mat-dialog-content>
+    <p [innerHtml]="content">
+    </p>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end" *ngIf="template === null">
+    <button *ngIf="cancel" mat-dialog-close="false" mat-button cdkFocusInitial color="warn">Cancel</button>
+    <button mat-button [mat-dialog-close]="true" cdkFocusInitial color="primary">Confirm</button>
+  </mat-dialog-actions>
+</span>
+
+<ng-template #customTemplate>
+  <ng-container [ngTemplateOutlet]="template"></ng-container>
+</ng-template>

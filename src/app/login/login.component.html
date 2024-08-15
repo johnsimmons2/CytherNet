@@ -1,5 +1,5 @@
 <mat-card [ngClass.gt-sm]="'fullscreen'">
-  <form [formGroup]="loginForm" (ngSubmit)="submit()">
+  <form [formGroup]="loginFormGroup" (ngSubmit)="submit()">
     <mat-card-header>
       <mat-card-title>
         <h2>Login to an existing account</h2>
@@ -9,13 +9,13 @@
       <mat-form-field fxFlex>
         <mat-label>Username</mat-label>
         <input id="username" matInput placeholder="Username" type="text" formControlName="username" />
-        <mat-error *ngIf="loginForm.controls.username.errors?.['genericError']">
+        <mat-error *ngIf="loginFormGroup.controls.username.errors?.['genericError']">
           An unknown error has occured. Please try again later, or check the console for more information.
         </mat-error>
-        <mat-error *ngIf="loginForm.controls.username.errors?.['loginError']">
+        <mat-error *ngIf="loginFormGroup.controls.username.errors?.['loginError']">
           The provided username and password combination could not be found.
         </mat-error>
-        <mat-error *ngIf="loginForm.controls.username.errors?.['required']">
+        <mat-error *ngIf="loginFormGroup.controls.username.errors?.['required']">
           Username is required.
         </mat-error>
       </mat-form-field>
@@ -23,11 +23,11 @@
       <mat-form-field fxFlex>
         <mat-label>Password</mat-label>
         <input id="password" matInput placeholder="Password" type="password" formControlName="password" />
-        <mat-error *ngIf="loginForm.controls.password.errors?.['required']">
+        <mat-error *ngIf="loginFormGroup.controls.password.errors?.['required']">
           Password is required.
         </mat-error>
         <mat-hint>
-          <app-subtle-modal title="Forgot Password?" text="To reset your password contact the site administrator.">
+          <app-subtle-modal title="Forgot Password?" [template]="passwordForm">
           </app-subtle-modal>
         </mat-hint>
       </mat-form-field>
@@ -35,9 +35,37 @@
 
     <mat-card-actions align="end">
       <button mat-raised-button color="primary" class="form-row-item" type="submit"
-        [disabled]="!loginForm.valid">Login</button>
+        [disabled]="!loginFormGroup.valid">Login</button>
       <button mat-raised-button color="accent" class="form-row-item" type="button"
         (click)="registerUser()">Register</button>
     </mat-card-actions>
   </form>
 </mat-card>
+
+<ng-template #passwordForm>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <h3>Reset your password</h3>
+      </mat-card-title>
+      <mat-card-subtitle>
+        If you have an account registered with an email address, you will
+        receive an email with instructions on how to recover your account.
+      </mat-card-subtitle>
+    </mat-card-header>
+    <form [formGroup]="passwordFormGroup" (ngSubmit)="resetPassword()">
+      <mat-card-content>
+        <mat-form-field style="width: 100%">
+          <mat-label>Email</mat-label>
+          <input id="email" matInput placeholder="Email" type="email" formControlName="email" />
+          <mat-error *ngIf="passwordFormGroup.controls.email.errors?.['required']">
+            Email is required.
+          </mat-error>
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-raised-button color="primary" type="submit" [disabled]="!passwordFormGroup.valid">Submit</button>
+      </mat-card-actions>
+    </form>
+  </mat-card>
+</ng-template>

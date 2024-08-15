@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit, TemplateRef } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
 
 @Component({
@@ -8,6 +8,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
 })
 export class ModalComponent implements OnInit {
 
+  template: TemplateRef<any> | null = null;
   content: string = '';
   title: string = ''
   cancel: boolean = false;
@@ -21,6 +22,7 @@ export class ModalComponent implements OnInit {
     this.content = this.data.content;
     this.title = this.data.title;
     this.cancel = this.data.cancel;
+    this.template = this.data.template;
   }
 
 }

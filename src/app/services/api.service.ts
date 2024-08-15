@@ -33,53 +33,38 @@ export class ApiService {
     return headers;
   }
 
-  private wrapper(action: (...args: any[]) => Observable<any>, 
-                  path: string, 
-                  headers: any, 
+  private wrapper(action: (...args: any[]) => Observable<any>,
+                  path: string,
+                  headers: any,
                   payload?: any): any {
-    
-    return new Observable((observer) => {
-      var actualConductedAction = null;
 
-      if (payload === undefined) {
-        // No payload / body
-        actualConductedAction = action.call(this.http, path, headers);
-      } else {
-        // Has a payload / json body
-        actualConductedAction = action.call(this.http, path, payload, headers);
-      }
+    return new Observable((observer) => {
+      var actualConductedAction = payload === undefined ? action.call(this.http, path, headers) : action.call(this.http, path, payload, headers);
 
       /**
        * Try to subscribe to the action, and pass the result
        * as an ApiResult object to the observer.
        */
-      try {
-        actualConductedAction.subscribe({
-          next: (res: any): void => {
-            observer.next(res);
-            observer.complete();
-          },
-          error: (err: any): void => {
-            observer.next(err);
-            observer.complete();
-          }
-        });
-      } catch (err: any) {
-        console.error('An unknown error has occurred.');
-        console.error(err);
-        observer.error(err);
-      }
+      actualConductedAction.subscribe({
+        next: (res: any): void => {
+          observer.next(res);
+          observer.complete();
+        },
+        error: (err: any): void => {
+          observer.error(err);
+        }
+      });
     });
   }
-  
+
   patch(endpoint: string, payload: any): Observable<any> {
     return this.wrapper(this.http.patch, this.ROOT_URL + endpoint, { headers: this.getHeaders() }, payload);
   }
-  
+
   post(endpoint: string, payload: any): Observable<any> {
     return this.wrapper(this.http.post, this.ROOT_URL + endpoint, { headers: this.getHeaders() }, payload);
   }
-  
+
   delete(endpoint: string): Observable<any> {
     return this.wrapper(this.http.delete, this.ROOT_URL + endpoint, { headers: this.getHeaders() });
   }

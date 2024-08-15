@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, TemplateRef, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { UserDto } from "../model/user";
 import { UserService } from "../services/user.service";
@@ -15,27 +15,42 @@ export class LoginComponent {
 
   constructor(private loginService: UserService, private router: Router) { }
 
-  loginForm = new FormGroup({
+  loginFormGroup = new FormGroup({
     username: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required])
-  })
+  });
+
+  passwordFormGroup = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email])
+  });
+
+  //@ViewChild('passwordForm', {static: true}) passwordFormTemplate: TemplateRef<any> | null = null;
 
   ngOnInit() {
-    this.loginForm.controls.password.valueChanges.subscribe((value: any) => {
-      this.loginForm.controls.password.setErrors(null);
-      this.loginForm.controls.username.setErrors(null);
+    this.loginFormGroup.controls.password.valueChanges.subscribe((value: any) => {
+      this.loginFormGroup.controls.password.setErrors(null);
+      this.loginFormGroup.controls.username.setErrors(null);
     });
   }
 
-  forgotPassword() {
+  resetPassword() {
+    if (this.passwordFormGroup.valid) {
+      console.log("Gonna send a password request!");
 
+      console.log(this.passwordFormGroup.value.email!);
+      this.loginService.getPasswordResetToken(this.passwordFormGroup.value.email!).subscribe(res => {
+        console.log(res);
+      });
+      // Get the reset token from the server
+      // Send the request passing token in body, express will proxy to mail service
+    }
   }
 
   submit() {
-    if (this.loginForm.valid) {
+    if (this.loginFormGroup.valid) {
       var user: UserDto = {
-        password: this.loginForm.value.password!,
-        username: this.loginForm.value.username!
+        password: this.loginFormGroup.value.password!,
+        username: this.loginFormGroup.value.username!
       };
 
       this.loginService.login(user).subscribe({
@@ -44,16 +59,16 @@ export class LoginComponent {
             this.router.navigate(['/']);
           } else {
             if (res.status === 401) {
-              this.loginForm.controls.username.setErrors({ 'loginError': true });
+              this.loginFormGroup.controls.username.setErrors({ 'loginError': true });
             } else {
-              this.loginForm.controls.username.setErrors({ 'genericError': true });
+              this.loginFormGroup.controls.username.setErrors({ 'genericError': true });
             }
           }
         },
 
         error: (err: any) => {
           console.log(err);
-          this.loginForm.controls.username.setErrors({ 'genericError': true });
+          this.loginFormGroup.controls.username.setErrors({ 'genericError': true });
         }
       });
     }

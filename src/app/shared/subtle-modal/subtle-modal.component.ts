@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalComponent } from './modal/modal.component';
 
@@ -9,8 +9,9 @@ import { ModalComponent } from './modal/modal.component';
 })
 export class SubtleModalComponent implements OnInit {
 
-  @Input() text: string = "";
-  @Input() title: string = "";
+  @Input() template: TemplateRef<any> | null = null;
+  @Input() text: string | null = null;
+  @Input() title: string | null = null;
 
   constructor(public dialog: MatDialog) { }
 
@@ -21,7 +22,8 @@ export class SubtleModalComponent implements OnInit {
     const dialogReg = this.dialog.open(ModalComponent, {
       data: {
         content: this.text,
-        title: this.title
+        title: this.title,
+        template: this.template
       }
     });
 

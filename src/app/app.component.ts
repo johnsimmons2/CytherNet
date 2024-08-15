@@ -46,10 +46,10 @@ import { SpinnerService } from './shared/loading-spinner/spinner.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'Cythernet';
+  title = 'Cyther.online';
 
   // Update on significant changes
-  cytherVersion = '0.0.2';
+  cytherVersion = '0.0.3';
   opened: boolean = false;
 
   get showSpinner() {

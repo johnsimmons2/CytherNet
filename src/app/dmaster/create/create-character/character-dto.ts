@@ -15,25 +15,36 @@ export interface CharacterDescriptionDTO {
   backstory: string;
 }
 
-export interface CharacterDTO {
-  // FORM 1
-  name: string;
-  level: number; // 1-20
-  characterType: number; //0 = player, 1 = npc
-  classId: number;
-  subclassId: number;
-  raceId: number;
-
-  // FORM 2
+export interface StatsheetDTO {
   strength: number;
   dexterity: number;
   constitution: number;
   intelligence: number;
   wisdom: number;
   charisma: number;
-  skillIds: number[];
+}
+
+export interface SpellbookDTO {
+  cantripIds: number[];
+  knownSpellIds: number[];
+  preparedSpellIds: number[];
+}
+
+export interface CharacterDTO {
+  // FORM 1
+  name: string;
+  classId: number;
+  subclassId: number | null;
+  raceId: number;
+  type: number; //0 = player, 1 = npc
+  speed: number;
+  // FORM 2
+  languages: string;
+  stats: StatsheetDTO;
+  spellbook: SpellbookDTO;
   savingThrows: string[];
-  proficiencyIds: number[];
-  backgrounds: string[];
-  languages: string[];
+  skillIds: number[];
+  proficiencies: string[];
+  description: CharacterDescriptionDTO;
+  hitDiceShape: number | null;
 }

@@ -16,7 +16,8 @@ export class UserService {
 
   constructor(
       private router: Router,
-      private apiService: ApiService
+      private apiService: ApiService,
+      private httpClient: HttpClient
   ) {}
 
   public login(user: UserDto): Observable<ApiResult> {
@@ -35,7 +36,7 @@ export class UserService {
         return res;
       }));
   }
-  
+
   public register(user: UserDto): Observable<boolean> {
     return this.apiService.post('auth/register', user).pipe(
       map((res: any) => {
@@ -76,6 +77,16 @@ export class UserService {
         console.log('token is still valid.');
       }
     }
+  }
+
+  public getPasswordResetToken(email: string): Observable<any> {
+    return this.httpClient.post('/password-request', {
+      email: email
+    });
+  }
+
+  public updateUserPassword(user: UserDto, resetToken: string): Observable<any> {
+    return this.httpClient.post('/api/auth/reset-password?', user, {params: {resetToken: resetToken}});
   }
 
   // PLAYER :-> 1

@@ -7,9 +7,9 @@
     </ng-template>
   </div>
 
-  <div fxFlex *ngIf="!isActiveRoute; else activeText" [ngClass]="{'active-link': isActiveRoute}" style="margin-left: 12px; align-self: center;" fxHide.lt-md><h2>{{buttonName}}</h2></div>
+  <div fxFlex *ngIf="!isActiveRoute; else activeText" [ngClass]="{'active-link': isActiveRoute}" style="margin-left: 12px; align-self: center;" fxHide.lt-sm><h2>{{buttonName}}</h2></div>
   <ng-template #activeText>
-    <div fxFlex class="hideifsmall" [ngClass]="{'active-link': isActiveRoute}" style="margin-left: 12px; align-self: center;">
+    <div fxFlex [ngClass]="{'active-link': isActiveRoute}" style="margin-left: 12px; align-self: center;">
       <h2>{{buttonName}}</h2>
     </div>
   </ng-template>

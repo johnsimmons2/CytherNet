@@ -22,6 +22,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpInterceptorImplementation } from './shared/http-interceptor/http-interceptor';
 import { SpinnerService } from './shared/loading-spinner/spinner.service';
 import { AboutComponent } from './about/about.component';
+import { NotFoundComponent } from './notfound/notfound.component';
+import { ResetPasswordComponent } from './login/reset-password/reset-password.component';
 
 
 @NgModule({
@@ -29,12 +31,14 @@ import { AboutComponent } from './about/about.component';
     AppComponent,
     HomeComponent,
     LoginComponent,
+    ResetPasswordComponent,
     ProfileComponent,
     JournalComponent,
     CharactersComponent,
     CampaignComponent,
     RegisterComponent,
-    AboutComponent
+    AboutComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
