@@ -80,7 +80,7 @@ export class UserService {
   }
 
   public getPasswordResetToken(email: string): Observable<any> {
-    return this.httpClient.post('/password-request', {
+    return this.apiService.post('auth/email-password-request', {
       email: email
     });
   }
