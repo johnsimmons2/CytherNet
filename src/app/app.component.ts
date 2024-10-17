@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { UserService } from './services/user.service';
@@ -83,34 +82,9 @@ export class AppComponent {
 
   constructor(
     private router: Router,
-    private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer,
     private userService: UserService,
     public spinnerService: SpinnerService) {
-      this.matIconRegistry.addSvgIcon(
-        "dice-4",
-        this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/dice-4.svg")
-      );
-      this.matIconRegistry.addSvgIcon(
-        "dice-6",
-        this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/dice-6.svg")
-      );
-      this.matIconRegistry.addSvgIcon(
-        "dice-8",
-        this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/dice-8.svg")
-      );
-      this.matIconRegistry.addSvgIcon(
-        "dice-10",
-        this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/dice-10.svg")
-      );
-      this.matIconRegistry.addSvgIcon(
-        "dice-12",
-        this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/dice-12.svg")
-      );
-      this.matIconRegistry.addSvgIcon(
-        "dice-20",
-        this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/dice-20.svg")
-      );
   }
 
   toggleNav(value: boolean) {

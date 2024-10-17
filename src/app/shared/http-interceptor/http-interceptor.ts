@@ -2,7 +2,6 @@ import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
 import { Injectable, NgZone } from "@angular/core";
 import { Observable, catchError, finalize, tap, throwError } from "rxjs";
 import { SpinnerService } from "../loading-spinner/spinner.service";
-import { MatSnackBar } from "@angular/material/snack-bar";
 import { HttpSnackBarComponent } from "./httpsnackbar-component/httpsnackbar.component";
 
 @Injectable({
@@ -12,7 +11,6 @@ export class HttpInterceptorImplementation implements HttpInterceptor {
 
     constructor(
         private spinnerService: SpinnerService,
-        private snackBar: MatSnackBar,
         private zone: NgZone) {
     }
 
@@ -64,24 +62,24 @@ export class HttpInterceptorImplementation implements HttpInterceptor {
     }
 
     private showSnackBar(message: string, error: boolean = false): void{
-        if (error) {
-            this.snackBar.openFromComponent(HttpSnackBarComponent, {
-                duration: 5000,
-                data: {
-                    message: message
-                },
-                panelClass: ['error-snack']
-            });
-        } else {
-            console.log("Posting success");
-            this.snackBar.openFromComponent(HttpSnackBarComponent, {
-                duration: 5000,
-                data: {
-                    message: message
-                },
-                panelClass: ['success-snack']
-            });
-        }
+        // if (error) {
+        //     this.snackBar.openFromComponent(HttpSnackBarComponent, {
+        //         duration: 5000,
+        //         data: {
+        //             message: message
+        //         },
+        //         panelClass: ['error-snack']
+        //     });
+        // } else {
+        //     console.log("Posting success");
+        //     this.snackBar.openFromComponent(HttpSnackBarComponent, {
+        //         duration: 5000,
+        //         data: {
+        //             message: message
+        //         },
+        //         panelClass: ['success-snack']
+        //     });
+        // }
     }
 
 }

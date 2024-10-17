@@ -23,21 +23,21 @@ import { FilterableSelectComponent } from "./filterable-select/filterable-select
 
 @NgModule({
     declarations: [
-        CharacterTableComponent,
-        ConfirmationModal,
-        DiceComponent,
-        HealthComponent,
-        LoadingSpinnerComponent,
-        SpellSlotComponent,
-        StatsFormComponent,
-        SubtleModalComponent,
-        ToolbarComponent,
-        HeaderButtonComponent,
-        ModalComponent,
-        InputModalComponent,
-        ModalInputComponent,
-        HttpSnackBarComponent,
-        FilterableSelectComponent
+        //CharacterTableComponent,
+        //ConfirmationModal,
+       // DiceComponent,
+       // HealthComponent,
+        //LoadingSpinnerComponent,
+        //SpellSlotComponent,
+        //StatsFormComponent,
+        //SubtleModalComponent,
+        //ToolbarComponent,
+        //HeaderButtonComponent,
+       // ModalComponent,
+        //InputModalComponent,
+        //ModalInputComponent,
+        //HttpSnackBarComponent,
+        //FilterableSelectComponent
     ],
     imports: [
         BrowserAnimationsModule,
@@ -49,20 +49,20 @@ import { FilterableSelectComponent } from "./filterable-select/filterable-select
         AppMaterialsModule
     ],
     exports: [
-        CharacterTableComponent,
-        ConfirmationModal,
-        DiceComponent,
-        HealthComponent,
-        LoadingSpinnerComponent,
-        SpellSlotComponent,
-        StatsFormComponent,
-        SubtleModalComponent,
-        ToolbarComponent,
-        HeaderButtonComponent,
-        ModalComponent,
-        InputModalComponent,
-        HttpSnackBarComponent,
-        FilterableSelectComponent
+       // CharacterTableComponent,
+        //ConfirmationModal,
+       // DiceComponent,
+        //HealthComponent,
+        //LoadingSpinnerComponent,
+        //SpellSlotComponent,
+        //StatsFormComponent,
+        //SubtleModalComponent,
+        //ToolbarComponent,
+        //HeaderButtonComponent,
+        //ModalComponent,
+        //InputModalComponent,
+        //HttpSnackBarComponent,
+        //FilterableSelectComponent
     ],
     schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

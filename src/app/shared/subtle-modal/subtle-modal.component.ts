@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { ModalComponent } from './modal/modal.component';
 
 @Component({
@@ -13,23 +12,12 @@ export class SubtleModalComponent implements OnInit {
   @Input() text: string | null = null;
   @Input() title: string | null = null;
 
-  constructor(public dialog: MatDialog) { }
+  constructor() { }
 
   ngOnInit(): void {
   }
 
   openDialog() {
-    const dialogReg = this.dialog.open(ModalComponent, {
-      data: {
-        content: this.text,
-        title: this.title,
-        template: this.template
-      }
-    });
-
-    dialogReg.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
   }
 
 }
