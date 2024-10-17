@@ -17,6 +17,8 @@ import { ManageFeatComponent } from "./manage/manage-feat/manage-feat.component"
 import { CreateFeatComponent } from "./create/create-feat/create-feat.component";
 import { CreateClassComponent } from "./create/create-class/create-class.component";
 import { CreateSpellComponent } from "./create/create-spell/create-spell.component";
+import { CharacterFormComponent } from "./character/character-form/character-form.component";
+import { CharacterViewComponent } from "./character/character-view/character-view.component";
 
 
 @NgModule({
@@ -29,6 +31,8 @@ import { CreateSpellComponent } from "./create/create-spell/create-spell.compone
     SharedModule
   ],
   declarations: [
+    CharacterFormComponent,
+    CharacterViewComponent,
     CreateCharacterComponent,
     CreateUserComponent,
     CreateRaceComponent,

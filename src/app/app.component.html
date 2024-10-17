@@ -10,16 +10,16 @@
           Welcome <h3 style="display: inline;">{{username}}</h3>
         </a>
         <!-- <a mat-list-item (click)="routeTo('profile')" routerLinkActive="active">Profile</a> -->
-        <a mat-list-item (click)="routeTo('campaign')" routerLinkActive="active">My Campaigns</a>
         <a mat-list-item (click)="routeTo('characters')" routerLinkActive="active">My Characters</a>
+        <a mat-list-item (click)="routeTo('campaign')" routerLinkActive="active">My Campaigns</a>
 
         <mat-divider></mat-divider>
 
         <!-- Campaign specific -->
         <div *ngIf="selectedCampaign !== ''">
+          <a mat-list-item (click)="routeTo('characters')" routerLinkActive="active">Characters</a>
           <a mat-list-item (click)="routeTo('campaign')" routerLinkActive="active"><h3>{{selectedCampaign}}</h3></a>
           <a mat-list-item (click)="routeTo('journal')" routerLinkActive="active">Journal</a>
-          <a mat-list-item (click)="routeTo('characters')" routerLinkActive="active">Characters</a>
         </div>
 
         <!-- Dungeon Master Panel -->

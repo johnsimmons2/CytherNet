@@ -24,6 +24,8 @@ import { CreateClassComponent } from './dmaster/create/create-class/create-class
 import { CreateSpellComponent } from './dmaster/create/create-spell/create-spell.component';
 import { NotFoundComponent } from './notfound/notfound.component';
 import { ResetPasswordComponent } from './login/reset-password/reset-password.component';
+import { CharacterFormComponent } from './dmaster/character/character-form/character-form.component';
+import { CharacterViewComponent } from './dmaster/character/character-view/character-view.component';
 
 
 const routes: Routes = [
@@ -72,11 +74,15 @@ const routes: Routes = [
       },
       {
         path: 'dmaster/characters/create',
-        component: CreateCharacterComponent
+        component: CharacterFormComponent
       },
       {
         path: 'dmaster/characters/:id',
-        component: ManageCharactersComponent
+        component: CharacterFormComponent
+      },
+      {
+        path: 'dmaster/characters',
+        component: CharacterViewComponent
       },
       {
         path: 'dmaster/users',
