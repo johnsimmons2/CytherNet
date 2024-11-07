@@ -1,16 +1,14 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from "@angular/common/http";
 import { Injectable, NgZone } from "@angular/core";
 import { Observable, catchError, finalize, tap, throwError } from "rxjs";
-import { SpinnerService } from "../loading-spinner/spinner.service";
-import { HttpSnackBarComponent } from "./httpsnackbar-component/httpsnackbar.component";
 
 @Injectable({
     providedIn: 'root',
 })
-export class HttpInterceptorImplementation implements HttpInterceptor {
+export class HttpInterceptorService implements HttpInterceptor {
 
     constructor(
-        private spinnerService: SpinnerService,
+        //private spinnerService: SpinnerService,
         private zone: NgZone) {
     }
 
@@ -23,7 +21,7 @@ export class HttpInterceptorImplementation implements HttpInterceptor {
               if (res instanceof HttpResponse) {
                   switch(res.status) {
                       case 201:
-                          this.showSnackBar("Updated");
+                          //this.showSnackBar("Updated");
                   }
               }
           }),
@@ -50,36 +48,16 @@ export class HttpInterceptorImplementation implements HttpInterceptor {
                       default:
                           message = "Unknown server error ocurred!";
                   }
-                  this.zone.run(() => {
-                      this.showSnackBar(message, true);
-                  });
+                  // Show the snackbar
+                  // this.zone.run(() => {
+                  //     this.showSnackBar(message, true);
+                  // });
               }
-              return throwError(error);
+              return throwError(() => error);
           }),
           finalize(()=> {
             this.spinnerService.spinnerVisible = false;
         }));
-    }
-
-    private showSnackBar(message: string, error: boolean = false): void{
-        // if (error) {
-        //     this.snackBar.openFromComponent(HttpSnackBarComponent, {
-        //         duration: 5000,
-        //         data: {
-        //             message: message
-        //         },
-        //         panelClass: ['error-snack']
-        //     });
-        // } else {
-        //     console.log("Posting success");
-        //     this.snackBar.openFromComponent(HttpSnackBarComponent, {
-        //         duration: 5000,
-        //         data: {
-        //             message: message
-        //         },
-        //         panelClass: ['success-snack']
-        //     });
-        // }
     }
 
 }

@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { UserService } from './services/user.service';
 import { SpinnerService } from './shared/loading-spinner/spinner.service';
-
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { IonicModule } from '@ionic/angular';
+import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 /**
  * Todo:
  *  - clean up a lot
@@ -42,7 +45,17 @@ import { SpinnerService } from './shared/loading-spinner/spinner.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    FormsModule,
+    ServiceWorkerModule,
+    IonicModule,
+    RouterModule,
+    LoadingSpinnerComponent
+  ],
 })
 export class AppComponent {
   title = 'Cyther.online';
@@ -82,7 +95,6 @@ export class AppComponent {
 
   constructor(
     private router: Router,
-    private domSanitizer: DomSanitizer,
     private userService: UserService,
     public spinnerService: SpinnerService) {
   }

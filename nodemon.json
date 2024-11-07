@@ -5,6 +5,6 @@
     "src/**/*.spec.ts",
     "node_modules"
   ],
-  "exec": "npm run build && node server.js",
+  "exec": "npm run build-io-local && node server.js",
   "delay": "5000"
 }

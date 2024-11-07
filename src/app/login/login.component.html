@@ -1,71 +1,62 @@
-<mat-card [ngClass.gt-sm]="'fullscreen'">
-  <form [formGroup]="loginFormGroup" (ngSubmit)="submit()">
-    <mat-card-header>
-      <mat-card-title>
-        <h2>Login to an existing account</h2>
-      </mat-card-title>
-    </mat-card-header>
-    <mat-card-content fxLayout="column">
-      <mat-form-field fxFlex>
-        <mat-label>Username</mat-label>
-        <input id="username" matInput placeholder="Username" type="text" formControlName="username" />
-        <mat-error *ngIf="loginFormGroup.controls.username.errors?.['genericError']">
-          An unknown error has occured. Please try again later, or check the console for more information.
-        </mat-error>
-        <mat-error *ngIf="loginFormGroup.controls.username.errors?.['loginError']">
-          The provided username and password combination could not be found.
-        </mat-error>
-        <mat-error *ngIf="loginFormGroup.controls.username.errors?.['required']">
-          Username is required.
-        </mat-error>
-      </mat-form-field>
+<ion-content>
+  <ion-card>
+    <form [formGroup]="loginFormGroup" (ngSubmit)="submit()">
+      <ion-card-header>
+        <ion-card-title>
+          <h2>Login to an existing account</h2>
+        </ion-card-title>
+      </ion-card-header>
 
-      <mat-form-field fxFlex>
-        <mat-label>Password</mat-label>
-        <input id="password" matInput placeholder="Password" type="password" formControlName="password" />
-        <mat-error *ngIf="loginFormGroup.controls.password.errors?.['required']">
-          Password is required.
-        </mat-error>
-        <mat-hint>
-          <app-subtle-modal title="Forgot Password?" [template]="passwordForm">
-          </app-subtle-modal>
-        </mat-hint>
-      </mat-form-field>
-    </mat-card-content>
+      <ion-card-content>
+        <ion-item>
+          <ion-input id="username" placeholder="Username" type="text" formControlName="username" [clearInput]="true"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="loginFormGroup.controls.username.errors?.['required'] && loginFormGroup.controls.username.touched">
+          <p>Username is required.</p>
+        </ion-text>
 
-    <mat-card-actions align="end">
-      <button mat-raised-button color="primary" class="form-row-item" type="submit"
-        [disabled]="!loginFormGroup.valid">Login</button>
-      <button mat-raised-button color="accent" class="form-row-item" type="button"
-        (click)="registerUser()">Register</button>
-    </mat-card-actions>
-  </form>
-</mat-card>
+        <ion-item>
+          <ion-input id="password" placeholder="Password" [type]="hidePassword ? 'password' : 'text'" formControlName="password" [clearOnEdit]="true">
+            <ion-button fill="clear" slot="end" aria-label="Show/hide" (click)="togglePasswordVisibility()">
+              <ion-icon slot="icon-only" [icon]="eyeCon" aria-hidden="true"></ion-icon>
+            </ion-button>
+          </ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="loginFormGroup.controls.password.errors?.['required'] && loginFormGroup.controls.password.touched">
+          <p>Password is required.</p>
+        </ion-text>
+      </ion-card-content>
 
-<ng-template #passwordForm>
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>
-        <h3>Reset your password</h3>
-      </mat-card-title>
-      <mat-card-subtitle>
-        If you have an account registered with an email address, you will
-        receive an email with instructions on how to recover your account.
-      </mat-card-subtitle>
-    </mat-card-header>
-    <form [formGroup]="passwordFormGroup" (ngSubmit)="resetPassword()">
-      <mat-card-content>
-        <mat-form-field style="width: 100%">
-          <mat-label>Email</mat-label>
-          <input id="email" matInput placeholder="Email" type="email" formControlName="email" />
-          <mat-error *ngIf="passwordFormGroup.controls.email.errors?.['required']">
-            Email is required.
-          </mat-error>
-        </mat-form-field>
-      </mat-card-content>
-      <mat-card-actions align="end">
-        <button mat-raised-button color="primary" type="submit" [disabled]="!passwordFormGroup.valid">Submit</button>
-      </mat-card-actions>
+      <ion-button color="primary" type="submit" [disabled]="!loginFormGroup.valid">Login</ion-button>
+      <ion-button color="secondary" type="button" (click)="registerUser()">Register</ion-button>
     </form>
-  </mat-card>
+  </ion-card>
+</ion-content>
+
+<!-- Password Reset Form -->
+<ng-template #passwordForm>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        <h3>Reset your password</h3>
+      </ion-card-title>
+      <ion-card-subtitle>
+        If you have an account registered with an email address, you will receive an email with instructions on how to recover your account.
+      </ion-card-subtitle>
+    </ion-card-header>
+
+    <form [formGroup]="passwordFormGroup" (ngSubmit)="resetPassword()">
+      <ion-card-content>
+        <ion-item>
+          <ion-label position="floating">Email</ion-label>
+          <ion-input id="email" placeholder="Email" type="email" formControlName="email"></ion-input>
+          <ion-note slot="error" *ngIf="passwordFormGroup.controls.email.errors?.['required']">
+            Email is required.
+          </ion-note>
+        </ion-item>
+      </ion-card-content>
+
+      <ion-button expand="block" color="primary" type="submit" [disabled]="!passwordFormGroup.valid">Submit</ion-button>
+    </form>
+  </ion-card>
 </ng-template>

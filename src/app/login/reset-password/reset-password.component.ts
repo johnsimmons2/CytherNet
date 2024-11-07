@@ -1,12 +1,21 @@
+import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
+import { IonicModule } from "@ionic/angular";
 import { UserDto } from "src/app/model/user";
 import { UserService } from "src/app/services/user.service";
 
 @Component({
   selector: 'reset-password',
   templateUrl: './reset-password.component.html',
+  standalone: true,
+  imports: [
+    CommonModule,
+    IonicModule,
+    FormsModule,
+    ReactiveFormsModule
+  ]
 })
 export class ResetPasswordComponent {
 

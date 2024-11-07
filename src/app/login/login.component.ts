@@ -1,18 +1,34 @@
 import { Component } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { UserDto } from "../model/user";
 import { UserService } from "../services/user.service";
 import { Router } from "@angular/router";
 import { ApiResult } from "../model/apiresult";
+import { CommonModule } from "@angular/common";
+import { IonicModule } from "@ionic/angular";
+import {addIcons } from 'ionicons';
+import { eyeOutline, eyeOffOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss',]
+  styleUrls: ['./login.component.scss',],
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    IonicModule
+  ],
+  providers: [UserService, Router]
 })
 export class LoginComponent {
 
-  constructor(private loginService: UserService, private router: Router) { }
+  hidePassword: boolean = true;
+
+  constructor(private loginService: UserService, private router: Router) {
+    addIcons({eyeOutline, eyeOffOutline});
+  }
 
   loginFormGroup = new FormGroup({
     username: new FormControl('', [Validators.required]),
@@ -25,11 +41,15 @@ export class LoginComponent {
 
   //@ViewChild('passwordForm', {static: true}) passwordFormTemplate: TemplateRef<any> | null = null;
 
+  get eyeCon() {
+    return this.hidePassword ? eyeOutline : eyeOffOutline;
+  }
+
   ngOnInit() {
-    this.loginFormGroup.controls.password.valueChanges.subscribe((value: any) => {
-      this.loginFormGroup.controls.password.setErrors(null);
-      this.loginFormGroup.controls.username.setErrors(null);
-    });
+  }
+
+  togglePasswordVisibility() {
+    this.hidePassword = !this.hidePassword;
   }
 
   resetPassword() {
@@ -43,6 +63,7 @@ export class LoginComponent {
   }
 
   submit() {
+    console.log(this.loginFormGroup)
     if (this.loginFormGroup.valid) {
       var user: UserDto = {
         password: this.loginFormGroup.value.password!,
@@ -71,7 +92,8 @@ export class LoginComponent {
   }
 
   registerUser() {
-    this.router.navigate(['/register']);
+    console.log(this.loginFormGroup.valid);
+   // this.router.navigate(['/register']);
   }
 
 }

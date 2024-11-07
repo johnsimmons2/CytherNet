@@ -1,96 +1,88 @@
-<form [formGroup]="registerForm" (ngSubmit)="register()" [ngClass.gt-sm]="'fullscreen'">
-    <mat-card>
-        <mat-card-header>
-            <mat-card-title>
-                <h2>Register an Account</h2>
-            </mat-card-title>
-            <mat-card-subtitle>
-                <h3>Required Fields</h3>
-            </mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content fxLayout="column">
-            <mat-form-field fxFlex="60">
-                <mat-label>Choose a username</mat-label>
-                <input id="username" matInput placeholder="Username" type="text" formControlName="username" />
-                <mat-error *ngIf="registerForm.controls.username.errors?.['nameTaken']">
-                    Username is taken.
-                </mat-error>
-                <mat-error *ngIf="registerForm.controls.username.errors?.['required']">
-                    Username is required.
-                </mat-error>
-            </mat-form-field>
+<form [formGroup]="registerForm" (ngSubmit)="register()">
+  <!-- Main card for required fields -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        <h2>Register an Account</h2>
+      </ion-card-title>
+      <ion-card-subtitle>
+        <h3>Required Fields</h3>
+      </ion-card-subtitle>
+    </ion-card-header>
 
-            <mat-form-field fxFlex="60">
-                <mat-label>Enter a password</mat-label>
-                <input id="password" matInput placeholder="Password" [type]="showPassword ? 'text' : 'password'" formControlName="password" />
-                <mat-icon matSuffix (click)="showPassword = !showPassword">{{showPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-                <mat-error *ngIf="registerForm.controls.password.errors?.['required']">
-                    Password is required.
-                </mat-error>
-            </mat-form-field>
-        
-            <mat-form-field fxFlex="60">
-                <mat-label>Confirm Password</mat-label>
-                <input id="passwordConfirm" matInput placeholder="Confirm Password" [type]="showPassword ? 'text' : 'password'" formControlName="passwordConfirm" />
-                <mat-icon matSuffix (click)="showPassword = !showPassword">{{showPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-                <mat-error *ngIf="registerForm.controls.passwordConfirm.errors?.['mismatch']">
-                    Passwords do not match
-                </mat-error>
-                <mat-error *ngIf="registerForm.controls.passwordConfirm.errors?.['required']">
-                    Confirming password is required.
-                </mat-error>
-            </mat-form-field>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">Choose a username</ion-label>
+        <ion-input id="username" placeholder="Username" type="text" formControlName="username"></ion-input>
+        <ion-note slot="error" *ngIf="registerForm.controls.username.errors?.['nameTaken']">
+          Username is taken.
+        </ion-note>
+        <ion-note slot="error" *ngIf="registerForm.controls.username.errors?.['required']">
+          Username is required.
+        </ion-note>
+      </ion-item>
 
-            <br/>
-            
-        </mat-card-content>
-    </mat-card>
+      <ion-item>
+        <ion-label position="floating">Enter a password</ion-label>
+        <ion-input id="password" placeholder="Password" [type]="showPassword ? 'text' : 'password'" formControlName="password"></ion-input>
+        <ion-icon slot="end" [name]="showPassword ? 'eye-off' : 'eye'" (click)="showPassword = !showPassword"></ion-icon>
+        <ion-note slot="error" *ngIf="registerForm.controls.password.errors?.['required']">
+          Password is required.
+        </ion-note>
+      </ion-item>
 
-    <br/>
+      <ion-item>
+        <ion-label position="floating">Confirm Password</ion-label>
+        <ion-input id="passwordConfirm" placeholder="Confirm Password" [type]="showPassword ? 'text' : 'password'" formControlName="passwordConfirm"></ion-input>
+        <ion-icon slot="end" [name]="showPassword ? 'eye-off' : 'eye'" (click)="showPassword = !showPassword"></ion-icon>
+        <ion-note slot="error" *ngIf="registerForm.controls.passwordConfirm.errors?.['mismatch']">
+          Passwords do not match.
+        </ion-note>
+        <ion-note slot="error" *ngIf="registerForm.controls.passwordConfirm.errors?.['required']">
+          Confirming password is required.
+        </ion-note>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
 
-    <mat-card>
-        <mat-card-header>
-            <mat-card-subtitle>
-                <h3>Optional Fields</h3>
-            </mat-card-subtitle>
-        </mat-card-header>
+  <br />
 
-        <mat-card-content>
-            <div fxLayout="column">
-                <div fxFlex>
-                    <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="10px">
-                        <mat-form-field fxFlex="50">
-                            <mat-label>First Name</mat-label>
-                            <input id="firstName" matInput placeholder="First Name" type="text" formControlName="firstName" />
-                        </mat-form-field>
+  <!-- Optional Fields card -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>
+        <h3>Optional Fields</h3>
+      </ion-card-subtitle>
+    </ion-card-header>
 
-                        <mat-form-field fxFlex="50">
-                            <mat-label>Last Name</mat-label>
-                            <input id="lastName" matInput placeholder="Last Name" type="text" formControlName="lastName" />
-                        </mat-form-field>
-                    </div>
-                </div>
-                    
-                <mat-form-field fxFlex>
-                    <mat-label>Email Address</mat-label>
-                    <input id="email" matInput placeholder="Email" type="text" formControlName="email" />
-                    <mat-error *ngIf="registerForm.controls.email.errors?.['email']">
-                        Enter a valid email address
-                    </mat-error>
-                    <mat-hint>
-                        <app-subtle-modal title="Why do you want my email?" text="We will not use your email for marketing or any nefarious purposes. When implemented down the road, you will be able to use your email (if provided) to reset your password.">
-                        </app-subtle-modal>
-                    </mat-hint>
-                </mat-form-field>
-            </div>
-            
-            <br>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">First Name</ion-label>
+        <ion-input id="firstName" placeholder="First Name" type="text" formControlName="firstName"></ion-input>
+      </ion-item>
 
-            <mat-card-actions align="end">
-                <button mat-raised-button type="submit" color="primary" [disabled]="!registerForm.valid">Register</button>
-                <br>
-                <button mat-raised-button type="button" color="warn" (click)="router.navigate(['/'])">Cancel</button>
-            </mat-card-actions>
-        </mat-card-content>
-    </mat-card>
+      <ion-item>
+        <ion-label position="floating">Last Name</ion-label>
+        <ion-input id="lastName" placeholder="Last Name" type="text" formControlName="lastName"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Email Address</ion-label>
+        <ion-input id="email" placeholder="Email" type="email" formControlName="email"></ion-input>
+        <ion-note slot="error" *ngIf="registerForm.controls.email.errors?.['email']">
+          Enter a valid email address.
+        </ion-note>
+        <ion-note>
+          <!-- <app-subtle-modal title="Why do you want my email?" text="We will not use your email for marketing or any nefarious purposes. When implemented down the road, you will be able to use your email (if provided) to reset your password.">
+          </app-subtle-modal> -->
+        </ion-note>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <br />
+
+  <!-- Action Buttons -->
+  <ion-button expand="full" type="submit" [disabled]="!registerForm.valid">Register</ion-button>
+  <ion-button expand="full" color="danger" (click)="router.navigate(['/'])">Cancel</ion-button>
 </form>

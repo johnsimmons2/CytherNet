@@ -1,18 +1,28 @@
+import { CommonModule } from "@angular/common";
 import { AfterViewInit, Component, Input } from "@angular/core";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
+import { IonicModule } from "@ionic/angular";
 import { UserDto } from "src/app/model/user";
 import { UserService } from "src/app/services/user.service";
 
 @Component({
     selector: 'app-register',
     templateUrl: './register.component.html',
-    styleUrls: ['./register.component.scss']
+    styleUrls: ['./register.component.scss'],
+    standalone: true,
+    imports: [
+        CommonModule,
+        IonicModule,
+        FormsModule,
+        ReactiveFormsModule
+    ],
+    providers: [UserService]
 })
 export class RegisterComponent implements AfterViewInit {
 
     @Input() username: string = '';
-    
+
     public nameTaken: boolean = false;
     public showPassword: boolean = false;
 

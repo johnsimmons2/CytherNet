@@ -3,9 +3,9 @@ import type { CapacitorConfig } from '@capacitor/cli';
 const config: CapacitorConfig = {
   appId: 'online.cyther',
   appName: 'CytherNet',
-  webDir: 'dist/app',
+  webDir: 'dist/app/browser',
   android: {
-    path: 'dist/android'
+    path: 'dist/app/android'
   }
 };
 

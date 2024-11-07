@@ -17,6 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "sourceMap": true,
             "serviceWorker": "ngsw-config.json",
             "outputPath": {
               "base": "dist/app"
@@ -101,7 +102,8 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "sourceMap": false
             },
             "development": {
               "optimization": false,
@@ -110,7 +112,7 @@
               "namedChunks": true
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "development"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -163,6 +165,10 @@
             "production": {
               "cordovaBuildTarget": "app:ionic-cordova-build:production",
               "devServerTarget": "app:serve:production"
+            },
+            "development": {
+              "cordovaBuildTarget": "app:ionic-cordova-build:development",
+              "devServerTarget": "app:serve:development"
             }
           }
         },
@@ -174,6 +180,10 @@
           "configurations": {
             "production": {
               "browserTarget": "app:build:production"
+            },
+            "development": {
+              "browserTarget": "app:build:development",
+              "sourceMap": true
             }
           }
         }
