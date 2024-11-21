@@ -18,9 +18,10 @@
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "sourceMap": true,
-            "serviceWorker": "ngsw-config.json",
+            "serviceWorker": "src/ngsw-config.json",
             "outputPath": {
-              "base": "dist/www"
+              "base": "dist/www",
+              "browser": ""
             },
             "index": "src/index.html",
             "polyfills": [
