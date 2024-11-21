@@ -3,8 +3,8 @@ import { Component } from "@angular/core";
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { IonicModule } from "@ionic/angular";
-import { UserDto } from "src/app/model/user";
-import { UserService } from "src/app/services/user.service";
+import { UserDto } from "src/app/common/model/user";
+import { UserService } from "src/app/common/services/user.service";
 
 @Component({
   selector: 'reset-password',
@@ -29,7 +29,7 @@ export class ResetPasswordComponent {
             this.passwordFormGroup.value.pword === this.passwordFormGroup.value.pword2;
   }
 
-  constructor(private loginService: UserService, private route: ActivatedRoute, private router: Router) {
+  constructor(private userService: UserService, private route: ActivatedRoute, private router: Router) {
     this.route.queryParams.subscribe(params => {
       this.resetToken = params['resetToken'];
       this.user = params['user'];
@@ -47,7 +47,8 @@ export class ResetPasswordComponent {
         password: this.passwordFormGroup.value.pword!,
         username: this.user
       }
-      this.loginService.updateUserPassword(user, this.resetToken!).subscribe(res => {
+
+      this.userService.updateUserPassword(user, this.resetToken!).subscribe(res => {
         if (res.success) {
           this.router.navigate(['/']);
         }

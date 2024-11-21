@@ -1,5 +1,8 @@
 require('dotenv').config();
 
+/**
+ * @deprecated this is no longer deployed, it will be removed from the sourcecode eventually. I have left it here so that I can be reminded to replicate the mail functionality on the backend.
+ */
 
 const { legacyCreateProxyMiddleware, fixRequestBody } = require('http-proxy-middleware');
 const { MailtrapClient } = require('mailtrap');

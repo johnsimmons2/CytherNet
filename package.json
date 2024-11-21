@@ -3,13 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "node server.js",
-    "local": "nodemon",
-    "build": "ionic build && cap copy",
-    "build-io-local": "ionic build -c development && cap copy",
-    "build-dev": "ng build --configuration development",
+    "start": "ng serve --proxy-config proxy.conf.json",
+    "local": "ng serve --proxy-config proxy.conf.local.json",
+    "build-local": "ng build --configuration development",
     "build-prod": "ng build --configuration production",
-    "heroku-postbuild": "npm run build-prod",
+    "sync": "npx cap sync",
     "tsc": "tsc"
   },
   "private": true,
@@ -32,7 +30,6 @@
     "@capacitor/core": "latest",
     "@ionic/angular": "^8.3.3",
     "dotenv": "^16.4.5",
-    "express": "^4.18.2",
     "jwt-decode": "^3.1.2",
     "mailtrap": "^3.4.0",
     "path": "^0.12.7",
@@ -51,7 +48,6 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
-    "nodemon": "^3.0.1",
     "ts-node": "^10.9.1",
     "typescript": "~5.4.3"
   },

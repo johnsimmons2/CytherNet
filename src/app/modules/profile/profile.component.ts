@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { UserService } from "../services/user.service";
+import { UserService } from "src/app/common/services/user.service";
 import { CommonModule } from "@angular/common";
 import { IonicModule } from "@ionic/angular";
 

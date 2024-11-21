@@ -20,7 +20,7 @@
             "sourceMap": true,
             "serviceWorker": "ngsw-config.json",
             "outputPath": {
-              "base": "dist/app"
+              "base": "dist/www"
             },
             "index": "src/index.html",
             "polyfills": [

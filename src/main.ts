@@ -6,8 +6,8 @@ import { AppComponent } from './app/app.component';
 import { provideIonicAngular, IonicRouteStrategy } from '@ionic/angular/standalone';
 import { provideRouter, RouteReuseStrategy } from '@angular/router';
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
-import { HttpInterceptorImplementation } from './app/shared/http-interceptor/http-interceptor';
-import { SpinnerService } from './app/shared/loading-spinner/spinner.service';
+import { HttpInterceptorService } from './app/common/services/http-interceptor.service';
+import { LoadingService } from './app/common/services/loading.service';
 import { provideServiceWorker } from '@angular/service-worker';
 
 if (environment.production) {
@@ -18,9 +18,9 @@ bootstrapApplication(AppComponent, {
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: HttpInterceptorImplementation,
+      useClass: HttpInterceptorService,
       multi: true,
-      deps: [SpinnerService, NgZone]
+      deps: [LoadingService, NgZone]
     },
     {
       provide: RouteReuseStrategy,

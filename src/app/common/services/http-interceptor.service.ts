@@ -1,6 +1,7 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from "@angular/common/http";
 import { Injectable, NgZone } from "@angular/core";
 import { Observable, catchError, finalize, tap, throwError } from "rxjs";
+import { LoadingService } from "./loading.service";
 
 @Injectable({
     providedIn: 'root',
@@ -8,12 +9,12 @@ import { Observable, catchError, finalize, tap, throwError } from "rxjs";
 export class HttpInterceptorService implements HttpInterceptor {
 
     constructor(
-        //private spinnerService: SpinnerService,
+        private loadingService: LoadingService,
         private zone: NgZone) {
     }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-      this.spinnerService.spinnerVisible = true;
+      this.loadingService.loading = true;
 
       return next.handle(req).pipe(
           // Check if successfully posted, patched, deleted
@@ -56,7 +57,7 @@ export class HttpInterceptorService implements HttpInterceptor {
               return throwError(() => error);
           }),
           finalize(()=> {
-            this.spinnerService.spinnerVisible = false;
+            this.loadingService.loading = false;
         }));
     }
 

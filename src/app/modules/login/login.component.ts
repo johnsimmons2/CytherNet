@@ -1,9 +1,9 @@
 import { Component } from "@angular/core";
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
-import { UserDto } from "../model/user";
-import { UserService } from "../services/user.service";
+import { UserDto } from "src/app/common/model/user";
+import { UserService } from "src/app/common/services/user.service";
 import { Router } from "@angular/router";
-import { ApiResult } from "../model/apiresult";
+import { ApiResult } from "src/app/common/model/apiresult";
 import { CommonModule } from "@angular/common";
 import { IonicModule } from "@ionic/angular";
 import {addIcons } from 'ionicons';

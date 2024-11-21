@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { UserService } from './services/user.service';
-import { SpinnerService } from './shared/loading-spinner/spinner.service';
+import { UserService } from './common/services/user.service';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { IonicModule } from '@ionic/angular';
-import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
+
 /**
  * Todo:
  *  - clean up a lot
@@ -54,7 +53,7 @@ import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinne
     ServiceWorkerModule,
     IonicModule,
     RouterModule,
-    LoadingSpinnerComponent
+    //LoadingSpinnerComponent
   ],
 })
 export class AppComponent {
@@ -65,7 +64,8 @@ export class AppComponent {
   opened: boolean = false;
 
   get showSpinner() {
-    return this.spinnerService.spinnerVisible;
+    //return this.spinnerService.spinnerVisible;
+    return false;
   }
 
   get isAdmin() {
@@ -95,8 +95,7 @@ export class AppComponent {
 
   constructor(
     private router: Router,
-    private userService: UserService,
-    public spinnerService: SpinnerService) {
+    private userService: UserService) {
   }
 
   toggleNav(value: boolean) {
