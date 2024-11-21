@@ -34,6 +34,9 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
 
 ## TODO:
+- Replace the "version" tag dynamically, to reflect individual builds. I want to manually push the X.Y.0 parts.
+
+
 - Character to User attachment via user manager -> characters
   - Add "User character manager" shortcut button in DMaster
 - View character on my page

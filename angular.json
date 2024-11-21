@@ -32,6 +32,12 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
+              "src/manifest.json",
+              {
+                "glob": "**/*",
+                "input": "src/theme",
+                "output": "./theme"
+              },
               {
                 "glob": "**/*.svg",
                 "input": "node_modules/ionicons/dist/ionicons/svg",
@@ -104,10 +110,11 @@
                 }
               ],
               "outputHashing": "all",
-              "sourceMap": false
+              "sourceMap": false,
+              "optimization": false
             },
             "development": {
-              "optimization": false,
+              "optimization": true,
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
@@ -151,7 +158,8 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "src/themes.scss"
             ],
             "scripts": []
           }
