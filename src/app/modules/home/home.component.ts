@@ -1,6 +1,6 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+
 
 
 @Component({
@@ -9,8 +9,9 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./home.component.scss'],
   standalone: true,
   imports: [
-    CommonModule,
-    RouterModule
+    IonHeader,
+    IonTitle,
+    IonToolbar
   ]
 })
 export class HomeComponent implements OnInit {

@@ -5,7 +5,7 @@ import { Role, UserDto } from '../model/user';
 import { ApiService } from './api.service';
 import jwtDecode from 'jwt-decode';
 import { catchError, map, tap } from 'rxjs/operators';
-import { Observable, Subscription, of } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, of } from 'rxjs';
 import { ApiResult } from '../model/apiresult';
 
 
@@ -13,12 +13,17 @@ import { ApiResult } from '../model/apiresult';
 export class UserService {
 
   private adjustmentPeriod: number = 1000 * 60; // 30 seconds
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.checkAuthentication());
 
   constructor(
       private router: Router,
       private apiService: ApiService,
       private httpClient: HttpClient
   ) {}
+
+  public get isAuthenticated$(): Observable<boolean> {
+    return this.isAuthenticatedSubject.asObservable();
+  }
 
   public login(user: UserDto): Observable<ApiResult> {
     console.log("Sending login request");
@@ -32,6 +37,12 @@ export class UserService {
           localStorage.setItem('username', decoded.username);
           localStorage.setItem('rolesLastUpdate', Date.now().toString());
           localStorage.setItem('roles', JSON.stringify(decoded.roles));
+          this.isAuthenticatedSubject.next(true);
+          setTimeout(() => {
+            this.router.navigate(['/']);
+          }, 0);
+        } else {
+          this.isAuthenticatedSubject.next(false);
         }
         return res;
       }));
@@ -50,7 +61,10 @@ export class UserService {
 
   public logout(): void {
     localStorage.clear();
-    this.router.navigate(['/login']);
+    this.isAuthenticatedSubject.next(false)
+    setTimeout(() => {
+      this.router.navigate(['/login']);
+    }, 0);
   }
 
   public async isNameRegistered(username: string): Promise<Subscription> {
@@ -157,7 +171,7 @@ export class UserService {
     return null;
   }
 
-  public isAuthenticated(): boolean {
+  private checkAuthentication(): boolean {
     const user = localStorage.getItem('jwtToken');
     if (user) {
       const decoded: any = jwtDecode(user);
@@ -174,7 +188,7 @@ export class UserService {
   */
   private validateUserRolesInStorage(): boolean {
     const jwtToken = localStorage.getItem('jwtToken');
-    if (jwtToken && this.isAuthenticated()) {
+    if (jwtToken && this.checkAuthentication()) {
       const lastUpdate = localStorage.getItem('rolesLastUpdate');
       const roles = localStorage.getItem('roles');
 

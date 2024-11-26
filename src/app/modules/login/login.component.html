@@ -1,13 +1,13 @@
 <ion-content>
   <ion-card>
-    <form [formGroup]="loginFormGroup" (ngSubmit)="submit()">
-      <ion-card-header>
-        <ion-card-title>
-          <h2>Login to an existing account</h2>
-        </ion-card-title>
-      </ion-card-header>
+    <ion-card-header>
+      <ion-card-title>
+        <h2>Login to an existing account</h2>
+      </ion-card-title>
+    </ion-card-header>
 
-      <ion-card-content>
+    <ion-card-content>
+      <form [formGroup]="loginFormGroup" (ngSubmit)="submit()" id="loginForm">
         <ion-item>
           <ion-input id="username" placeholder="Username" type="text" formControlName="username" [clearInput]="true"></ion-input>
         </ion-item>
@@ -25,11 +25,11 @@
         <ion-text color="danger" *ngIf="loginFormGroup.controls.password.errors?.['required'] && loginFormGroup.controls.password.touched">
           <p>Password is required.</p>
         </ion-text>
-      </ion-card-content>
+      </form>
+    </ion-card-content>
 
-      <ion-button color="primary" type="submit" [disabled]="!loginFormGroup.valid">Login</ion-button>
-      <ion-button color="secondary" type="button" (click)="registerUser()">Register</ion-button>
-    </form>
+    <ion-button fill="clear" type="submit" form="loginForm" (click)="submit()" [disabled]="!loginFormGroup.valid">Login</ion-button>
+    <ion-button fill="clear" color="secondary" type="button" (click)="registerUser()">Register</ion-button>
   </ion-card>
 </ion-content>
 

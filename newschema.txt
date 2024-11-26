@@ -1,0 +1,11 @@
+auth service
+- roles
+- users
+- logging in / authorization
+- guid: new services that want to connect or be related to a user can use this guid
+
+campaign service
+- campaigns that own rule sets / lore / whitelist or blacklists
+- player: stores characters and other miscellaneous data that does not belong on auth server
+- characters
+- spells / abilities / skills: certain things that are searched for are globally cached

@@ -1,12 +1,20 @@
 import { Component } from "@angular/core";
-import { IonicModule } from "@ionic/angular";
+import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonItem, IonLabel, IonList } from "@ionic/angular/standalone";
 
 @Component({
     selector: 'app-about',
     templateUrl: './about.component.html',
     standalone: true,
     imports: [
-      IonicModule
+      IonContent,
+      IonCardHeader,
+      IonCard,
+      IonCardTitle,
+      IonCardSubtitle,
+      IonCardContent,
+      IonList,
+      IonItem,
+      IonLabel
     ]
 })
 export class AboutComponent {

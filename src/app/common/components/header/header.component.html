@@ -1,0 +1,15 @@
+<ion-toolbar color="primary">
+  <ion-title routerLink="/">
+    <a routerLink="/" style="text-decoration: inherit; cursor: pointer; color: inherit">
+      {{title}}
+    </a>
+  </ion-title>
+  <ion-buttons slot="end">
+
+    <ion-button *ngIf="!authenticated" routerLink="about">About</ion-button>
+
+    <ng-container *ngIf="authenticated">
+      <ion-button (click)="logout()">Logout</ion-button>
+    </ng-container>
+  </ion-buttons>
+</ion-toolbar>

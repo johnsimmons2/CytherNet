@@ -4,7 +4,8 @@ import { UserService } from './common/services/user.service';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { IonicModule } from '@ionic/angular';
+import { IonContent, IonHeader, IonMenu, IonToolbar, IonTitle, IonList, IonItemDivider, IonItem, IonAccordionGroup, IonAccordion, IonLabel, IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { HeaderComponent} from './common/components/header/header.component';
 
 /**
  * Todo:
@@ -51,16 +52,21 @@ import { IonicModule } from '@ionic/angular';
     CommonModule,
     FormsModule,
     ServiceWorkerModule,
-    IonicModule,
     RouterModule,
+    IonApp,
+    IonRouterOutlet,
+    IonHeader,
+    IonContent,
+    HeaderComponent
     //LoadingSpinnerComponent
   ],
+  providers: [Router]
 })
 export class AppComponent {
   title = 'Cyther.online';
 
   // Update on significant changes
-  cytherVersion = '0.0.3';
+  cytherVersion = '0.0.4';
   opened: boolean = false;
 
   get showSpinner() {

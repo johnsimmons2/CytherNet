@@ -4,8 +4,8 @@ import { routes } from './app/app-routing';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
 import { provideIonicAngular, IonicRouteStrategy } from '@ionic/angular/standalone';
-import { provideRouter, RouteReuseStrategy } from '@angular/router';
-import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
+import { provideRouter, RouteReuseStrategy, withComponentInputBinding } from '@angular/router';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule, provideHttpClient } from '@angular/common/http';
 import { HttpInterceptorService } from './app/common/services/http-interceptor.service';
 import { LoadingService } from './app/common/services/loading.service';
 import { provideServiceWorker } from '@angular/service-worker';
@@ -26,12 +26,14 @@ bootstrapApplication(AppComponent, {
       provide: RouteReuseStrategy,
       useClass: IonicRouteStrategy
     },
-    provideIonicAngular(),
+    provideIonicAngular({
+      innerHTMLTemplatesEnabled: true
+    }),
     provideServiceWorker('ngsw-worker.js', {
       enabled: true,
       registrationStrategy: 'registerWhenStable:30000'
     }),
-    provideRouter(routes),
-    importProvidersFrom(HttpClientModule)
+    provideRouter(routes, withComponentInputBinding()),
+    provideHttpClient()
   ],
 })

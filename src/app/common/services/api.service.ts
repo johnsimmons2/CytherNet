@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ApiResult } from '../model/apiresult';
 
@@ -11,7 +10,6 @@ export class ApiService {
   readonly ROOT_URL = '/api/';
 
   constructor(
-      private router: Router,
       private http: HttpClient
   ) {
   }

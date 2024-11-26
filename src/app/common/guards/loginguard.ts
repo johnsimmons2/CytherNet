@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { ApiService } from '../services/api.service';
-import { Observable, catchError } from 'rxjs';
+import { take, map, tap, catchError } from 'rxjs';
 
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: 'root'})
 export class LoginGuard implements CanActivate {
   constructor(
     private router: Router,
@@ -13,11 +13,14 @@ export class LoginGuard implements CanActivate {
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const auth = this.accountService.isAuthenticated();
-    if (auth) {
-      this.router.navigate(['']);
-      return false;
-    }
-    return true;
+    return this.accountService.isAuthenticated$.pipe(
+      take(1), // Ensures the observable completes
+      map((isAuth) => {
+        if (isAuth) {
+          return false;
+        }
+        return true;
+      }),
+    );
   }
 }
