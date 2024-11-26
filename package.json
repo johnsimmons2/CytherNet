@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ionic serve -c production",
-    "local": "ionic serve -c development",
-    "build": "ionic build --configuration development",
-    "build-prod": "ionic build --configuration production",
+    "start": "npx ionic serve -c production",
+    "local": "npx ionic serve -c development",
+    "build": "npx ionic build --configuration development",
+    "build-prod": "npx ionic build --configuration production",
     "sync": "npx cap sync",
     "tsc": "tsc"
   },
