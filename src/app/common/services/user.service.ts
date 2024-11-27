@@ -26,7 +26,6 @@ export class UserService {
   }
 
   public login(user: UserDto): Observable<ApiResult> {
-    console.log("Sending login request");
     return this.apiService.post('auth/token', user).pipe(
       map((res: ApiResult) => {
         if (res.success && res.data) {
