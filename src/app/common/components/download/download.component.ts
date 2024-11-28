@@ -31,7 +31,7 @@ export class DownloadComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    if (this.platformService.operatingSystem === 'Android') {
+    if (this.platformService.platform === 'android') {
       this.modal.present();
     }
   }

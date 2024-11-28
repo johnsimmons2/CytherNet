@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { ApiService } from "./api.service";
 import { map, Observable, tap } from "rxjs";
 import { HttpResponse } from "@angular/common/http";
+import { Capacitor } from "@capacitor/core";
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,10 @@ export class PlatformService {
 
   public get isDesktop(): boolean {
     return !this.isMobile;
+  }
+
+  public get platform(): string {
+    return Capacitor.getPlatform();
   }
 
   public get operatingSystem(): string {
