@@ -1,12 +1,12 @@
 {
   "name": "app",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "scripts": {
     "ng": "ng",
     "start": "npx ionic serve -c production",
     "local": "npx ionic serve -c development",
     "build": "npx ionic build --configuration development",
-    "build-prod": "npm run --no-git-tag-version -f update-version && npx ionic build --configuration production",
+    "build-prod": "npx ionic build --configuration production",
     "sync": "npx cap sync",
     "tsc": "tsc",
     "update-version": "npm version patch"
