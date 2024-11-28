@@ -79,6 +79,7 @@ export class AppComponent {
   ipAddress: string = '-.-.-.-';
   operatingSystem: string = '';
   apiVersion: string = '';
+  platform: string = '';
 
   get showSpinner() {
     //return this.spinnerService.spinnerVisible;
@@ -124,7 +125,8 @@ export class AppComponent {
       });
       this.apiService.healthCheck().subscribe((res) => {
         this.apiVersion = res.body.data;
-      })
+      });
+      this.platform = this.platformService.platform;
   }
 
 

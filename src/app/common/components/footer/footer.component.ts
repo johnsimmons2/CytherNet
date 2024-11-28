@@ -44,6 +44,7 @@ export class FooterComponent {
   @Input() browserVersion!: string;
   @Input() ipAddress!: string;
   @Input() operatingSystem!: string;
+  @Input() platform!: string;
 
   constructor(private apiService: ApiService, private router: Router) {
   }
