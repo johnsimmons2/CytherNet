@@ -4,8 +4,12 @@ import { UserService } from './common/services/user.service';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { IonContent, IonHeader, IonMenu, IonToolbar, IonTitle, IonList, IonItemDivider, IonItem, IonAccordionGroup, IonAccordion, IonLabel, IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonMenu, IonToolbar, IonTitle, IonList, IonItemDivider, IonItem, IonAccordionGroup, IonAccordion, IonLabel, IonApp, IonRouterOutlet, IonFooter } from '@ionic/angular/standalone';
 import { HeaderComponent} from './common/components/header/header.component';
+import { FooterComponent } from './common/components/footer/footer.component';
+import { environment } from 'src/environments/environment';
+import { PlatformService } from './common/services/platform.service';
+import { ApiService } from './common/services/api.service';
 
 /**
  * Todo:
@@ -57,7 +61,9 @@ import { HeaderComponent} from './common/components/header/header.component';
     IonRouterOutlet,
     IonHeader,
     IonContent,
-    HeaderComponent
+    HeaderComponent,
+    IonFooter,
+    FooterComponent
     //LoadingSpinnerComponent
   ],
   providers: [Router]
@@ -66,8 +72,13 @@ export class AppComponent {
   title = 'Cyther.online';
 
   // Update on significant changes
-  cytherVersion = '0.0.4';
+  cytherVersion: string = '';
   opened: boolean = false;
+  browserVersion: string = '';
+  browser: string = '';
+  ipAddress: string = '-.-.-.-';
+  operatingSystem: string = '';
+  apiVersion: string = '';
 
   get showSpinner() {
     //return this.spinnerService.spinnerVisible;
@@ -101,8 +112,21 @@ export class AppComponent {
 
   constructor(
     private router: Router,
-    private userService: UserService) {
+    private userService: UserService,
+    private platformService: PlatformService,
+    private apiService: ApiService) {
+      this.cytherVersion = environment.version;
+      this.browser = this.platformService.browser;
+      this.browserVersion = this.platformService.browserVersion;
+      this.operatingSystem = this.platformService.operatingSystem;
+      this.platformService.getIpAddress().subscribe((ip) => {
+        this.ipAddress = ip;
+      });
+      this.apiService.healthCheck().subscribe((res) => {
+        this.apiVersion = res.body.data;
+      })
   }
+
 
   toggleNav(value: boolean) {
     this.opened = value;

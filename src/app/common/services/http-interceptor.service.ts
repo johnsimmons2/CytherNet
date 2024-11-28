@@ -1,6 +1,6 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from "@angular/common/http";
 import { Injectable, NgZone } from "@angular/core";
-import { Observable, catchError, finalize, tap, throwError } from "rxjs";
+import { Observable, catchError, finalize, map, tap, throwError } from "rxjs";
 import { LoadingService } from "./loading.service";
 
 @Injectable({
@@ -25,6 +25,13 @@ export class HttpInterceptorService implements HttpInterceptor {
                           //this.showSnackBar("Updated");
                   }
               }
+          }),
+          map((res: any) => {
+            if (res instanceof HttpResponse) {
+              console.log("Cloning!!!");
+              return res.clone({ body: res.body.data, headers: res.headers });
+            }
+            return res;
           }),
           // Snackbar for errors
           catchError((error: any) => {

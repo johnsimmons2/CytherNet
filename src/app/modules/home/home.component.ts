@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { DownloadComponent } from 'src/app/common/components/download/download.component';
 
 
 
@@ -11,7 +12,8 @@ import { IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
   imports: [
     IonHeader,
     IonTitle,
-    IonToolbar
+    IonToolbar,
+    DownloadComponent
   ]
 })
 export class HomeComponent implements OnInit {

@@ -11,37 +11,43 @@
     </ion-card-header>
 
     <ion-card-content>
-      <h2>Summary</h2>
-      <p>
-        Cyther.online is a tool designed for Dungeon Masters to help them manage their campaigns.
-        It is designed to be used in conjunction with the Dungeons and Dragons 5th Edition ruleset,
-        however, future updates will allow for wider flexibility.
-      </p>
-      <p>
-        Individual users may create campaigns and invite other users to join them. Users who create
-        a campaign become a Dungeon Master of that campaign, and can manage users, characters, lore, and unique rule sets.
-        The DM can update character sheets, create and manage monsters, and create and manage items.
-        Updates to the character sheets reflect live, and your users can see the changes you make in real time during
-        your game nights.
-      </p>
-      <p>
-        Cyther Online is still in early development, many new features are being added all the time, with some
-        really cool ones to come down the road. Cyther Online should make a fun, useful, and optional supplement to any
-        tabletop RPG campaign.
-      </p>
-
-      <h2>Features</h2>
-      <h3>Features for Users</h3>
-      <p>
-        This is an early version of Cyther Online, the only features that function at the moment are
-        back-end or administrative features.
-      </p>
-
-      <h2>Administrative Features</h2>
-      <h3>Features for Dungeon Masters</h3>
-      <p>
-        This is a comprehensive list of current features with more or less complete functionality.
-      </p>
+      <ion-item>
+        <ion-label>
+          <h1>Summary</h1>
+          <p>
+            Cyther.online is a tool designed for Dungeon Masters to help them manage their campaigns.
+            It is designed to be used in conjunction with the Dungeons and Dragons 5th Edition ruleset,
+            however, future updates will allow for wider flexibility.
+          </p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <p>
+            Individual users may create campaigns and invite other users to join them. Users who create
+            a campaign become a Dungeon Master of that campaign, and can manage users, characters, lore, and unique rule sets.
+            The DM can update character sheets, create and manage monsters, and create and manage items.
+            Updates to the character sheets reflect live, and your users can see the changes you make in real time during
+            your game nights.
+          </p>
+        </ion-label>
+      </ion-item>
+    <ion-item>
+      <ion-label>
+        <p>
+          Cyther Online is still in early development, many new features are being added all the time, with some
+          really cool ones to come down the road. Cyther Online should make a fun, useful, and optional supplement to any
+          tabletop RPG campaign.
+        </p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <h2>Features</h2>
+        <br/>
+        <h3>Administrative Features</h3>
+      </ion-label>
+    </ion-item>
 
       <ion-list>
         <ion-item>
@@ -64,27 +70,21 @@
         </ion-item>
       </ion-list>
 
-      <h2>Changes</h2>
+      <ion-item>
+        <ion-label>
+          <h2>Changes</h2>
+          <h4>For API changes, check my github.</h4>
+        </ion-label>
+      </ion-item>
       <ion-list>
-        <ion-item>
+        <ion-item *ngFor="let x of changeLog">
           <ion-label>
-            <h3>Version 0.0.3</h3>
-            <p>Account recovery with email password reset requests.</p>
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            <h3>Version 0.0.2</h3>
-            <p>Character, Race, and Spell creation scaffolded.</p>
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            <h3>Version 0.0.1</h3>
-            <p>First tracked version.</p>
+            <h3>{{ x.version }}</h3>
+            <p>{{ x.description }}</p>
           </ion-label>
         </ion-item>
       </ion-list>
+
 
       <br>
 

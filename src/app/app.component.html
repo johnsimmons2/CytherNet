@@ -5,4 +5,13 @@
   <ion-content>
     <ion-router-outlet></ion-router-outlet>
   </ion-content>
+  <ion-footer [translucent]="true">
+    <app-footer [appVersion]="cytherVersion"
+                [apiVersion]="apiVersion"
+                [browser]="browser"
+                [browserVersion]="browserVersion"
+                [ipAddress]="ipAddress"
+                [operatingSystem]="operatingSystem">
+    </app-footer>
+  </ion-footer>
 </ion-app>

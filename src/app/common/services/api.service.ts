@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { ApiResult } from '../model/apiresult';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { map, Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 
@@ -34,26 +33,19 @@ export class ApiService {
 
   private wrapper(action: (...args: any[]) => Observable<any>,
                   path: string,
-                  headers: any,
+                  options: any,
                   payload?: any): any {
-
-    return new Observable((observer) => {
-      var actualConductedAction = payload === undefined ? action.call(this.http, path, headers) : action.call(this.http, path, payload, headers);
+    var actualConductedAction = payload === undefined ? action.call(this.http, path, options) : action.call(this.http, path, payload, options);
 
       /**
        * Try to subscribe to the action, and pass the result
        * as an ApiResult object to the observer.
        */
-      actualConductedAction.subscribe({
-        next: (res: any): void => {
-          observer.next(res);
-          observer.complete();
-        },
-        error: (err: any): void => {
-          observer.error(err);
-        }
-      });
-    });
+    return actualConductedAction.pipe(
+      map((res) => {
+        return res;
+      })
+    );
   }
 
   patch(endpoint: string, payload: any): Observable<any> {
@@ -68,15 +60,23 @@ export class ApiService {
     return this.wrapper(this.http.delete, this.ROOT_URL + endpoint, { headers: this.getHeaders() });
   }
 
-  get(endpoint: string, headers?: any): Observable<ApiResult> {
-    if (headers === undefined) {
-      headers = { headers: this.getHeaders() };
+  get(endpoint: string, options?: any, headers?: any): Observable<any> {
+    if (headers === undefined && options === undefined) {
+      options = { headers: this.getHeaders() };
+    } else if (headers !== undefined && options === undefined) {
+      options = { headers: headers };
+    } else if (headers !== undefined && options !== undefined) {
+      options.headers = headers;
     }
-    return this.wrapper(this.http.get, this.ROOT_URL + endpoint, headers);
+    return this.wrapper(this.http.get, this.ROOT_URL + endpoint, options);
   }
 
   validateToken(substitutedToken: any) {
     return this.get(this.ROOT_URL + 'auth', { headers: this.getHeadersWithToken(substitutedToken) });
+  }
+
+  public healthCheck(): Observable<any> {
+    return this.get('health', { observe: 'response' });
   }
 
 }

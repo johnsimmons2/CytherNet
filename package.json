@@ -1,14 +1,15 @@
 {
   "name": "app",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "scripts": {
     "ng": "ng",
     "start": "npx ionic serve -c production",
     "local": "npx ionic serve -c development",
     "build": "npx ionic build --configuration development",
-    "build-prod": "npx ionic build --configuration production",
+    "build-prod": "npm run update-version && npx ionic build --configuration production",
     "sync": "npx cap sync",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "update-version": "npm version patch"
   },
   "private": true,
   "dependencies": {
