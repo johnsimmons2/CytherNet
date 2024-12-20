@@ -1,13 +1,13 @@
-import { Component } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { UserDto } from "src/app/common/model/user";
 import { UserService } from "src/app/common/services/user.service";
 import { Router, RouterModule } from "@angular/router";
 import { ApiResult } from "src/app/common/model/apiresult";
 import { CommonModule } from "@angular/common";
-import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonIcon, IonInput, IonItem, IonLabel, IonNote, IonText } from "@ionic/angular/standalone";
+import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonIcon, IonInput, IonItem, IonLabel, IonModal, IonNote, IonText } from "@ionic/angular/standalone";
 import { addIcons } from 'ionicons';
-import { eyeOutline, eyeOffOutline } from 'ionicons/icons';
+import { eyeOutline, eyeOffOutline, refreshOutline } from 'ionicons/icons';
 
 @Component({
 	selector: 'login',
@@ -31,10 +31,13 @@ import { eyeOutline, eyeOffOutline } from 'ionicons/icons';
     IonLabel,
     IonNote,
     IonInput,
+    IonModal,
     RouterModule
 	],
 })
 export class LoginComponent {
+
+  @ViewChild(IonModal) modal!: IonModal;
 
 	hidePassword: boolean = true;
 
@@ -51,11 +54,13 @@ export class LoginComponent {
 		email: new FormControl('', [Validators.required, Validators.email])
 	});
 
-	//@ViewChild('passwordForm', {static: true}) passwordFormTemplate: TemplateRef<any> | null = null;
-
 	get eyeCon() {
 		return this.hidePassword ? eyeOutline : eyeOffOutline;
 	}
+
+  get resetIcon() {
+    return refreshOutline;
+  }
 
 	ngOnInit() {
 	}
@@ -99,9 +104,16 @@ export class LoginComponent {
 		}
 	}
 
+  cancel() {
+    this.modal.dismiss(null, 'cancel');
+  }
+
+  onWillDismiss(event: any) {
+    console.log(event);
+  }
+
 	registerUser() {
-		console.log(this.loginFormGroup.valid);
-		// this.router.navigate(['/register']);
+		this.router.navigate(['/register']);
 	}
 
 }

@@ -13,8 +13,8 @@ import { PlatformService } from "../../services/platform.service";
   standalone: true,
   imports: [
     CommonModule,
-    IonToolbar,
-    IonTitle,
+    //IonToolbar,
+    //IonTitle,
     IonButton,
     RouterModule,
     IonModal,

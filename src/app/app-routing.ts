@@ -7,7 +7,6 @@ import { ProfileComponent } from './modules/profile/profile.component';
 import { RegisterComponent } from './modules/login/register/register.component';
 import { AboutComponent } from './modules/about/about.component';
 import { NotFoundComponent } from './modules/notfound/notfound.component';
-import { ResetPasswordComponent } from './modules/login/reset-password/reset-password.component';
 
 
 export const routes: Routes = [
@@ -15,10 +14,6 @@ export const routes: Routes = [
     path: 'login',
     component: LoginComponent,
     canActivate: [LoginGuard]
-  },
-  {
-    path: 'reset-password',
-    component: ResetPasswordComponent
   },
   {
     path: 'register',

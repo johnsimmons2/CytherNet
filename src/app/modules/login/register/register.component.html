@@ -1,88 +1,88 @@
-<form [formGroup]="registerForm" (ngSubmit)="register()">
-  <!-- Main card for required fields -->
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>
-        <h2>Register an Account</h2>
-      </ion-card-title>
-      <ion-card-subtitle>
-        <h3>Required Fields</h3>
-      </ion-card-subtitle>
-    </ion-card-header>
+<ion-content>
+  <form [formGroup]="registerForm" (ngSubmit)="register()">
+    <!-- Main card for required fields -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          <h2>Register an Account</h2>
+        </ion-card-title>
+        <ion-card-subtitle>
+          <h3>Required Fields</h3>
+        </ion-card-subtitle>
+      </ion-card-header>
 
-    <ion-card-content>
-      <ion-item>
-        <ion-label position="floating">Choose a username</ion-label>
-        <ion-input id="username" placeholder="Username" type="text" formControlName="username"></ion-input>
-        <ion-note slot="error" *ngIf="registerForm.controls.username.errors?.['nameTaken']">
-          Username is taken.
-        </ion-note>
-        <ion-note slot="error" *ngIf="registerForm.controls.username.errors?.['required']">
-          Username is required.
-        </ion-note>
-      </ion-item>
+      <ion-card-content>
+        <ion-item>
+          <ion-input id="username" placeholder="Username" type="text" formControlName="username"></ion-input>
+          <ion-note slot="error" *ngIf="registerForm.controls.username.errors?.['nameTaken']">
+            Username is taken.
+          </ion-note>
+          <ion-note slot="error" *ngIf="registerForm.controls.username.errors?.['required']">
+            Username is required.
+          </ion-note>
+        </ion-item>
 
-      <ion-item>
-        <ion-label position="floating">Enter a password</ion-label>
-        <ion-input id="password" placeholder="Password" [type]="showPassword ? 'text' : 'password'" formControlName="password"></ion-input>
-        <ion-icon slot="end" [name]="showPassword ? 'eye-off' : 'eye'" (click)="showPassword = !showPassword"></ion-icon>
-        <ion-note slot="error" *ngIf="registerForm.controls.password.errors?.['required']">
-          Password is required.
-        </ion-note>
-      </ion-item>
+        <ion-item>
+          <ion-input id="password" placeholder="Password" [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"></ion-input>
+          <ion-icon slot="end" [name]="showPassword ? 'eye-off' : 'eye'"
+            (click)="showPassword = !showPassword"></ion-icon>
+          <ion-note slot="error" *ngIf="registerForm.controls.password.errors?.['required']">
+            Password is required.
+          </ion-note>
+        </ion-item>
 
-      <ion-item>
-        <ion-label position="floating">Confirm Password</ion-label>
-        <ion-input id="passwordConfirm" placeholder="Confirm Password" [type]="showPassword ? 'text' : 'password'" formControlName="passwordConfirm"></ion-input>
-        <ion-icon slot="end" [name]="showPassword ? 'eye-off' : 'eye'" (click)="showPassword = !showPassword"></ion-icon>
-        <ion-note slot="error" *ngIf="registerForm.controls.passwordConfirm.errors?.['mismatch']">
-          Passwords do not match.
-        </ion-note>
-        <ion-note slot="error" *ngIf="registerForm.controls.passwordConfirm.errors?.['required']">
-          Confirming password is required.
-        </ion-note>
-      </ion-item>
-    </ion-card-content>
-  </ion-card>
+        <ion-item>
+          <ion-input id="passwordConfirm" placeholder="Confirm Password" [type]="showPassword ? 'text' : 'password'"
+            formControlName="passwordConfirm"></ion-input>
+          <ion-icon slot="end" [name]="showPassword ? 'eye-off' : 'eye'"
+            (click)="showPassword = !showPassword"></ion-icon>
+          <ion-note slot="error" *ngIf="registerForm.controls.passwordConfirm.errors?.['mismatch']">
+            Passwords do not match.
+          </ion-note>
+          <ion-note slot="error" *ngIf="registerForm.controls.passwordConfirm.errors?.['required']">
+            Confirming password is required.
+          </ion-note>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
 
-  <br />
+    <br />
 
-  <!-- Optional Fields card -->
-  <ion-card>
-    <ion-card-header>
-      <ion-card-subtitle>
-        <h3>Optional Fields</h3>
-      </ion-card-subtitle>
-    </ion-card-header>
+    <!-- Optional Fields card -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-subtitle>
+          <h3>Optional Fields</h3>
+        </ion-card-subtitle>
+      </ion-card-header>
 
-    <ion-card-content>
-      <ion-item>
-        <ion-label position="floating">First Name</ion-label>
-        <ion-input id="firstName" placeholder="First Name" type="text" formControlName="firstName"></ion-input>
-      </ion-item>
+      <ion-card-content>
+        <ion-item>
+          <ion-input id="firstName" placeholder="First Name" type="text" formControlName="firstName"></ion-input>
+        </ion-item>
 
-      <ion-item>
-        <ion-label position="floating">Last Name</ion-label>
-        <ion-input id="lastName" placeholder="Last Name" type="text" formControlName="lastName"></ion-input>
-      </ion-item>
+        <ion-item>
+          <ion-input id="lastName" placeholder="Last Name" type="text" formControlName="lastName"></ion-input>
+        </ion-item>
 
-      <ion-item>
-        <ion-label position="floating">Email Address</ion-label>
-        <ion-input id="email" placeholder="Email" type="email" formControlName="email"></ion-input>
-        <ion-note slot="error" *ngIf="registerForm.controls.email.errors?.['email']">
-          Enter a valid email address.
-        </ion-note>
-        <ion-note>
-          <!-- <app-subtle-modal title="Why do you want my email?" text="We will not use your email for marketing or any nefarious purposes. When implemented down the road, you will be able to use your email (if provided) to reset your password.">
-          </app-subtle-modal> -->
-        </ion-note>
-      </ion-item>
-    </ion-card-content>
-  </ion-card>
+        <ion-item>
+          <ion-input id="email" placeholder="Email" type="email" formControlName="email"></ion-input>
+          <ion-note slot="error" *ngIf="registerForm.controls.email.errors?.['email']">
+            Enter a valid email address.
+          </ion-note>
+          <ion-note>
+            <!-- <app-subtle-modal title="Why do you want my email?" text="We will not use your email for marketing or any nefarious purposes. When implemented down the road, you will be able to use your email (if provided) to reset your password.">
+              </app-subtle-modal> -->
+          </ion-note>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
 
-  <br />
+    <br />
 
-  <!-- Action Buttons -->
-  <ion-button expand="full" type="submit" [disabled]="!registerForm.valid">Register</ion-button>
-  <ion-button expand="full" color="danger" (click)="router.navigate(['/'])">Cancel</ion-button>
-</form>
+    <!-- Action Buttons -->
+    <ion-button type="submit" [disabled]="!registerForm.valid">Register</ion-button>
+    <ion-button color="danger" (click)="router.navigate(['/'])">Cancel</ion-button>
+  </form>
+</ion-content>
