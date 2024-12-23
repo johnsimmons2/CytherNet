@@ -65,6 +65,10 @@ export const routes: Routes = [
     ]
   },
   {
+    path: 'admin/users',
+    loadComponent: () => import('./modules/admin/users/users.component').then(m => m.UsersComponent),
+  },
+  {
     path: '**',
     pathMatch: 'full',
     component: NotFoundComponent

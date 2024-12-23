@@ -6,6 +6,7 @@ export interface UserDto {
     fName?: string;
     lName?: string;
     token?: string;
+    roles?: Role[];
 }
 
 export interface Role {

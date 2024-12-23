@@ -1,0 +1,36 @@
+<ion-content>
+  <ion-grid>
+    <ion-row class="table-header">
+      <ion-col size="3">Username</ion-col>
+      <ion-col size="4">Email</ion-col>
+      <ion-col size="3">Role</ion-col>
+      <ion-col size="2">Actions</ion-col>
+    </ion-row>
+    <ion-row *ngFor="let user of users">
+      <!-- Username Column -->
+      <ion-col size="3">
+        <span>{{ user.username }}</span>
+      </ion-col>
+
+      <!-- Email Column -->
+      <ion-col size="4">
+        <span>{{ user.email }}</span>
+      </ion-col>
+
+      <!-- Role Column -->
+      <ion-col size="3">
+        <span>{{ user.roles }}</span>
+      </ion-col>
+
+      <!-- Actions -->
+      <ion-col size="2" class="actions-col">
+        <ion-button color="primary">
+          Edit
+        </ion-button>
+        <ion-button color="danger" (click)="deleteUser(user.id)" *ngIf="user.username !== 'admin'">
+          Delete
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
