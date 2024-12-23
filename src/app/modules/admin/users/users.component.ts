@@ -45,6 +45,12 @@ export class UsersComponent {
 
   }
 
+  resetPassword(user: any) {
+    this.userService.resetPasswordLink(this.users.find(x => x.id === user)).subscribe((res) => {
+      console.log(res);
+    });
+  }
+
   deleteUser(user: any) {
     console.log(user);
     this.userService.deleteUser(user).subscribe(() => {

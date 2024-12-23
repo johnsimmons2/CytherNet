@@ -79,6 +79,10 @@ export class UserService {
     });
   }
 
+  public resetPasswordLink(user: any): Observable<string> {
+    return this.apiService.post('auth/get-password-reset-link', user);
+  }
+
   public refreshToken(): void {
     const user = localStorage.getItem('jwtToken');
     if (user) {

@@ -24,7 +24,7 @@
 
       <!-- Actions -->
       <ion-col size="2" class="actions-col">
-        <ion-button color="primary">
+        <ion-button color="primary" (click)="resetPassword(user.id)">
           Edit
         </ion-button>
         <ion-button color="danger" (click)="deleteUser(user.id)" *ngIf="user.username !== 'admin'">
