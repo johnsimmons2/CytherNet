@@ -6,7 +6,9 @@
   </ion-title>
   <ion-buttons slot="end">
 
-    <ion-button *ngIf="!authenticated" routerLink="about">About</ion-button>
+    <ion-button *ngIf="!authenticated && !onAbout" routerLink="about">About</ion-button>
+
+    <ion-button *ngIf="!authenticated && onAbout" routerLink="login">Login</ion-button>
 
     <ng-container *ngIf="authenticated">
       <ion-button (click)="logout()">Logout</ion-button>

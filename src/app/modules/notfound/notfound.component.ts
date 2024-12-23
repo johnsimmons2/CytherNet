@@ -1,15 +1,18 @@
 import { Component } from "@angular/core";
-import { IonContent, IonTitle } from "@ionic/angular/standalone";
+import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonTitle } from "@ionic/angular/standalone";
 
 @Component({
   selector: 'not-found',
   templateUrl: './notfound.component.html',
   standalone: true,
   imports: [
+    IonCard,
     IonContent,
-    IonTitle
+    IonCardHeader,
+    IonCardTitle,
+    IonCardSubtitle,
+    IonCardContent
   ]
 })
 export class NotFoundComponent {
-
 }

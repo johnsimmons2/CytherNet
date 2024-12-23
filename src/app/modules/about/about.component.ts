@@ -1,11 +1,14 @@
 import { CommonModule } from "@angular/common";
+import { HttpClient } from "@angular/common/http";
 import { Component } from "@angular/core";
 import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonItem, IonLabel, IonList } from "@ionic/angular/standalone";
+import { ApiService } from "src/app/common/services/api.service";
 import { environment } from "src/environments/environment";
 
 @Component({
     selector: 'app-about',
     templateUrl: './about.component.html',
+    styleUrls: ['./about.component.scss'],
     standalone: true,
     imports: [
       CommonModule,
@@ -23,35 +26,21 @@ import { environment } from "src/environments/environment";
 export class AboutComponent {
     //TODO get the version from the package.json
     version: string = '';
+    apiVersion: string = '';
+    features: { [key: string]: any[] } = {};
+    changeLog: any[] = [];
 
-    changeLog: any[] = [{
-      version: '0.0.1',
-      description: 'Initial release',
-      id: 1,
-    },
-    {
-      version: '0.0.2 - 0.0.3',
-      description: 'CRUD operations and role based authentication. Database recovery / revision system.',
-      id: 2,
-    },
-    {
-      version: '0.0.3 - 0.0.5',
-      description: 'Characters, races, spells, monsters, items; dungeon master administration screen.',
-      id: 3,
-    },
-    {
-      version: '0.0.6',
-      description: 'Password retreival via email and password reset form.',
-      id: 4,
-    },
-    {
-      version: '0.1.X (beta / current)',
-      description: 'Major refactor, theme change, android mobile platform support, offline mode.',
-      id: 5,
-    }
-  ];
-
-  constructor() {
+  constructor(private http: HttpClient, private apiService: ApiService) {
     this.version = environment.version;
+    this.http.get('assets/features.json', { responseType: 'json' }).subscribe((data: any) => {
+      this.features = data;
+    });
+    this.http.get('assets/changelog.json', { responseType: 'json' }).subscribe((data: any) => {
+      this.changeLog = data;
+    });
+    this.version = environment.version;
+    this.apiService.healthCheck().subscribe((res) => {
+      this.apiVersion = res.data;
+    });
   }
 }

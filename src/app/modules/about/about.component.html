@@ -1,96 +1,110 @@
 <ion-content>
+  <div class="about-container">
+    <div style="width: 100%">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>
+            About Cyther Online
+          </ion-card-title>
+          <ion-card-subtitle>
+            Current version: {{ version }}
+          </ion-card-subtitle>
+        </ion-card-header>
 
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>
-        About Cyther Online
-      </ion-card-title>
-      <ion-card-subtitle>
-        Current version: {{ version }}
-      </ion-card-subtitle>
-    </ion-card-header>
+        <ion-card-content>
+          <ion-label>
+            <h2>Summary</h2>
+          </ion-label>
+          <ion-item>
+            <ion-label>
+              <p>
+                Cyther.online is a tool designed for Dungeon Masters to help them manage their campaigns.
+                It is designed to be used in conjunction with the Dungeons and Dragons 5th Edition ruleset,
+                however, future updates will allow for wider flexibility.
+              </p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <p>
+                Individual users may create campaigns and invite other users to join them. Users who create
+                a campaign become a Dungeon Master of that campaign, and can manage users, characters, lore, and unique rule sets.
+                The DM can update character sheets, create and manage monsters, and create and manage items.
+                Updates to the character sheets reflect live, and your users can see the changes you make in real time during
+                your game nights.
+              </p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <p>
+                Cyther Online is still in early development, many new features are being added all the time, with some
+                really cool ones to come down the road. Cyther Online should make a fun, useful, and optional supplement to any
+                tabletop RPG campaign.
+              </p>
+            </ion-label>
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>
+            Features and Changes
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-label>
+            <h3>Administrative Features</h3>
+          </ion-label>
+          <ion-list>
+            <ion-item *ngFor="let x of features['administrative']">
+              <ion-label>
+                <h3>{{ x.title }}</h3>
+                <p>{{ x.description }}</p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+          <ion-label>
+            <h3>User Features</h3>
+          </ion-label>
+          <ion-list>
+            <ion-item *ngFor="let x of features['user']">
+              <ion-label>
+                <h3>{{ x.title }}</h3>
+                <p>{{ x.description }}</p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+          <ion-label>
+            <h3>Changes</h3>
+          </ion-label>
+          <ion-item>
+            <ion-label>
+              <p>
+                The changelog for cyther.online is below. For the backend API change list, check out the <a target="_blank" href="https://github.com/johnsimmons2/CytherAPI">github repository</a> and look for the commit history.
+              </p>
+              <br/>
+              <p>
+                The current version of Cyther.online is {{ version }}, and the current version of the backend API is {{ apiVersion }}.
+              </p>
+            </ion-label>
+          </ion-item>
+          <ion-list>
+            <ion-item *ngFor="let x of changeLog">
+              <ion-label>
+                <h3>{{ x.version }}</h3>
+                <p>{{ x.description }}</p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
 
-    <ion-card-content>
-      <ion-item>
-        <ion-label>
-          <h1>Summary</h1>
+          <br>
+
           <p>
-            Cyther.online is a tool designed for Dungeon Masters to help them manage their campaigns.
-            It is designed to be used in conjunction with the Dungeons and Dragons 5th Edition ruleset,
-            however, future updates will allow for wider flexibility.
+            <sub>Created by <a href="https://johnsimmons2.github.io/" target="_blank">Jonathan Simmons</a></sub>
           </p>
-        </ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-label>
-          <p>
-            Individual users may create campaigns and invite other users to join them. Users who create
-            a campaign become a Dungeon Master of that campaign, and can manage users, characters, lore, and unique rule sets.
-            The DM can update character sheets, create and manage monsters, and create and manage items.
-            Updates to the character sheets reflect live, and your users can see the changes you make in real time during
-            your game nights.
-          </p>
-        </ion-label>
-      </ion-item>
-    <ion-item>
-      <ion-label>
-        <p>
-          Cyther Online is still in early development, many new features are being added all the time, with some
-          really cool ones to come down the road. Cyther Online should make a fun, useful, and optional supplement to any
-          tabletop RPG campaign.
-        </p>
-      </ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>
-        <h2>Features</h2>
-        <br/>
-        <h3>Administrative Features</h3>
-      </ion-label>
-    </ion-item>
-
-      <ion-list>
-        <ion-item>
-          <ion-label>
-            <h3>Authentication & Authorization</h3>
-            <p>Custom JWT Auth services for user authentication and authorization.</p>
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            <h3>Manage Characters</h3>
-            <p>Create/View/Edit characters, races, classes, and feats.</p>
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            <h3>Up to date DnD 5e data</h3>
-            <p>We pull from various APIs to retrieve spells, feats, traits, and more. Credits available on 1.0 release.</p>
-          </ion-label>
-        </ion-item>
-      </ion-list>
-
-      <ion-item>
-        <ion-label>
-          <h2>Changes</h2>
-          <h4>For API changes, check my github.</h4>
-        </ion-label>
-      </ion-item>
-      <ion-list>
-        <ion-item *ngFor="let x of changeLog">
-          <ion-label>
-            <h3>{{ x.version }}</h3>
-            <p>{{ x.description }}</p>
-          </ion-label>
-        </ion-item>
-      </ion-list>
-
-
-      <br>
-
-      <p>
-        <sub>Created by <a href="https://johnsimmons2.github.io/" target="_blank">Jonathan Simmons</a></sub>
-      </p>
-    </ion-card-content>
-  </ion-card>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
 </ion-content>

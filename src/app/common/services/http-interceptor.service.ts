@@ -28,7 +28,6 @@ export class HttpInterceptorService implements HttpInterceptor {
           }),
           map((res: any) => {
             if (res instanceof HttpResponse) {
-              console.log("Cloning!!!");
               return res.clone({ body: res.body.data, headers: res.headers });
             }
             return res;

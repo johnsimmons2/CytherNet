@@ -1,0 +1,18 @@
+{
+  "administrative": [
+    {
+      "title": "Authentication & Authorization",
+      "description": "Custom JWT Auth services for user authentication and authorization."
+    },
+    {
+      "title": "Manage Characters",
+      "description": "Create/View/Edit characters, races, classes, and feats."
+    }
+  ],
+  "user": [
+    {
+      "title": "View Characters",
+      "description": "View your character sheets and inventories."
+    }
+  ]
+}

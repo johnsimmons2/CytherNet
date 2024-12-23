@@ -124,7 +124,7 @@ export class AppComponent {
         this.ipAddress = ip;
       });
       this.apiService.healthCheck().subscribe((res) => {
-        this.apiVersion = res.body.data;
+        this.apiVersion = res.data;
       });
       this.platform = this.platformService.platform;
   }

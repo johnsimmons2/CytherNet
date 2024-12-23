@@ -1,0 +1,27 @@
+[
+  {
+    "version": "0.0.1",
+    "description": "Initial release",
+    "id": 1
+  },
+  {
+    "version": "0.0.2 - 0.0.3",
+    "description": "CRUD operations and role based authentication. Database recovery / revision system.",
+    "id": 2
+  },
+  {
+    "version": "0.0.3 - 0.0.5",
+    "description": "Characters, races, spells, monsters, items; dungeon master administration screen.",
+    "id": 3
+  },
+  {
+    "version": "0.0.6",
+    "description": "Password retreival via email and password reset form.",
+    "id": 4
+  },
+  {
+    "version": "'0.1.X (beta / current)'",
+    "description": "Major refactor, theme change, android mobile platform support, offline mode.",
+    "id": 5
+  }
+]

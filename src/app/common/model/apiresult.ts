@@ -4,4 +4,5 @@ export interface ApiResult {
     message?: string;
     data?: any;
     errors?: string[];
+    headers: any;
 }

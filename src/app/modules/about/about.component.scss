@@ -1,11 +1,11 @@
-.login-container {
+.about-container {
   display: flex;
   justify-content: center;
   align-items: first baseline;
   height: 100%;
 
-  ion-card {
-    max-width: 600px;
+  div {
+    max-width: 800px;
     width: 100%;
   }
 }

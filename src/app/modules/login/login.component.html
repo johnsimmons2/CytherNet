@@ -1,70 +1,78 @@
-<ion-content>
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>
-        <h2>Login to an existing account</h2>
-      </ion-card-title>
-    </ion-card-header>
+<ion-content >
+  <div class="login-container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          <h2>Login to an existing account</h2>
+        </ion-card-title>
+      </ion-card-header>
 
-    <ion-card-content>
-      <form [formGroup]="loginFormGroup" (ngSubmit)="submit()" id="loginForm">
-        <ion-item>
-          <ion-input id="username" placeholder="Username" type="text" formControlName="username" [clearInput]="true"></ion-input>
-        </ion-item>
-        <ion-text color="danger" *ngIf="loginFormGroup.controls.username.errors?.['required'] && loginFormGroup.controls.username.touched">
-          <p>Username is required.</p>
-        </ion-text>
+      <ion-card-content>
+        <form [formGroup]="loginFormGroup" (ngSubmit)="submit()" id="loginForm">
+          <ion-item>
+            <ion-input id="username" placeholder="Username" type="text" formControlName="username" [clearInput]="true"></ion-input>
+          </ion-item>
+          <ion-text color="danger" *ngIf="loginFormGroup.controls.username.errors?.['required'] && loginFormGroup.controls.username.dirty">
+            <p>Username is required.</p>
+          </ion-text>
 
-        <ion-item>
-          <ion-input id="password" placeholder="Password" [type]="hidePassword ? 'password' : 'text'" formControlName="password" [clearOnEdit]="true">
-            <ion-button fill="clear" slot="end" aria-label="resetPassword" id="open-modal">
-              <ion-icon slot="icon-only" [icon]="resetIcon" aria-hidden="true"></ion-icon>
-            </ion-button>
-            <ion-button fill="clear" slot="end" aria-label="Show/hide" (click)="togglePasswordVisibility()">
-              <ion-icon slot="icon-only" [icon]="eyeCon" aria-hidden="true"></ion-icon>
-            </ion-button>
-          </ion-input>
-        </ion-item>
-        <ion-text color="danger" *ngIf="loginFormGroup.controls.password.errors?.['required'] && loginFormGroup.controls.password.touched">
-          <p>Password is required.</p>
-        </ion-text>
-      </form>
-    </ion-card-content>
-
-    <ion-button fill="clear" type="submit" form="loginForm" (click)="submit()" [disabled]="!loginFormGroup.valid">Login</ion-button>
-    <ion-button fill="clear" color="secondary" type="button" (click)="registerUser()">Register</ion-button>
-  </ion-card>
-
-  <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
-    <ng-template #passwordForm>
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>
-            <h3>Reset your password</h3>
-          </ion-card-title>
-          <ion-card-subtitle>
-            If you have an account registered with an email address, you will receive an email with instructions on how to recover your account.
-          </ion-card-subtitle>
-        </ion-card-header>
-
-        <form [formGroup]="passwordFormGroup" (ngSubmit)="resetPassword()">
-          <ion-card-content>
-            <ion-item>
-              <ion-input id="email" placeholder="Email" type="email" formControlName="email"></ion-input>
-              <ion-note slot="error" *ngIf="passwordFormGroup.controls.email.errors?.['required']">
-                Email is required.
-              </ion-note>
-            </ion-item>
-          </ion-card-content>
-
-          <ion-button color="primary" type="submit" [disabled]="!passwordFormGroup.valid">Submit</ion-button>
-          <ion-button color="secondary" type="submit" (click)="cancel()">Cancel</ion-button>
+          <ion-item>
+            <ion-input id="password" placeholder="Password" [type]="hidePassword ? 'password' : 'text'" formControlName="password" [clearOnEdit]="true">
+              <ion-button fill="clear" slot="end" aria-label="Show/hide" (click)="togglePasswordVisibility()">
+                <ion-icon slot="icon-only" [icon]="eyeCon" aria-hidden="true"></ion-icon>
+              </ion-button>
+            </ion-input>
+          </ion-item>
+          <ion-text color="danger" *ngIf="loginFormGroup.controls.password.errors?.['required'] && loginFormGroup.controls.password.dirty">
+            <p>Password is required.</p>
+          </ion-text>
+          <ion-text color="danger" *ngIf="loginFormGroup.controls.password.errors?.['loginError'] && loginFormGroup.controls.password.dirty">
+            <p>The username / password combination could not be found.</p>
+          </ion-text>
+          <ion-text color="danger" *ngIf="loginFormGroup.controls.password.errors?.['genericError'] && loginFormGroup.controls.password.dirty">
+            <p>Something went wrong with your login request.</p>
+          </ion-text>
+          <ion-item lines="none" button="true" id="open-modal">
+            <ion-text color="secondary" style="font-size: 0.75rem">Forgot your password?</ion-text>
+          </ion-item>
         </form>
-      </ion-card>
-    </ng-template>
-  </ion-modal>
+      </ion-card-content>
+      <ion-button fill="outline" type="submit" form="loginForm" expand="block" [disabled]="loginFormGroup.invalid">Login</ion-button>
 
+      <ion-item lines="none" button="true" (click)="router.navigate(['/register'])">
+        <ion-text color="secondary" style="font-size: 0.75rem">Register a new account</ion-text>
+      </ion-item>
+    </ion-card>
+
+    <!-- Password Reset Email Request Modal -->
+    <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+      <ng-template #passwordForm>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>
+              <h3>Reset your password</h3>
+            </ion-card-title>
+            <ion-card-subtitle>
+              If you have an account registered with an email address, you will receive an email with instructions on how to recover your account.
+            </ion-card-subtitle>
+          </ion-card-header>
+
+          <form [formGroup]="passwordFormGroup" (ngSubmit)="resetPassword()">
+            <ion-card-content>
+              <ion-item>
+                <ion-input id="email" placeholder="Email" type="email" formControlName="email"></ion-input>
+                <ion-note slot="error" *ngIf="passwordFormGroup.controls.email.errors?.['required']">
+                  Email is required.
+                </ion-note>
+              </ion-item>
+            </ion-card-content>
+            <br/>
+            <ion-button fill="clear" color="primary" type="submit" [disabled]="!passwordFormGroup.valid">Submit</ion-button>
+            <ion-button fill="clear" color="secondary" type="submit" (click)="cancel()">Cancel</ion-button>
+          </form>
+        </ion-card>
+      </ng-template>
+    </ion-modal>
+  </div>
+  <ion-toast [isOpen]="toastOpen" (didDismiss)="toastOpen = false" message="If a user with that email address is registered, they should receive instructions in 5 - 30 minutes." [duration]="5000"></ion-toast>
 </ion-content>
-
-<!-- Password Reset Form -->
-

@@ -13,7 +13,7 @@
 
       <ion-card-content>
         <ion-item>
-          <ion-input id="username" placeholder="Username" type="text" formControlName="username"></ion-input>
+          <ion-input id="username" placeholder="Username*" type="text" formControlName="username"></ion-input>
           <ion-note slot="error" *ngIf="registerForm.controls.username.errors?.['nameTaken']">
             Username is taken.
           </ion-note>
@@ -23,7 +23,7 @@
         </ion-item>
 
         <ion-item>
-          <ion-input id="password" placeholder="Password" [type]="showPassword ? 'text' : 'password'"
+          <ion-input id="password" placeholder="Password*" [type]="showPassword ? 'text' : 'password'"
             formControlName="password"></ion-input>
           <ion-icon slot="end" [name]="showPassword ? 'eye-off' : 'eye'"
             (click)="showPassword = !showPassword"></ion-icon>
@@ -33,7 +33,7 @@
         </ion-item>
 
         <ion-item>
-          <ion-input id="passwordConfirm" placeholder="Confirm Password" [type]="showPassword ? 'text' : 'password'"
+          <ion-input id="passwordConfirm" placeholder="Confirm Password*" [type]="showPassword ? 'text' : 'password'"
             formControlName="passwordConfirm"></ion-input>
           <ion-icon slot="end" [name]="showPassword ? 'eye-off' : 'eye'"
             (click)="showPassword = !showPassword"></ion-icon>
@@ -45,6 +45,10 @@
           </ion-note>
         </ion-item>
       </ion-card-content>
+
+      <!-- Action Buttons -->
+      <ion-button fill="clear" type="submit" [disabled]="!registerForm.valid">Register</ion-button>
+      <ion-button fill="clear" color="secondary" (click)="router.navigate(['/'])">Cancel</ion-button>
     </ion-card>
 
     <br />
@@ -78,11 +82,5 @@
         </ion-item>
       </ion-card-content>
     </ion-card>
-
-    <br />
-
-    <!-- Action Buttons -->
-    <ion-button type="submit" [disabled]="!registerForm.valid">Register</ion-button>
-    <ion-button color="danger" (click)="router.navigate(['/'])">Cancel</ion-button>
   </form>
 </ion-content>

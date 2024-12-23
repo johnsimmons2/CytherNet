@@ -1,1 +1,14 @@
+<ion-tabs>
+  <ion-tab-bar>
+    <ion-tab-button tab="home">
+      <h3>Home</h3>
+    </ion-tab-button>
+    <ion-tab-button *ngIf="isAdmin" tab="admin">
+      <h3>Admin</h3>
+    </ion-tab-button>
+    <ion-tab-button tab="profile">
+      <h3>Profile</h3>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>
 <app-download></app-download>

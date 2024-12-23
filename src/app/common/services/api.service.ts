@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { map, Observable, tap } from 'rxjs';
+import { catchError, map, Observable, of, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { ApiResult } from '../model/apiresult';
 
 
 @Injectable({ providedIn: 'root' })
@@ -35,6 +36,7 @@ export class ApiService {
                   path: string,
                   options: any,
                   payload?: any): any {
+    options.observe = 'response';
     var actualConductedAction = payload === undefined ? action.call(this.http, path, options) : action.call(this.http, path, payload, options);
 
       /**
@@ -42,8 +44,32 @@ export class ApiService {
        * as an ApiResult object to the observer.
        */
     return actualConductedAction.pipe(
+      catchError((error) => {
+        return of<ApiResult>({
+          success: false,
+          status: error.status,
+          data: error,
+          errors: [error.error],
+          headers: error.headers
+        });
+      }),
       map((res) => {
-        return res;
+        let body = res.body;
+        let success = res.status >= 200 && res.status < 300;
+        if (body?.data !== undefined) {
+          body = body.data;
+          if (body?.data?.success !== undefined) {
+            success = body.data.success;
+          }
+        }
+
+        let result: ApiResult = {
+          success: success,
+          status: res.status,
+          data: body,
+          headers: res.headers
+        }
+        return result;
       })
     );
   }
@@ -76,7 +102,7 @@ export class ApiService {
   }
 
   public healthCheck(): Observable<any> {
-    return this.get('health', { observe: 'response' });
+    return this.get('health');
   }
 
 }

@@ -27,6 +27,10 @@ export class UserService {
 
   public login(user: UserDto): Observable<ApiResult> {
     return this.apiService.post('auth/token', user).pipe(
+      catchError((error: any) => {
+        this.isAuthenticatedSubject.next(false);
+        return of({ success: false, status: error.status});
+      }),
       map((res: ApiResult) => {
         if (res.success && res.data) {
           localStorage.clear();
@@ -102,6 +106,10 @@ export class UserService {
     return this.httpClient.post('/api/auth/reset-password?', user, {params: {resetToken: resetToken}});
   }
 
+  public updateUserPasswordManual(request: any): Observable<any> {
+    return this.apiService.post('auth/reset-password/manual-request', request);
+  }
+
   // PLAYER :-> 1
   public hasRolePlayer(): boolean {
     return this.hasRoleLevel(1);
@@ -149,7 +157,7 @@ export class UserService {
     return this.apiService.get('users');
   }
 
-  public getUser(userId: number): Observable<any> {
+  public getUser(userId: number | string): Observable<any> {
     return this.apiService.get(`users/${userId}`);
   }
 

@@ -1,6 +1,8 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTab, IonTabBar, IonTabButton, IonTabs, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { DownloadComponent } from 'src/app/common/components/download/download.component';
+import { UserService } from 'src/app/common/services/user.service';
 
 
 
@@ -10,15 +12,22 @@ import { DownloadComponent } from 'src/app/common/components/download/download.c
   styleUrls: ['./home.component.scss'],
   standalone: true,
   imports: [
-    IonHeader,
-    IonTitle,
+    CommonModule,
+    IonTabs,
+    IonTabBar,
     IonToolbar,
+    IonContent,
+    IonTabButton,
     DownloadComponent
   ]
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private userService: UserService) { }
+
+  get isAdmin(): boolean {
+    return this.userService.hasRoleAdmin();
+  }
 
   ngOnInit(): void {
   }
