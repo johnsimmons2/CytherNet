@@ -107,7 +107,7 @@ export class UserService {
   }
 
   public updateUserPassword(user: UserDto, resetToken: string): Observable<any> {
-    return this.httpClient.post('/api/auth/reset-password?', user, {params: {resetToken: resetToken}});
+    return this.apiService.post(`auth/reset-password?t=${resetToken}&u=${user.username}`, user);
   }
 
   public updateUserPasswordManual(request: any): Observable<any> {

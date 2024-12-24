@@ -11,7 +11,7 @@
     <ion-card-content>
       <form [formGroup]="profileForm" (ngSubmit)="submit()">
         <ion-label>
-          <h3>Profile Information</h3>
+          <h3>Profile Information <span *ngIf="username?.toLowerCase() === 'wocket'">...Hi Bob</span></h3>
         </ion-label>
         <ion-list>
           <ion-item>

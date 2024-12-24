@@ -37,7 +37,7 @@
           </ion-item>
         </form>
       </ion-card-content>
-      <ion-button fill="outline" type="submit" form="loginForm" expand="block" [disabled]="loginFormGroup.invalid">Login</ion-button>
+      <ion-button fill="outline" type="submit" form="loginForm" expand="block" [disabled]="!loginFormGroup.valid">Login</ion-button>
 
       <ion-item lines="none" button="true" (click)="router.navigate(['/register'])">
         <ion-text color="secondary" style="font-size: 0.75rem">Register a new account</ion-text>

@@ -14,36 +14,36 @@
       <ion-card-content>
         <ion-item>
           <ion-input id="username" placeholder="Username*" type="text" formControlName="username"></ion-input>
-          <ion-note slot="error" *ngIf="registerForm.controls.username.errors?.['nameTaken']">
-            Username is taken.
-          </ion-note>
-          <ion-note slot="error" *ngIf="registerForm.controls.username.errors?.['required']">
-            Username is required.
-          </ion-note>
         </ion-item>
+        <ion-text color="danger" *ngIf="registerForm.controls.username.hasError('nameTaken')">
+          <p>A user with this username (or email if provided) already exists.</p>
+        </ion-text>
+        <ion-text color="danger" *ngIf="registerForm.controls.username.hasError('required')">
+          <p>Username is required.</p>
+        </ion-text>
 
         <ion-item>
           <ion-input id="password" placeholder="Password*" [type]="showPassword ? 'text' : 'password'"
             formControlName="password"></ion-input>
           <ion-icon slot="end" [name]="showPassword ? 'eye-off' : 'eye'"
             (click)="showPassword = !showPassword"></ion-icon>
-          <ion-note slot="error" *ngIf="registerForm.controls.password.errors?.['required']">
-            Password is required.
-          </ion-note>
         </ion-item>
+        <ion-text color="danger" *ngIf="registerForm.controls.password.errors?.['required']">
+          Password is required.
+        </ion-text>
 
         <ion-item>
           <ion-input id="passwordConfirm" placeholder="Confirm Password*" [type]="showPassword ? 'text' : 'password'"
             formControlName="passwordConfirm"></ion-input>
           <ion-icon slot="end" [name]="showPassword ? 'eye-off' : 'eye'"
             (click)="showPassword = !showPassword"></ion-icon>
-          <ion-note slot="error" *ngIf="registerForm.controls.passwordConfirm.errors?.['mismatch']">
-            Passwords do not match.
-          </ion-note>
-          <ion-note slot="error" *ngIf="registerForm.controls.passwordConfirm.errors?.['required']">
-            Confirming password is required.
-          </ion-note>
         </ion-item>
+        <ion-text color="danger" *ngIf="registerForm.controls.passwordConfirm.errors?.['mismatch']">
+          Passwords do not match.
+        </ion-text>
+        <ion-text color="danger" *ngIf="registerForm.controls.passwordConfirm.errors?.['required']">
+          Confirm password.
+        </ion-text>
       </ion-card-content>
 
       <!-- Action Buttons -->

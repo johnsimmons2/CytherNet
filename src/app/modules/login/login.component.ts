@@ -70,9 +70,6 @@ export class LoginComponent {
   }
 
 	ngOnInit() {
-    this.loginFormGroup.controls.password.valueChanges.subscribe((value: any) => {
-      this.loginFormGroup.controls.password.setErrors(null);
-    });
 	}
 
 	togglePasswordVisibility() {
@@ -111,10 +108,15 @@ export class LoginComponent {
 
   cancel() {
     this.modal.dismiss(null, 'cancel');
+    this.loginFormGroup.reset();
+    this.toastOpen = false;
+    this.hidePassword = true;
   }
 
   onWillDismiss(event: any) {
-    console.log(event);
+    this.loginFormGroup.reset();
+    this.toastOpen = false;
+    this.hidePassword = true;
   }
 
 	registerUser() {
