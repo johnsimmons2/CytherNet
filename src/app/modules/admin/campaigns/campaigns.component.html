@@ -1,0 +1,117 @@
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <app-table [data]="campaigns"
+                [columns]="cols"
+                [actions]="getTableActions()">
+      </app-table>
+    </ion-card-content>
+
+    <br/>
+
+    <ion-button id="add-campaign" fill="outline" color="primary">
+      <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+      <ion-label>Add Campaign</ion-label>
+    </ion-button>
+
+    <ion-button id="add-campaign-user" fill="outline" color="primary">
+      <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+      <ion-label>Attach User to Campaign</ion-label>
+    </ion-button>
+
+    <ion-button id="add-campaign-character" fill="outline" color="primary">
+      <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+      <ion-label>Attach Character to Campaign</ion-label>
+    </ion-button>
+  </ion-card>
+</ion-content>
+
+<ion-modal #addCampaignModal trigger="add-campaign">
+  <ng-template>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Add Campaign</ion-card-title>
+        <ion-card-subtitle>Fill in the details</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <form [formGroup]="newCampaignForm" (submit)="addCampaign()">
+          <ion-item>
+            <ion-input id="name" type="text" formControlName="name" placeholder="Campaign Name"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-textarea autoGrow="true" formControlName="description" placeholder="Campaign Description"></ion-textarea>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Active: {{newCampaignForm.controls.active.value}}</ion-label>
+            <ion-checkbox slot="end" formControlName="active"></ion-checkbox>
+          </ion-item>
+          <ion-item>
+            <ion-label>Campaign creation date</ion-label>
+            <ion-text>{{rightNow | date }}</ion-text>
+          </ion-item>
+
+          <br />
+
+          <ion-button fill="outline" type="submit" color="primary" [disabled]="!newCampaignForm.valid">Add</ion-button>
+          <ion-button fill="outline" color="secondary" (click)="closeNewCampaign()">Cancel</ion-button>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
+</ion-modal>
+
+<ion-modal #addUserToCampaignModal trigger="add-campaign-user">
+  <ng-template>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Add User to Campaign</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <form [formGroup]="userToCampaignForm" (submit)="addUserToCampaign()">
+          <ion-item>
+            <ion-select id="name" type="text" formControlName="userId" placeholder="Choose a User">
+              <ion-select-option *ngFor="let user of users" [value]="user.id">{{user.username}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-select autoGrow="true" formControlName="campaignId" placeholder="Choose a Campaign">
+              <ion-select-option *ngFor="let campaign of campaigns" [value]="campaign.id">{{campaign.name}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <br />
+
+          <ion-button fill="outline" type="submit" color="primary" [disabled]="!userToCampaignForm.valid">Add</ion-button>
+          <ion-button fill="outline" color="secondary" (click)="closeAddUserToCampaign()">Cancel</ion-button>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
+</ion-modal>
+
+<ion-modal #addCharacterToCampaignModal trigger="add-campaign-character">
+  <ng-template>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Add User to Campaign</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <form [formGroup]="characterToCampaignForm" (submit)="addUserToCampaign()">
+          <ion-item>
+            <ion-select id="name" type="text" formControlName="characterId" placeholder="Choose a Character">
+              <ion-select-option *ngFor="let user of users" [value]="user.id">{{user.username}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-select autoGrow="true" formControlName="campaignId" placeholder="Choose a Campaign">
+              <ion-select-option *ngFor="let campaign of campaigns" [value]="campaign.id">{{campaign.name}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <br />
+
+          <ion-button fill="outline" type="submit" color="primary" [disabled]="!characterToCampaignForm.valid">Add</ion-button>
+          <ion-button fill="outline" color="secondary" (click)="closeAddCharacterToCampaign()">Cancel</ion-button>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
+</ion-modal>

@@ -1,12 +1,16 @@
+import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
-import { Router } from "@angular/router";
-import { IonButton, IonContent } from "@ionic/angular/standalone";
+import { Router, RouterModule } from "@angular/router";
+import { IonButton, IonContent, IonRouterLink } from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   standalone: true,
   imports: [
+    CommonModule,
+    IonRouterLink,
+    RouterModule,
     IonContent,
     IonButton
   ]
@@ -16,6 +20,6 @@ export class AdminComponent {
   }
 
   routeToUsers() {
-    this.router.navigate(['/admin/users']);
+    this.router.navigate(['admin/users']);
   }
 }

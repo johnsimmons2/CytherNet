@@ -1,0 +1,79 @@
+<ion-grid>
+  <ion-row>
+    <ng-container *ngFor="let col of columns; let i = index">
+      <ion-col *ngIf="i === 0; else regularColumn" [style.width.px]="0" size="0.1" class="shrinkable"><ion-label>{{col.alias ?? col.name}}</ion-label></ion-col>
+      <ng-template #regularColumn>
+        <ion-col [style.width.px]="columnWidths[i]" class="shrinkable"><ion-label>{{col.alias ?? col.name}}</ion-label></ion-col>
+      </ng-template>
+    </ng-container>
+    <ion-col [style.width.px]="actionsColumnWidth" class="shrinkable">Actions</ion-col>
+  </ion-row>
+
+  <ion-row *ngFor="let d of data; let i = index">
+    <!-- Data -->
+    <ng-container *ngFor="let c of columns; let j = index">
+      <ion-col *ngIf="j !== 0; else idColumn" [style.width.px]="columnWidths[i]" class="shrinkable">
+        <a *ngIf="canEditRow(i, j); else nonEditableColumn" style=":hover {cursor: pointer;}" style="margin: 0; padding: 0" (click)="actionView(i, j)">
+          {{getDisplayName(i, j)}}
+        </a>
+        <ng-template #nonEditableColumn>
+          <ion-label>{{getDisplayName(i, j)}}</ion-label>
+        </ng-template>
+      </ion-col>
+      <ng-template #idColumn>
+        <ion-col [style.width.px]="0" size="0.1" class="shrinkable" (click)="actionView(i, j)">
+          <ion-label>{{getDisplayName(i, j)}}</ion-label>
+        </ion-col>
+      </ng-template>
+    </ng-container>
+
+    <!-- Actions -->
+    <ion-col [style.width.px]="actionsColumnWidth" class="shrinkable">
+      <span *ngFor="let action of actions">
+        <ion-button size="small"  [color]="action.color" (click)="action.action(i)" [disabled]="action.disabled(i)">
+          {{ action.label }}
+        </ion-button>
+      </span>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+
+
+<ion-modal>
+  <ng-template>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Viewing {{contextHeaderColumnName}} for {{contextRow[primaryColumn]}}</ion-card-title>
+        <ion-card-subtitle>Edit and confirm changes</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <ng-container *ngTemplateOutlet="contextTemplate || defaultTemplate;
+        context: {$implicit: data[contextIndex], column: columns[contextColumnIndex]}"></ng-container>
+
+        <ng-template #defaultTemplate let-row let-column="column">
+          <ion-list>
+            <ion-item>
+              <ion-label>
+                <h2>Before</h2>
+                <span *ngIf="contextRow[contextHeaderColumn] !== null && contextRow[contextHeaderColumn] !== ''; else noContentRow">
+                  {{contextRow[contextHeaderColumn]}}
+                </span>
+                <ng-template #noContentRow>
+                  <i>(No data)</i>
+                </ng-template>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <h2>After</h2>
+                <ion-input [placeholder]="contextRow[contextHeaderColumn]" [ngModel]="contextNewValue" (change)="setNewValue($event)"></ion-input>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+          <ion-button fill="outline" color="primary" (click)="confirmChange()">Confirm</ion-button>
+          <ion-button fill="outline" color="secondary" (click)="cancel()">Cancel</ion-button>
+        </ng-template>
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
+</ion-modal>

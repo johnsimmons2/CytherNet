@@ -1,3 +1,6 @@
 <ion-content>
-  <ion-button (click)="routeToUsers()">Users</ion-button>
+  <ion-button [routerLink]="['users']">Users</ion-button>
+  <ion-button [routerLink]="['campaigns']">Campaigns</ion-button>
+  <ion-button [routerLink]="['characters']">Characters</ion-button>
 </ion-content>
+<router-outlet></router-outlet>

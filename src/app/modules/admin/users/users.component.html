@@ -1,36 +1,46 @@
 <ion-content>
-  <ion-grid>
-    <ion-row class="table-header">
-      <ion-col size="3">Username</ion-col>
-      <ion-col size="4">Email</ion-col>
-      <ion-col size="3">Role</ion-col>
-      <ion-col size="2">Actions</ion-col>
-    </ion-row>
-    <ion-row *ngFor="let user of users">
-      <!-- Username Column -->
-      <ion-col size="3">
-        <span>{{ user.username }}</span>
-      </ion-col>
-
-      <!-- Email Column -->
-      <ion-col size="4">
-        <span>{{ user.email }}</span>
-      </ion-col>
-
-      <!-- Role Column -->
-      <ion-col size="3">
-        <span>{{ user.roles }}</span>
-      </ion-col>
-
-      <!-- Actions -->
-      <ion-col size="2" class="actions-col">
-        <ion-button color="primary" (click)="resetPassword(user.id)">
-          Edit
-        </ion-button>
-        <ion-button color="danger" (click)="deleteUser(user.id)" *ngIf="user.username !== 'admin'">
-          Delete
-        </ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <ion-card>
+    <ion-card-content>
+      <app-table [data]="users"
+                [columns]="cols"
+                [actions]="getTableActions()"
+                [primaryColumn]="'username'"
+                (valueChange)="saveChanges($event)">
+      </app-table>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
+
+
+<ng-template #rolesTemplate let-row let-column="column">
+  <ion-item>
+    <ion-label><h2>Roles</h2></ion-label>
+    <ion-select [(ngModel)]="row.roles" [value]="row.roles" multiple="true" [selectedText]="row[column.name].length + ' roles selected'" [compareWith]="compareRoleFn">
+      <ion-select-option *ngFor="let option of roleOptions" [value]="option" >
+        {{ option.roleName }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-label>Role</ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-label>Level</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngFor="let role of row.roles">
+        <ion-col>
+          <ion-label> {{ role.roleName }} </ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-label> {{ role.level }} </ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-item>
+  <ion-button fill="outline" color="primary" (click)="confirmRoleChange(row)">Confirm</ion-button>
+  <ion-button fill="outline" color="secondary" >Cancel</ion-button>
+</ng-template>

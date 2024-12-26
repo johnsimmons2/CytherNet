@@ -79,7 +79,7 @@ export class UserService {
     });
   }
 
-  public resetPasswordLink(user: any): Observable<string> {
+  public resetPasswordLink(user: any): Observable<ApiResult> {
     return this.apiService.post('auth/get-password-reset-link', user);
   }
 
@@ -106,11 +106,11 @@ export class UserService {
     });
   }
 
-  public updateUserPassword(user: UserDto, resetToken: string): Observable<any> {
+  public updateUserPassword(user: UserDto, resetToken: string): Observable<ApiResult> {
     return this.apiService.post(`auth/reset-password?t=${resetToken}&u=${user.username}`, user);
   }
 
-  public updateUserPasswordManual(request: any): Observable<any> {
+  public updateUserPasswordManual(request: any): Observable<ApiResult> {
     return this.apiService.post('auth/reset-password/manual-request', request);
   }
 
@@ -132,25 +132,20 @@ export class UserService {
     return false;
   }
 
-  public deleteUser(userId: number): Observable<any> {
+  public deleteUser(userId: number): Observable<ApiResult> {
     return this.apiService.delete('users/' + userId);
   }
 
-  public getRolesForUser(userId: number): Observable<any> {
+  public getRolesForUser(userId: number): Observable<ApiResult> {
     return this.apiService.get('users/' + userId + '/roles');
   }
 
-  public updateUserRoles(userId: number, roles: Role[]): Observable<any> {
+  public updateUserRoles(userId: number, roles: Role[]): Observable<ApiResult> {
     return this.apiService.post('users/' + userId + '/roles', roles);
   }
 
-  public getAllRoles(): Observable<any> {
-    return this.apiService.get('roles').pipe(map((res: any) => {
-      if (res.success && res.data) {
-        return res.data;
-      }
-      return [];
-    }));
+  public getAllRoles(): Observable<ApiResult> {
+    return this.apiService.get('roles');
   }
 
   public updateUser(user: UserDto): Observable<any> {

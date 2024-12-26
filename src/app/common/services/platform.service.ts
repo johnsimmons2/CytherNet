@@ -74,9 +74,7 @@ export class PlatformService {
   public getIpAddress(): Observable<string> {
     return this.apiService.healthCheck().pipe(
       map((res: HttpResponse<any>) => {
-        console.log(res);
         let result = res.headers.get('X-Client-Ip') || 'Unkown';
-        console.log(result);
         return result;
       })
     );

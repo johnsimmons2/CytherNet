@@ -50,27 +50,37 @@ export const routes: Routes = [
       },
       {
         path: 'admin',
-        loadComponent: () => import('./modules/admin/admin.component').then(m => m.AdminComponent),
         canActivate: [ RoleGuard ],
-        data: { roles: ['admin'] }
+        data: { roles: ['admin'] },
+        children: [
+          {
+            path: '',
+            loadComponent: () => import('./modules/admin/admin.component').then(m => m.AdminComponent),
+          },
+          {
+            path: 'users',
+            loadComponent: () => import('./modules/admin/users/users.component').then(m => m.UsersComponent),
+          },
+          {
+            path: 'campaigns',
+            loadComponent: () => import('./modules/admin/campaigns/campaigns.component').then(m => m.CampaignsComponent),
+          },
+          {
+            path: 'characters',
+            children: [
+              {
+                path: '',
+                loadComponent: () => import('./modules/admin/characters/characters.component').then(m => m.CharactersComponent),
+              },
+              {
+                path: ':id',
+                loadComponent: () => import('./modules/admin/characters/character-detail/characters-detail.component').then(m => m.CharactersDetailComponent)
+              }
+            ]
+          }
+        ]
       }
-      // {
-      //   path: 'journal',
-      //   component: JournalComponent
-      // },
-      // {
-      //   path: 'characters',
-      //   component: CharactersComponent
-      // },
-      // {
-      //   path: 'campaign',
-      //   component: CampaignComponent
-      // },
     ]
-  },
-  {
-    path: 'admin/users',
-    loadComponent: () => import('./modules/admin/users/users.component').then(m => m.UsersComponent),
   },
   {
     path: '**',

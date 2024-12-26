@@ -4,7 +4,7 @@ import { UserDto } from "src/app/common/model/user";
 import { UserService } from "src/app/common/services/user.service";
 import { Router, RouterModule } from "@angular/router";
 import { ApiResult } from "src/app/common/model/apiresult";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonIcon, IonInput, IonItem, IonModal, IonNote, IonText, IonToast } from "@ionic/angular/standalone";
 import { addIcons } from 'ionicons';
 import { eyeOutline, eyeOffOutline, refreshOutline } from 'ionicons/icons';
@@ -35,6 +35,7 @@ import { tap } from "rxjs";
     RouterModule,
     IonToast
 	],
+  providers: [DatePipe]
 })
 export class LoginComponent {
 
