@@ -1,9 +1,11 @@
 import { Component, OnInit } from "@angular/core";
-import { IonButton, IonButtons, IonTitle, IonToolbar } from "@ionic/angular/standalone";
+import { IonAvatar, IonButton, IonButtons, IonChip, IonIcon, IonLabel, IonTitle, IonToolbar } from "@ionic/angular/standalone";
 import { UserService } from "../../services/user.service";
 import { CommonModule } from "@angular/common";
 import { NavigationEnd, Router, RouterModule } from "@angular/router";
 import { take, tap } from "rxjs/operators";
+import { addIcons } from 'ionicons';
+import { personOutline } from "ionicons/icons";
 
 
 @Component({
@@ -12,6 +14,9 @@ import { take, tap } from "rxjs/operators";
   standalone: true,
   imports: [
     CommonModule,
+    IonIcon,
+    IonChip,
+    IonLabel,
     IonToolbar,
     IonTitle,
     IonButtons,
@@ -27,8 +32,14 @@ export class HeaderComponent implements OnInit {
 
   authenticated: boolean = false;
   onAbout: boolean = false; // Do not display a link to the about page if we are already here
+  onProfile: boolean = false; // Do not display a link to the profile page if we are already here
+
+  get username() {
+    return this.userService.getCurrentUsername();
+  }
 
   constructor(private userService: UserService, private router: Router) {
+    addIcons({ personOutline });
   }
 
   ngOnInit() {
@@ -42,6 +53,7 @@ export class HeaderComponent implements OnInit {
       tap((event) => {
         if (event instanceof NavigationEnd) {
           this.onAbout = event.url === '/about';
+          this.onProfile = event.url === '/profile';
         }
       })
     ).subscribe();

@@ -93,6 +93,8 @@ export class ApiService {
       options = { headers: headers };
     } else if (headers !== undefined && options !== undefined) {
       options.headers = headers;
+    } else if (headers === undefined && options !== undefined) {
+      options.headers = this.getHeaders();
     }
     return this.wrapper(this.http.get, this.ROOT_URL + endpoint, options);
   }

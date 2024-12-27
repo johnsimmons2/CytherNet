@@ -21,6 +21,10 @@ export class RaceService {
       }));
   }
 
+  public getRace(id: number) {
+    return this.apiService.get(`race/${id}`);
+  }
+
   public delete(id: number) {
     return this.apiService.delete(`race/${id}`);
   }

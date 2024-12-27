@@ -6,6 +6,11 @@
   </ion-title>
   <ion-buttons slot="end">
 
+    <ion-chip [routerLink]="['/profile']" *ngIf="authenticated" [color]="onProfile ? 'secondary' : 'dark'">
+      <ion-icon name="person-outline"></ion-icon>
+      <ion-label>{{username}}</ion-label>
+    </ion-chip>
+
     <ion-button *ngIf="!authenticated && !onAbout" routerLink="about">About</ion-button>
 
     <ion-button *ngIf="!authenticated && onAbout" routerLink="login">Login</ion-button>

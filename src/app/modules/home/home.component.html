@@ -1,13 +1,19 @@
 <ion-tabs>
   <ion-tab-bar>
-    <ion-tab-button tab="home">
-      <h3>Home</h3>
+    <ion-tab-button tab="home" layout="icon-start">
+      <ion-icon name="home-outline"></ion-icon>
+      <ion-label><h1>Home</h1></ion-label>
     </ion-tab-button>
-    <ion-tab-button *ngIf="isAdmin" tab="admin">
-      <h3>Admin</h3>
+    <ion-tab-button tab="admin" layout="icon-start" *ngIf="isAdmin">
+      <ion-icon name="hammer-outline"></ion-icon>
+      <ion-label><h1>Admin</h1></ion-label>
     </ion-tab-button>
-    <ion-tab-button tab="profile">
+    <!-- <ion-tab-button tab="profile">
       <h3>Profile</h3>
+    </ion-tab-button> -->
+    <ion-tab-button tab="journal" layout="icon-start">
+      <ion-icon name="book-outline"></ion-icon>
+      <ion-label><h1>Journal</h1></ion-label>
     </ion-tab-button>
   </ion-tab-bar>
 </ion-tabs>

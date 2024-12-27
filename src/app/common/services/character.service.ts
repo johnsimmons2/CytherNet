@@ -13,8 +13,16 @@ export class CharacterService {
       private apiService: ApiService
   ) {}
 
-  getPlayerCharacters(userId: number) {
-    return this.apiService.get(`characters?userId=${userId}`);
+  getCharacter(id: number) {
+    return this.apiService.get(`characters/${id}`);
+  }
+
+  getCharacterByName(name: string) {
+    return this.apiService.get(`characters/${name}`);
+  }
+
+  getPlayerCharacters(username: string) {
+    return this.apiService.get(`characters`, { params: { username: username } });
   }
 
   getAllPlayerCharacters() {

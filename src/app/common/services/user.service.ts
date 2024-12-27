@@ -160,6 +160,10 @@ export class UserService {
     return this.apiService.get(`users/${userId}`);
   }
 
+  public getUserByUsername(username: string): Observable<any> {
+    return this.apiService.get(`users/${username}`);
+  }
+
   public getCurrentUsername(): string | null {
     const user = localStorage.getItem('username');
     if (user) {

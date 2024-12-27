@@ -1,0 +1,91 @@
+
+<ion-label color="dark" (click)="showDetails($event)">
+  {{resolvedValue.searchId}}
+</ion-label>
+<ion-popover #popover [isOpen]="showPopover" (didDismiss)="showPopover = false">
+  <ng-template>
+    <ion-content *ngIf="viewContent === null; else hasContent">
+      <ion-card>
+        <ion-card-content>
+          <!-- TODO: Add a helper to show what are valid queries. -->
+          <ion-label>The query could not resolve for: {{rawText}}</ion-label>
+        </ion-card-content>
+      </ion-card>
+    </ion-content>
+
+    <ng-template #hasContent>
+      <ng-container *ngTemplateOutlet="viewContent"></ng-container>
+    </ng-template>
+  </ng-template>
+</ion-popover>
+
+<ng-template #userContent>
+  <ion-content>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Inspecting <a href="/characters">{{resolvedValue.searchId}}</a></ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-label>First Name</ion-label>
+            <ion-text>{{resolvedValue.fName}}</ion-text>
+          </ion-item>
+          <ion-item>
+            <ion-label>Last Name</ion-label>
+            <ion-text>{{resolvedValue.lName}}</ion-text>
+          </ion-item>
+          <ion-item>
+            <ion-label>Campaigns</ion-label>
+            <ion-text><i>User is not participating in any campaigns.</i></ion-text>
+          </ion-item>
+          <ion-item>
+            <ion-label>Characters</ion-label>
+            <ion-text><i>User has not created any characters.</i></ion-text>
+          </ion-item>
+          <ion-item>
+            <ion-label>Notes</ion-label>
+            <ion-text><i>No notes.</i></ion-text>
+          </ion-item>
+          <ion-item>
+            <ion-label>Refs</ion-label>
+            <ion-text><i>No cross-references.</i></ion-text>
+          </ion-item>
+          <br/>
+          <!-- Only share details that a user may see, if the user is shared. This is long-term TODO. -->
+          <ion-text><i>This profile is public.</i></ion-text>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  </ion-content>
+</ng-template>
+
+<ng-template #characterContent>
+  <ion-content style="--min-width: 100%; width: 100%">
+    <ion-card >
+      <ion-card-header>
+        <ion-card-title>Inspecting <a href="/characters">{{resolvedValue.searchId}}</a></ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-label>Owner</ion-label>
+            <!-- <ion-text>TODO: Grab user from user_characters table</ion-text> -->
+          </ion-item>
+          <ion-item>
+            <ion-label>Stats</ion-label>
+            <!-- <ion-text>TODO: mini stats bar / class / race</ion-text> -->
+          </ion-item>
+          <ion-item>
+            <ion-label>Notes</ion-label>
+            <ion-text><i>No notes.</i></ion-text>
+          </ion-item>
+          <ion-item>
+            <ion-label>Refs</ion-label>
+            <ion-text><i>No cross-references.</i></ion-text>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  </ion-content>
+</ng-template>

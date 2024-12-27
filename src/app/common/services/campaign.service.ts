@@ -5,6 +5,7 @@ import { UserDto } from '../model/user';
 import { ApiService } from './api.service';
 import jwtDecode from 'jwt-decode';
 import { Campaign } from '../model/campaign';
+import { query } from '@angular/animations';
 
 
 @Injectable({ providedIn: 'root' })
@@ -16,6 +17,10 @@ export class CampaignService {
 
   getCampaigns() {
     return this.apiService.get('campaigns');
+  }
+
+  getCampaignsForUser(username: string) {
+    return this.apiService.get('campaigns/user', { params: { username: username } });
   }
 
   createCampaign(campaign: Campaign) {
