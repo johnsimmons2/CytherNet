@@ -13,6 +13,10 @@
     {
       "title": "View Characters",
       "description": "View your character sheets and inventories."
+    },
+    {
+      "title": "Journal",
+      "description": "Keep a journal of your adventures; using basic markdown formatting and dynamic linking to other sheets/notes/concepts throughout the site."
     }
   ]
 }
