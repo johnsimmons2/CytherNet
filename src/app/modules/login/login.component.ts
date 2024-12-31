@@ -71,6 +71,9 @@ export class LoginComponent {
   }
 
 	ngOnInit() {
+    if (this.loginService.checkAuthentication()) {
+      this.loginService.logout();
+    }
 	}
 
 	togglePasswordVisibility() {
