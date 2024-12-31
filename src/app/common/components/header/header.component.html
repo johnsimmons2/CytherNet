@@ -5,6 +5,9 @@
     </a>
   </ion-title>
   <ion-buttons slot="end">
+    <ion-button [routerLink]="['/shop']" *ngIf="authenticated" [color]="onShop ? 'secondary' : 'dark'">
+      <ion-icon slot="icon-only" name="cart-outline"></ion-icon>
+    </ion-button>
 
     <ion-chip [routerLink]="['/profile']" *ngIf="authenticated" [color]="onProfile ? 'secondary' : 'dark'">
       <ion-icon name="person-outline"></ion-icon>

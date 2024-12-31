@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, ViewChild, TemplateRef, AfterViewInit } from "@angular/core";
 import { IonButton, IonSelectOption, IonCard, IonLabel, IonCardContent, IonCol, IonContent, IonGrid, IonInput, IonItem, IonRow, IonSelect, IonList, IonIcon, IonModal, IonCardHeader, IonCardTitle, IonCardSubtitle, IonText } from "@ionic/angular/standalone";
-import { Role, UserDto } from "src/app/common/model/user";
+import { Role, User } from "src/app/common/model/user";
 import { UserService } from "src/app/common/services/user.service";
 import { TableComponent } from "src/app/common/components/table/table.component";
 import { TableActon } from "src/app/common/components/table/table.actions";
@@ -55,13 +55,17 @@ import { RouterModule } from "@angular/router";
 export class CharactersComponent {
 
   @ViewChild(TableComponent) table!: TableComponent;
+  @ViewChild('attachToUser') attachModal!: IonModal;
 
   newCharacterForm = new FormGroup({
 
   });
 
-  characters: CharacterDto[] = [];
+  characters: any[] = [];
+  contextIndex: number = 0;
+  changedUserIdForCharacter: number = -1;
   classes: Class[] = [];
+  users: User[] = [];
   subclasses: Subclass[] = [];
   races: Race[] = [];
   cols: TableColumn[] = [
@@ -74,28 +78,39 @@ export class CharactersComponent {
     {
       name: 'classId',
       alias: 'class',
-      getValue: (row: CharacterDto) => this.classes.filter(c => c.id === row.classId)[0]?.name,
+      getValue: (row: Character) => this.classes.filter(c => c.id === row.classId)[0]?.name,
     },
     {
       name: 'subclassId',
       alias: 'subclass',
-      getValue: (row: CharacterDto) => this.subclasses.filter(c => c.id === row.subclassId)[0]?.name,
+      getValue: (row: Character) => this.subclasses.filter(c => c.id === row.subclassId)[0]?.name,
     },
     {
       name: 'raceId',
       alias: 'race',
-      getValue: (row: CharacterDto) => this.races.filter(c => c.id === row.raceId)[0]?.name,
+      getValue: (row: Character) => this.races.filter(c => c.id === row.raceId)[0]?.name,
+    },
+    {
+      name: 'user',
+      getValue: (row: Character) => {
+        return this.users.filter(u => u.id === row.userId)[0]?.username ?? 'None';
+      },
     }
   ];
 
   constructor(private characterService: CharacterService,
               private classService: ClassService,
               private raceService: RaceService,
-              private toastService: ToastService) {
+              private toastService: ToastService,
+              private userService: UserService) {
                 addIcons({addCircleOutline});
   }
 
-  confirmRoleChange(row: UserDto) {
+  get contextUsername() {
+    return this.users[this.contextIndex]?.username;
+  }
+
+  confirmRoleChange(row: User) {
     // try {
     //   console.log('hi');
     //   this.characterService..updateUserRoles(row.id!, row.roles!).pipe(
@@ -120,6 +135,7 @@ export class CharactersComponent {
   }
 
   compareRoleFn(o1: any, o2: any): boolean {
+    console.log(o1);
     return o1.id === o2.id;
   }
 
@@ -130,6 +146,18 @@ export class CharactersComponent {
         disabled: (index) => false,
         color: 'secondary',
         action: (index) => this.deleteCharacter(index)
+      },
+      {
+        label: 'Edit',
+        disabled: (index) => false,
+        color: 'primary',
+        action: (index) => () => {}
+      },
+      {
+        label: 'Attach',
+        disabled: (index) => false,
+        color: 'primary',
+        action: (index) => this.openAttachModal(index)
       }
     ];
   }
@@ -138,8 +166,13 @@ export class CharactersComponent {
     this.characterService.getAllCharacters().pipe(
       tap((res: ApiResult) => {
         if (res.success) {
-          this.characters = res.data as CharacterDto[];
-          console.log(this.characters);
+          Object.keys(res.data).forEach(key => {
+            console.log(res.data);
+            this.characters.push({
+              userId: res.data[key].userId,
+              ...res.data[key].character
+            });
+          });
         } else {
           this.toastService.show({
             message: res.message ?? 'Failed to load characters',
@@ -166,6 +199,12 @@ export class CharactersComponent {
         this.races = cls;
       })
     ).subscribe();
+
+    this.userService.getUsers().pipe(
+      tap(users => {
+        this.users = users;
+      })
+    ).subscribe();
   }
 
   deleteCharacter(index: number) {
@@ -189,32 +228,31 @@ export class CharactersComponent {
     // ).subscribe();
   }
 
+  openAttachModal(index: number) {
+    this.contextIndex = index;
+    this.attachModal.present();
+  }
+
+  saveAttachModal() {
+    this.attachModal.dismiss('saved').then(() => {
+      this.characterService.updateUserCharacter(this.changedUserIdForCharacter, this.characters[this.contextIndex].id).pipe(
+        tap((res: ApiResult) => {
+          if (res.success) {
+            this.toastService.show({
+              message: 'Character attached',
+              type: 'success'
+            });
+          }
+        })
+      ).subscribe();
+    });
+  }
+
+  cancelAttachModal() {
+    this.attachModal.dismiss();
+  }
+
   saveChanges(event: TableValueChangeEvent) {
-    // try {
-    //   const newValue = event.value;
-    //   event.data[event.column] = newValue;
-    //   const user: UserDto = event.data;
-    //   this.userService.updateUser(user).pipe(
-    //     tap((res: ApiResult) => {
-    //       if (res.success) {
-    //         this.getUsersWithRoles();
-    //         this.toastService.show({
-    //           message: 'User updated',
-    //           type: 'success',
-    //         });
-    //       } else {
-    //         this.toastService.show({
-    //           message: res.errors?.join(', ') ?? 'An error occurred',
-    //           type: 'warning',
-    //         });
-    //       }
-    //     })
-    //   ).subscribe()
-    // } catch (e) {
-    //   this.toastService.show({
-    //     message: 'An exception has ocurred: ' + e,
-    //     type: 'warning',
-    //   });
-    // }
+
   }
 }

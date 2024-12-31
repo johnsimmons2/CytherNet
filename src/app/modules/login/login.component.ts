@@ -1,6 +1,6 @@
 import { Component, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
-import { UserDto } from "src/app/common/model/user";
+import { User } from "src/app/common/model/user";
 import { UserService } from "src/app/common/services/user.service";
 import { Router, RouterModule } from "@angular/router";
 import { ApiResult } from "src/app/common/model/apiresult";
@@ -90,7 +90,7 @@ export class LoginComponent {
 
 	submit() {
 		if (this.loginFormGroup.valid) {
-			var user: UserDto = {
+			var user: User = {
 				password: this.loginFormGroup.value.password!,
 				username: this.loginFormGroup.value.username!
 			};

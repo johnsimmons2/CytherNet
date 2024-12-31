@@ -5,6 +5,7 @@ import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardT
 import { addIcons } from "ionicons";
 import { addCircleOutline } from "ionicons/icons";
 import { Subject, takeUntil, tap } from "rxjs";
+import { CharacterCardComponent } from "src/app/common/components/characterCard/charactercard.component";
 import { NotetextComponent } from "src/app/common/components/notetext/notetext.component";
 import { TableComponent } from "src/app/common/components/table/table.component";
 import { ApiResult } from "src/app/common/model/apiresult";
@@ -38,7 +39,8 @@ import { UserService } from "src/app/common/services/user.service";
     IonCardHeader,
     IonCardTitle,
     IonCardContent,
-    NotetextComponent
+    NotetextComponent,
+    CharacterCardComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -81,46 +83,32 @@ export class LandingComponent implements OnInit {
             this.changeDetectorRef.markForCheck();
             return campaign;
           });
-        } else {
-          this.toastService.show({
-            message: res.message ?? "Couldn't load campaigns.",
-            type: 'warning'
-          });
         }
       })
     ).subscribe();
 
-    this.characterService.getPlayerCharacters(this.userService.getCurrentUsername()!).pipe(
-      tap((res: ApiResult) => {
-        if (res.success) {
-          this.characters = res.data;
+    this.characterService.getCharacters().pipe(
+      tap((res: Character[]) => {
+        console.log(res);
+        if (res.length > 0) {
+          this.characters = res;
           this.changeDetectorRef.markForCheck();
-        } else {
-          this.toastService.show({
-            message: res.message ?? "Couldn't load characters.",
-            type: 'warning'
-          });
         }
       })
     ).subscribe();
 
-    this.noteService.getPlayerNotes().pipe(
-      tap((res: ApiResult) => {
-        if (res.success) {
-          this.notes = res.data as Note[];
-          this.notes.forEach(note => {
-            this.parts.push({note, parts: this.parseDescriptionIntoParts(note.description)});
-          });
-          this.changeDetectorRef.markForCheck();
-          console.log(this.parts);
-        } else {
-          this.toastService.show({
-            message: res.message ?? "Couldn't load notes.",
-            type: 'warning'
-          });
-        }
-      })
-    ).subscribe();
+    // this.noteService.getPlayerNotes().pipe(
+    //   tap((res: ApiResult) => {
+    //     if (res.success) {
+    //       this.notes = res.data as Note[];
+    //       this.notes.forEach(note => {
+    //         this.parts.push({note, parts: this.parseDescriptionIntoParts(note.description)});
+    //       });
+    //       this.changeDetectorRef.markForCheck();
+    //       console.log(this.parts);
+    //     }
+    //   })
+    // ).subscribe();
 
   }
 

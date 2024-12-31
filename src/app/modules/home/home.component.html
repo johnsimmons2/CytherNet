@@ -4,16 +4,31 @@
       <ion-icon name="home-outline"></ion-icon>
       <ion-label><h1>Home</h1></ion-label>
     </ion-tab-button>
-    <ion-tab-button tab="admin" layout="icon-start" *ngIf="isAdmin">
-      <ion-icon name="hammer-outline"></ion-icon>
-      <ion-label><h1>Admin</h1></ion-label>
-    </ion-tab-button>
-    <!-- <ion-tab-button tab="profile">
-      <h3>Profile</h3>
-    </ion-tab-button> -->
+
+    <ng-container *ngIf="isPlayer">
+      <ng-container *ngIf="selectedCharacter === null; else hasCharacter">
+        <ion-tab-button tab="characters" layout="icon-start">
+          <ion-icon name="people-outline"></ion-icon>
+          <ion-label><h1>Characters</h1></ion-label>
+        </ion-tab-button>
+      </ng-container>
+      <ng-template #hasCharacter>
+        <ion-tab-button tab="characters" layout="icon-start">
+          <ion-icon name="accessibility-outline"></ion-icon>
+          <ion-label><h1>{{selectedCharacter!.name}}</h1></ion-label>
+        </ion-tab-button>
+      </ng-template>
+    </ng-container>
+
     <ion-tab-button tab="journal" layout="icon-start">
       <ion-icon name="book-outline"></ion-icon>
       <ion-label><h1>Journal</h1></ion-label>
+    </ion-tab-button>
+
+    <!-- Admin is last -->
+    <ion-tab-button tab="admin" layout="icon-start" *ngIf="isAdmin">
+      <ion-icon name="hammer-outline"></ion-icon>
+      <ion-label><h1>Admin</h1></ion-label>
     </ion-tab-button>
   </ion-tab-bar>
 </ion-tabs>

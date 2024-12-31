@@ -7,7 +7,7 @@ import { addIcons } from "ionicons";
 import { eyeOffOutline, eyeOutline } from "ionicons/icons";
 import { tap } from "rxjs";
 import { ApiResult } from "src/app/common/model/apiresult";
-import { UserDto } from "src/app/common/model/user";
+import { User } from "src/app/common/model/user";
 import { UserService } from "src/app/common/services/user.service";
 
 @Component({
@@ -94,7 +94,7 @@ export class ResetPasswordComponent {
   }
 
   changePassword() {
-    const user: UserDto = {
+    const user: User = {
       username: this.username,
       password: this.passwordForm.controls.passwordConfirm.value!
     };

@@ -49,6 +49,25 @@ export const routes: Routes = [
         loadComponent: () => import('./modules/landing/landing.component').then(m => m.LandingComponent)
       },
       {
+        path: 'journal',
+        loadComponent: () => import('./modules/journal/journal.component').then(m => m.JournalComponent)
+      },
+      {
+        path: 'shop',
+        loadComponent: () => import('./modules/shop/shop.component').then(m => m.ShopComponent)
+      },
+      {
+        path: 'characters',
+        canActivate: [ RoleGuard ],
+        data: { roles: ['player', 'admin'] },
+        children: [
+          {
+            path: '',
+            loadComponent: () => import('./modules/characters/characters.component').then(m => m.CharactersComponent)
+          }
+        ]
+      },
+      {
         path: 'admin',
         canActivate: [ RoleGuard ],
         data: { roles: ['admin'] },

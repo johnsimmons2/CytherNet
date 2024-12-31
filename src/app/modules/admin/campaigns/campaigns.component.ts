@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCheckbox, IonCol, IonContent, IonDatetime, IonGrid, IonIcon, IonInput, IonItem, IonLabel, IonModal, IonRouterLink, IonRow, IonSelect, IonSelectOption, IonText, IonTextarea } from "@ionic/angular/standalone";
-import { User, UserDto } from "src/app/common/model/user";
+import { User } from "src/app/common/model/user";
 import { UserService } from "src/app/common/services/user.service";
 import { TableComponent } from "src/app/common/components/table/table.component";
 import { TableActon } from "src/app/common/components/table/table.actions";
@@ -126,14 +126,9 @@ export class CampaignsComponent implements OnInit {
       })
     ).subscribe();
 
-    this.userService.getUsers().pipe(
-      tap((res: ApiResult) => {
-        if (res.success) {
-          this.users = res.data as User[];
-        } else {
-        }
-      })
-    ).subscribe();
+    const users = this.userService.getUsers().subscribe((result: User[]) => {
+      this.users = result;
+    });
   }
 
   editCampaign(index: number) {

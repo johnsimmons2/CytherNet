@@ -1,17 +1,20 @@
-export interface CharacterDto {
+export interface Character {
   id: number;
   name: string;
   classId: number;
   subclassId: number;
+  statsheetId: number;
   raceId: number;
   campaignCompatability: string;
   languages: string;
   speed: number;
   type: number;
   proficiencybonus: number;
+
+  userId?: number;
 }
 
-export interface Character {
+export interface CharacterDto {
   id?: number;
   name: string;
   class: string;

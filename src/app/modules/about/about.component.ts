@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { HttpClient } from "@angular/common/http";
 import { Component } from "@angular/core";
-import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonItem, IonLabel, IonList } from "@ionic/angular/standalone";
+import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonItem, IonLabel, IonList, IonText } from "@ionic/angular/standalone";
 import { ApiService } from "src/app/common/services/api.service";
 import { environment } from "src/environments/environment";
 
@@ -19,6 +19,7 @@ import { environment } from "src/environments/environment";
       IonCardSubtitle,
       IonCardContent,
       IonList,
+      IonText,
       IonItem,
       IonLabel
     ]

@@ -63,7 +63,7 @@ import { ApiService } from './common/services/api.service';
     IonContent,
     HeaderComponent,
     IonFooter,
-    FooterComponent
+    FooterComponent,
     //LoadingSpinnerComponent
   ],
   providers: [Router]
@@ -116,7 +116,7 @@ export class AppComponent {
     private userService: UserService,
     private platformService: PlatformService,
     private apiService: ApiService) {
-      this.cytherVersion = environment.version;
+      this.cytherVersion = environment.api_version ?? environment.version;
       this.browser = this.platformService.browser;
       this.browserVersion = this.platformService.browserVersion;
       this.operatingSystem = this.platformService.operatingSystem;

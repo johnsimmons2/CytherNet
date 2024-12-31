@@ -4,7 +4,6 @@ import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, Ion
 import { TableActon } from "./table.actions";
 import { TableValueChangeEvent } from "./tablevaluechanges.event";
 import { TableColumn } from "./table.column";
-import { UserDto } from "../../model/user";
 import { format } from "util";
 import moment from 'moment';
 import assert from "assert";
@@ -100,7 +99,7 @@ export class TableComponent implements OnInit {
     this.contextColumnIndex = column;
     this.contextHeaderColumn = this.columns[column].name;
     this.contextHeaderColumnName = this.columns[column].alias ?? this.contextHeaderColumn;
-    this.contextRow = { ...this.data[index] } as UserDto;
+    this.contextRow = { ...this.data[index] };
     this.contextTemplate = this.columns[column].customTemplate ?? undefined;
     console.log(this.contextRow);
     this.modal.present();
@@ -197,7 +196,6 @@ export class TableComponent implements OnInit {
     const cell = this.data[index];
     const data = cell[column];
     const emptyText = '[ None ]';
-    console.log("get display for " + this.columns[colIndex].name);
     try {
       if (typeof this.columns[colIndex]?.getValue === 'function') {
 

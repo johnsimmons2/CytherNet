@@ -1,14 +1,3 @@
-export interface UserDto {
-    id?: number;
-    username?: string;
-    email?: string;
-    password?: string;
-    fName?: string;
-    lName?: string;
-    token?: string;
-    roles?: Role[];
-}
-
 export interface Role {
   id?: number;
   roleName?: string;
@@ -16,12 +5,12 @@ export interface Role {
 }
 
 export interface User {
-  id: number;
-  username: string;
-  email: string;
-  firstName?: string;
-  lastName?: string;
-  lastOnline?: Date;
-  created?: Date;
+  id?: number;
+  username?: string;
+  email?: string;
+  password?: string;
+  fName?: string;
+  lName?: string;
+  token?: string;
   roles?: Role[];
 }

@@ -1,0 +1,35 @@
+<ion-card style="min-width: 300px;">
+  <ion-card-header>
+    <ion-card-title>
+      <b>{{_character.name}}</b> - Lvl {{_statsheet.level}}
+      <ion-icon name="help-circle-outline" size="small"></ion-icon>
+    </ion-card-title>
+    <ion-card-subtitle>
+      <ion-text>
+        <h3><b>{{classname}}</b>, {{subclassname}}</h3>
+      </ion-text>
+    </ion-card-subtitle>
+  </ion-card-header>
+  <ion-card-content>
+    <!-- Status card: health, AC,  status effects, death saves (if down)-->
+    <!-- Stats card: str, wis, cha, etc... highlight proficiencies for saving throws -->
+    {{classname}}
+  </ion-card-content>
+  <br />
+  <ion-toolbar>
+    <ion-buttons>
+      <!-- Take you to the journal page filtered by notes on this character -->
+      <ion-button fill="clear" color="primary">Notes</ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <!-- Take you to the full character sheet page -->
+      <ion-button fill="clear" color="secondary">Details</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-card>
+
+<!-- If small: only show whats already written. -->
+
+<!-- If medium: show picture, if available. -->
+
+<!-- Show all of above, and show skills / languages -->

@@ -7,7 +7,7 @@ import { tap } from "rxjs";
 import { addIcons } from 'ionicons';
 import { createOutline, checkboxOutline, closeCircleOutline } from 'ionicons/icons';
 import { EditableFieldComponent } from "../../common/components/editableField/editable-field.component";
-import { UserDto } from "src/app/common/model/user";
+import { User } from "src/app/common/model/user";
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonInput, IonItem, IonLabel, IonList, IonText, IonToast } from "@ionic/angular/standalone";
 
 
@@ -55,6 +55,8 @@ export class ProfileComponent {
   toastMessage: string = '';
   userId: number = 0;
 
+  users: User[] = [];
+
   constructor(private userService: UserService) {
     addIcons({ createOutline, checkboxOutline, closeCircleOutline });
   }
@@ -64,16 +66,15 @@ export class ProfileComponent {
   }
 
   ngOnInit() {
-    this.userService.getUser(this.username!).pipe(
-      tap((res) => {
-        if (res.success) {
-          this.userId = res.data.id
-          this.profileForm.patchValue({
-            email: res.data.email,
-            firstName: res.data.fName,
-            lastName: res.data.lName
-          })
-        }
+    this.userService.getUserByUsername(this.username!).pipe(
+      tap((res: User) => {
+        console.log(res);
+        this.userId = res.id!;
+        this.profileForm.patchValue({
+          email: res.email,
+          firstName: res.fName,
+          lastName: res.lName
+        })
       })
     ).subscribe();
   }
@@ -111,8 +112,9 @@ export class ProfileComponent {
   }
 
   submit() {
-    if (this.profileForm.valid) {
-      let user: UserDto = {
+    console.log(this.userId);
+    if (this.profileForm.valid && this.userId) {
+      let user: User = {
         id: this.userId,
         email: this.profileForm.value.email!,
         fName: this.profileForm.value.firstName!,
@@ -130,7 +132,6 @@ export class ProfileComponent {
           this.toastOpen = true;
         })
       ).subscribe();
-      this.toastOpen = true;
     }
   }
 

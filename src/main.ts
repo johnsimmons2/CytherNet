@@ -10,6 +10,7 @@ import { HttpInterceptorService } from './app/common/services/http-interceptor.s
 import { LoadingService } from './app/common/services/loading.service';
 import { provideServiceWorker } from '@angular/service-worker';
 
+
 if (environment.production) {
   enableProdMode();
 }
@@ -34,6 +35,6 @@ bootstrapApplication(AppComponent, {
       registrationStrategy: 'registerWhenStable:30000'
     }),
     provideRouter(routes, withComponentInputBinding()),
-    provideHttpClient()
+    provideHttpClient(),
   ],
 })

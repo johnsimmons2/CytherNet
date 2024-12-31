@@ -1,4 +1,19 @@
 <ion-content>
+
+  <!-- User Characters -->
+  <ng-container #Characters *ngIf="characters.length > 0">
+    <ion-item>
+      <ion-label>
+        <h1>Characters</h1>
+      </ion-label>
+    </ion-item>
+    <ion-item color="light">
+      <ng-container *ngFor="let char of characters">
+        <app-character-card [character]="char"></app-character-card>
+      </ng-container>
+    </ion-item>
+  </ng-container>
+
   <!-- User Campaigns -->
   <ng-container #Campaigns *ngIf="campaigns.length > 0">
     <ion-item>
@@ -18,41 +33,20 @@
         <br />
         <ion-toolbar>
           <ion-buttons>
+            <!-- Take user to the live session or create one if not open -->
+            <!-- Open chat, have an "export chat to note" option (WAYYYY down the road) -->
             <ion-button fill="clear" color="primary">Join</ion-button>
+            <!-- Take you to the journal with the filter pre-set to this campaign. -->
             <ion-button fill="clear" color="primary">Notes</ion-button>
+            <!-- Take you to the party view in campaign, where all users in this campaign are visible -->
+            <!-- Eventually you can only see specific things if they are not hidden. -->
+            <!-- Make notes directly from a player/character, or initiate a trade. -->
             <ion-button fill="clear" color="primary">Party</ion-button>
+            <!-- View the live map session, shows campaign-wide notes and world map -->
             <ion-button fill="clear" color="primary">Map</ion-button>
           </ion-buttons>
           <ion-buttons slot="end">
-            <ion-button fill="clear" color="secondary">Details</ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-card>
-    </ion-item>
-  </ng-container>
-
-  <!-- User Characters -->
-  <ng-container #Characters *ngIf="characters.length > 0">
-    <ion-item>
-      <ion-label>
-        <h1>Characters</h1>
-      </ion-label>
-    </ion-item>
-    <ion-item color="light">
-      <ion-card *ngFor="let c of characters" style="width: 100%">
-        <ion-card-header>
-          <ion-card-title>{{c.name}}</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          {{c.name}}
-        </ion-card-content>
-        <br />
-        <ion-toolbar>
-          <ion-buttons>
-            <ion-button fill="clear" color="primary">Character Sheet</ion-button>
-            <ion-button fill="clear" color="primary">Notes</ion-button>
-          </ion-buttons>
-          <ion-buttons slot="end">
+            <!-- Campaign details page, view campaign specific notes made by admins, and other details. -->
             <ion-button fill="clear" color="secondary">Details</ion-button>
           </ion-buttons>
         </ion-toolbar>
@@ -66,20 +60,21 @@
       <h1>Notes</h1>
     </ion-label>
   </ion-item>
+  <!-- Make a note component -->
   <ion-item color="light">
     <ion-card *ngFor="let c of notes; trackBy: trackByNoteId" style="width: 100%">
       <ion-card-header>
         <ion-card-title>{{c.name}}</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <ng-container *ngFor="let part of findNoteParts(c.id)">
+        <!-- <ng-container *ngFor="let part of findNoteParts(c.id)">
           <ng-container *ngIf="part.type === 'text'">
             <ion-text [innerHTML]="part.value"></ion-text>
           </ng-container>
           <ng-container *ngIf="part.type === 'component'">
             <app-note-text [rawText]="part.value"></app-note-text>
           </ng-container>
-        </ng-container>
+        </ng-container> -->
       </ion-card-content>
       <br />
       <ion-toolbar>

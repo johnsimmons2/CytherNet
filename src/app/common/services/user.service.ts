@@ -1,31 +1,40 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { Role, UserDto } from '../model/user';
+import { Role, User } from '../model/user';
 import { ApiService } from './api.service';
 import jwtDecode from 'jwt-decode';
-import { catchError, map, tap } from 'rxjs/operators';
-import { BehaviorSubject, Observable, Subscription, of } from 'rxjs';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subscription, from, of } from 'rxjs';
 import { ApiResult } from '../model/apiresult';
+import { BaseService } from './base.service';
+import { DatabaseService } from './database.service';
 
 
 @Injectable({ providedIn: 'root' })
-export class UserService {
+export class UserService extends BaseService<User> {
 
   private adjustmentPeriod: number = 1000 * 60; // 30 seconds
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.checkAuthentication());
 
   constructor(
-      private router: Router,
-      private apiService: ApiService,
-      private httpClient: HttpClient
-  ) {}
+    private router: Router,
+    private httpClient: HttpClient,
+    protected override database: DatabaseService,
+    protected override apiService: ApiService
+  ) {
+    super(database, apiService); // Pass required arguments to the BaseService constructor
+  }
+
+  protected override getTableName(): string {
+    return "users";
+  }
 
   public get isAuthenticated$(): Observable<boolean> {
     return this.isAuthenticatedSubject.asObservable();
   }
 
-  public login(user: UserDto): Observable<ApiResult> {
+  public login(user: User): Observable<ApiResult> {
     return this.apiService.post('auth/token', user).pipe(
       catchError((error: any) => {
         this.isAuthenticatedSubject.next(false);
@@ -51,7 +60,7 @@ export class UserService {
       }));
   }
 
-  public register(user: UserDto): Observable<boolean> {
+  public register(user: User): Observable<boolean> {
     return this.apiService.post('auth/register', user).pipe(
       map((res: any) => {
         if (res.success && res.data) {
@@ -66,7 +75,9 @@ export class UserService {
     localStorage.clear();
     this.isAuthenticatedSubject.next(false)
     setTimeout(() => {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/login']).then(() => {
+        window.location.reload();
+      });
     }, 0);
   }
 
@@ -106,7 +117,7 @@ export class UserService {
     });
   }
 
-  public updateUserPassword(user: UserDto, resetToken: string): Observable<ApiResult> {
+  public updateUserPassword(user: User, resetToken: string): Observable<ApiResult> {
     return this.apiService.post(`auth/reset-password?t=${resetToken}&u=${user.username}`, user);
   }
 
@@ -133,7 +144,7 @@ export class UserService {
   }
 
   public deleteUser(userId: number): Observable<ApiResult> {
-    return this.apiService.delete('users/' + userId);
+    return this.delete('users/' + userId, userId);
   }
 
   public getRolesForUser(userId: number): Observable<ApiResult> {
@@ -141,27 +152,31 @@ export class UserService {
   }
 
   public updateUserRoles(userId: number, roles: Role[]): Observable<ApiResult> {
-    return this.apiService.post('users/' + userId + '/roles', roles);
+    return this.update(`users/${userId}/roles`, userId, {roles: roles});
   }
 
   public getAllRoles(): Observable<ApiResult> {
     return this.apiService.get('roles');
   }
 
-  public updateUser(user: UserDto): Observable<any> {
-    return this.apiService.post(`users/${user.id}`, user);
+  public updateUser(user: User): Observable<ApiResult> {
+    return this.update(`users/${user.id}`, user.id!, user);
   }
 
-  public getUsers(): Observable<any> {
-    return this.apiService.get('users');
+  public getUsers(): Observable<User[]> {
+    return this.getAllNoCache('users');
   }
 
-  public getUser(userId: number | string): Observable<any> {
-    return this.apiService.get(`users/${userId}`);
+  public getUser(userId: number): Observable<User> {
+    return this.get(`users/${userId}`, { id: userId }).pipe(
+      map((res: User[]) => res[0])
+    );
   }
 
-  public getUserByUsername(username: string): Observable<any> {
-    return this.apiService.get(`users/${username}`);
+  public getUserByUsername(username: string): Observable<User> {
+    return this.get(`users/${username}`, { username: username }).pipe(
+      map((res: User[]) => res[0])
+    );
   }
 
   public getCurrentUsername(): string | null {
@@ -181,7 +196,7 @@ export class UserService {
     return null;
   }
 
-  private checkAuthentication(): boolean {
+  public checkAuthentication(): boolean {
     const user = localStorage.getItem('jwtToken');
     if (user) {
       const decoded: any = jwtDecode(user);
@@ -196,7 +211,7 @@ export class UserService {
   /**
    * @returns True if the user has roles and were validated - checking server only ocassionally, false otherwise.
   */
-  private validateUserRolesInStorage(): boolean {
+  public validateUserRolesInStorage(): boolean {
     const jwtToken = localStorage.getItem('jwtToken');
     if (jwtToken && this.checkAuthentication()) {
       const lastUpdate = localStorage.getItem('rolesLastUpdate');
@@ -220,7 +235,7 @@ export class UserService {
     return false;
   }
 
-  private doesRoleContain({level}: Role): boolean {
+  public doesRoleContain({level}: Role): boolean {
     var contains = false;
     const roleString = localStorage.getItem('roles');
     const roles = JSON.parse(roleString!);
@@ -239,7 +254,7 @@ export class UserService {
    * Authenticates based on current JWT token and refreshes the roles in local storage.
    * @returns True if the user has roles and were validated, false otherwise.
    */
-  private getUserRoles(): boolean {
+  public getUserRoles(): boolean {
     var success = false;
 
     this.apiService.get('auth').subscribe((res: any) => {

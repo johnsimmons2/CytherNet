@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, ViewChild, TemplateRef, AfterViewInit } from "@angular/core";
 import { IonButton, IonSelectOption, IonCard, IonLabel, IonCardContent, IonCol, IonContent, IonGrid, IonInput, IonItem, IonRow, IonSelect, IonList } from "@ionic/angular/standalone";
-import { Role, UserDto } from "src/app/common/model/user";
+import { Role, User } from "src/app/common/model/user";
 import { UserService } from "src/app/common/services/user.service";
 import { TableComponent } from "src/app/common/components/table/table.component";
 import { TableActon } from "src/app/common/components/table/table.actions";
@@ -41,7 +41,7 @@ export class UsersComponent implements AfterViewInit {
   @ViewChild(TableComponent) table!: TableComponent;
 
   roleOptions: Role[] = [];
-  users: UserDto[] = [];
+  users: User[] = [];
   cols: TableColumn[] = [
     {
       name: 'id',
@@ -74,12 +74,16 @@ export class UsersComponent implements AfterViewInit {
   constructor(private userService: UserService, private toastService: ToastService) {
   }
 
+  closeModal() {
+    this.table.modal.dismiss(null, 'close');
+  }
+
   ngAfterViewInit() {
     const roles = this.cols.find(x => x.name === 'roles');
     roles!.customTemplate = this.rolesTemplate;
   }
 
-  confirmRoleChange(row: UserDto) {
+  confirmRoleChange(row: User) {
     try {
       console.log('hi');
       this.userService.updateUserRoles(row.id!, row.roles!).pipe(
@@ -92,7 +96,7 @@ export class UsersComponent implements AfterViewInit {
             this.table.modal.dismiss(null, 'saved');
           } else {
             this.toastService.show({
-              message: res.errors?.join(', ') ?? 'An error occurred',
+              message: 'An error occurred',
               type: 'warning',
             });
           }
@@ -125,11 +129,12 @@ export class UsersComponent implements AfterViewInit {
   }
 
   getUsersWithRoles() {
-    this.users = [];
     this.userService.getUsers().pipe(
-      mergeMap((users: {data: UserDto[]}) =>
-        from(users.data).pipe(
-          mergeMap((user: UserDto) =>
+      mergeMap((users: User[]) =>
+        from(users).pipe(
+          tap((user: User) => console.log(user)),
+          mergeMap((user: User) =>
+
             this.userService.getRolesForUser(user.id!).pipe(
               map((result: ApiResult) => result.data),
               map((roles: Role[]) => ({
@@ -143,8 +148,11 @@ export class UsersComponent implements AfterViewInit {
               }))
             )
           ),
-          tap((user: UserDto) => {
+          tap((user: User) => {
             this.users.push(user);
+          }),
+          tap(() => {
+            this.users = this.users.sort((a, b) => a.id! - b.id!);
           })
         )
       )
@@ -216,10 +224,11 @@ export class UsersComponent implements AfterViewInit {
     try {
       const newValue = event.value;
       event.data[event.column] = newValue;
-      const user: UserDto = event.data;
+      const user: User = event.data;
       this.userService.updateUser(user).pipe(
         tap((res: ApiResult) => {
           if (res.success) {
+            this.users = [];
             this.getUsersWithRoles();
             this.toastService.show({
               message: 'User updated',

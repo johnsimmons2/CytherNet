@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, ViewChild, TemplateRef, AfterViewInit } from "@angular/core";
 import { IonButton, IonSelectOption, IonCard, IonLabel, IonCardContent, IonCol, IonContent, IonGrid, IonInput, IonItem, IonRow, IonSelect, IonList, IonIcon, IonModal, IonCardHeader, IonCardTitle, IonCardSubtitle, IonText, IonSegment, IonSegmentButton, IonSegmentContent, IonSegmentView } from "@ionic/angular/standalone";
-import { Role, UserDto } from "src/app/common/model/user";
+import { Role, User } from "src/app/common/model/user";
 import { UserService } from "src/app/common/services/user.service";
 import { TableComponent } from "src/app/common/components/table/table.component";
 import { TableActon } from "src/app/common/components/table/table.actions";
@@ -112,7 +112,7 @@ export class CharactersDetailComponent {
                 addIcons({addCircleOutline});
   }
 
-  confirmRoleChange(row: UserDto) {
+  confirmRoleChange(row: User) {
     // try {
     //   console.log('hi');
     //   this.characterService..updateUserRoles(row.id!, row.roles!).pipe(

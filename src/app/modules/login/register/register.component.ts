@@ -3,7 +3,7 @@ import { AfterViewInit, Component, Input } from "@angular/core";
 import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
 import { IonicModule } from "@ionic/angular";
-import { UserDto } from "src/app/common/model/user";
+import { User } from "src/app/common/model/user";
 import { UserService } from "src/app/common/services/user.service";
 
 @Component({
@@ -57,7 +57,7 @@ export class RegisterComponent implements AfterViewInit {
 
   public register() {
     if (this.registerForm.valid) {
-      var user: UserDto = {
+      var user: User = {
         password: this.registerForm.value.password!,
         username: this.registerForm.value.username!
       };
