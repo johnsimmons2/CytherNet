@@ -71,7 +71,7 @@ export class LoginComponent {
   }
 
 	ngOnInit() {
-    if (this.loginService.checkAuthentication()) {
+    if (!this.loginService.checkAuthentication()) {
       this.loginService.logout();
     }
 	}
