@@ -4,11 +4,17 @@
       {{title}}
     </a>
   </ion-title>
+
+  <ion-buttons slot="start">
+    <app-connection-status></app-connection-status>
+  </ion-buttons>
+
   <ion-buttons slot="end">
     <ion-button [routerLink]="['/shop']" *ngIf="authenticated" [color]="onShop ? 'secondary' : 'dark'">
       <ion-icon slot="icon-only" name="cart-outline"></ion-icon>
     </ion-button>
 
+    <!-- dropdown on small screens -->
     <ion-chip [routerLink]="['/profile']" *ngIf="authenticated" [color]="onProfile ? 'secondary' : 'dark'">
       <ion-icon name="person-outline"></ion-icon>
       <ion-label>{{username}}</ion-label>

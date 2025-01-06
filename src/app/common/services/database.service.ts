@@ -9,8 +9,9 @@ export class DatabaseService extends Dexie {
 
   table_definitions: { [key: string]: string } = {
     'db_version': '++id, updated, version',
-    'users': 'id, &username, &email, firstName, lastName, lastOnline, created, roles',
-    'characters': 'id, &name, &statsheetId, classId, subclassId, raceId, languages, speed, type, proficiencyBonus'
+    'users': '&id, &username, &email, firstName, lastName, lastOnline, created, roles',
+    'characters': '&id, &name, &statsheetId, classId, subclassId, raceId, languages, speed, type, proficiencyBonus',
+    'notes': '&id, name, description, type, creator, created, updated, tags, directory',
   };
 
   constructor() {

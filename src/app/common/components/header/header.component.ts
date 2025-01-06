@@ -6,6 +6,8 @@ import { NavigationEnd, Router, RouterModule } from "@angular/router";
 import { take, tap } from "rxjs/operators";
 import { addIcons } from 'ionicons';
 import { personOutline, cartOutline } from "ionicons/icons";
+import { ConnectionStatusComponent } from "../connectionStatus/connectionstatus.component";
+import { PlatformService } from "../../services/platform.service";
 
 
 @Component({
@@ -23,8 +25,17 @@ import { personOutline, cartOutline } from "ionicons/icons";
     IonFabButton,
     IonButtons,
     IonButton,
-    RouterModule
+    RouterModule,
+    ConnectionStatusComponent
   ],
+  styles: [
+    `
+    ion-title {
+      margin-left: 0px;
+      padding-left: 2px;
+    }
+    `
+  ]
 })
 export class HeaderComponent implements OnInit {
 
@@ -36,16 +47,23 @@ export class HeaderComponent implements OnInit {
   onAbout: boolean = false; // Do not display a link to the about page if we are already here
   onProfile: boolean = false; // Do not display a link to the profile page if we are already here
   onShop: boolean = false;
+  online: boolean = false;
 
   get username() {
-    return this.userService.getCurrentUsername();
+    return this.userService.currentUsername;
   }
 
-  constructor(private userService: UserService, private router: Router) {
+  constructor(private userService: UserService, private router: Router, private platform: PlatformService) {
     addIcons({ personOutline, cartOutline });
   }
 
   ngOnInit() {
+    this.platform.isOnline$.pipe(
+      tap((isOnline) => {
+        this.online = isOnline;
+      })
+    ).subscribe();
+
     this.authSubscription = this.userService.isAuthenticated$.pipe(
       tap((isAuth) => {
         this.authenticated = isAuth;

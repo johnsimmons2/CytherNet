@@ -34,6 +34,15 @@ export class UserService extends BaseService<User> {
     return this.isAuthenticatedSubject.asObservable();
   }
 
+  get currentUsername(): string | null {
+    const user = localStorage.getItem('username');
+    if (user) {
+      return user;
+    }
+    // Blah blah something wrong do something
+    return null;
+  }
+
   public login(user: User): Observable<ApiResult> {
     return this.apiService.post('auth/token', user).pipe(
       catchError((error: any) => {
@@ -44,7 +53,14 @@ export class UserService extends BaseService<User> {
         if (res.success && res.data) {
           localStorage.clear();
           localStorage.setItem('jwtToken', res.data.token);
-          const decoded: any = jwtDecode(res.data.token);
+          let decoded: any;
+          try {
+            decoded = jwtDecode(res.data.token);
+          } catch (error) {
+            console.error('Error decoding JWT token: ' + error);
+            this.isAuthenticatedSubject.next(false);
+            return res;
+          }
           // Use the username we received from the server, not the one the user entered.
           localStorage.setItem('username', decoded.username);
           localStorage.setItem('rolesLastUpdate', Date.now().toString());
@@ -90,25 +106,44 @@ export class UserService extends BaseService<User> {
     });
   }
 
+
   public resetPasswordLink(user: any): Observable<ApiResult> {
     return this.apiService.post('auth/get-password-reset-link', user);
   }
 
-  public refreshToken(): void {
+  public refreshToken(): Observable<boolean> {
     const user = localStorage.getItem('jwtToken');
-    if (user) {
-      const decoded: any = jwtDecode(user);
-      if (decoded.exp * 1000 < Date.now()) {
-        this.apiService.post('auth/token', user).subscribe((res: any) => {
-          if (res.success && res.data.token) {
-            localStorage.setItem('jwtToken', res.data.token);
-            console.log('token has expired and was successfully refreshed.');
-          }
-        });
-      } else {
-        console.log('token is still valid.');
-      }
+    if (!user) {
+      return of(false); // No token found
     }
+
+    let decoded: any;
+    try {
+      decoded = jwtDecode(user);
+    } catch (error) {
+      console.error('Token decode failed:', error);
+      return of(false);
+    }
+
+    if (decoded && decoded.exp * 1000 < Date.now()) {
+      // Token expired, attempt to refresh
+      return this.apiService.post(`auth/token/refresh?t=${user}`, {}).pipe(
+        map((res: any) => {
+          if (res.success && res.data.token) {
+            localStorage.setItem('jwtToken', res.data.token); // Save new token
+            return true;
+          }
+          return false;
+        }),
+        catchError(error => {
+          console.error('Token refresh failed:', error);
+          return of(false); // Refresh failed due to error
+        })
+      );
+    }
+
+    // Token is still valid
+    return of(true);
   }
 
   public getPasswordResetToken(email: string): Observable<any> {
@@ -179,14 +214,6 @@ export class UserService extends BaseService<User> {
     );
   }
 
-  public getCurrentUsername(): string | null {
-    const user = localStorage.getItem('username');
-    if (user) {
-      return user;
-    }
-    // Blah blah something wrong do something
-    return null;
-  }
 
   public getJwt(): string | null {
     const user = localStorage.getItem('jwtToken');

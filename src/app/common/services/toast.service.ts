@@ -32,4 +32,11 @@ export class ToastService {
 
     await toast.present();
   }
+
+  public async showUnimplemented(): Promise<void> {
+    this.show({
+      message: 'This feature is not implemented yet. Please check back again later!',
+      type: 'warning'
+    });
+  }
 }

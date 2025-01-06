@@ -101,7 +101,6 @@ export class TableComponent implements OnInit {
     this.contextHeaderColumnName = this.columns[column].alias ?? this.contextHeaderColumn;
     this.contextRow = { ...this.data[index] };
     this.contextTemplate = this.columns[column].customTemplate ?? undefined;
-    console.log(this.contextRow);
     this.modal.present();
   }
 
@@ -138,6 +137,10 @@ export class TableComponent implements OnInit {
   calculateColumnWidths(): void {
     const minWidth = 50; // Minimum width for a column
     const maxWidth = 300; // Maximum width for a column
+
+    if (!this.columns || this.columns.length === 0) {
+      throw new Error('No columns defined for table');
+    }
 
     // Initialize column widths
     this.columnWidths = this.columns.map(() => 0);

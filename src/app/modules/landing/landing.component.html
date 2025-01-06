@@ -1,94 +1,125 @@
 <ion-content>
 
   <!-- User Characters -->
-  <ng-container #Characters *ngIf="characters.length > 0">
-    <ion-item>
-      <ion-label>
-        <h1>Characters</h1>
-      </ion-label>
-    </ion-item>
-    <ion-item color="light">
-      <ng-container *ngFor="let char of characters">
-        <app-character-card [character]="char"></app-character-card>
-      </ng-container>
-    </ion-item>
+  <ng-container #Characters>
+    <ng-container *ngIf="characters.length > 0; else noCharacters">
+      <ion-item>
+        <ion-label>
+          <h1>Characters</h1>
+        </ion-label>
+      </ion-item>
+      <ion-item color="light">
+        <ng-container *ngFor="let char of characters">
+          <app-character-card [character]="char"></app-character-card>
+        </ng-container>
+      </ion-item>
+    </ng-container>
+    <ng-template #noCharacters>
+      <ion-item>
+        <ion-label>
+          <h1>Characters</h1>
+        </ion-label>
+      </ion-item>
+      <ion-item color="light">
+        <ion-text>
+          <em>You have no characters. Eventually you will be able to create one. For now, ask an Admin!</em>
+        </ion-text>
+      </ion-item>
+    </ng-template>
   </ng-container>
 
   <!-- User Campaigns -->
-  <ng-container #Campaigns *ngIf="campaigns.length > 0">
-    <ion-item>
-      <ion-label>
-        <h1>Campaigns</h1>
-      </ion-label>
-    </ion-item>
-    <ion-item color="light">
-      <ion-card *ngFor="let c of campaigns" style="width: 100%">
-        <ion-card-header>
-          <ion-card-title>{{c.name}}</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <ion-text [innerHTML]="innerHtmlForDescription(c.description)">
-          </ion-text>
-        </ion-card-content>
-        <br />
-        <ion-toolbar>
-          <ion-buttons>
-            <!-- Take user to the live session or create one if not open -->
-            <!-- Open chat, have an "export chat to note" option (WAYYYY down the road) -->
-            <ion-button fill="clear" color="primary">Join</ion-button>
-            <!-- Take you to the journal with the filter pre-set to this campaign. -->
-            <ion-button fill="clear" color="primary">Notes</ion-button>
-            <!-- Take you to the party view in campaign, where all users in this campaign are visible -->
-            <!-- Eventually you can only see specific things if they are not hidden. -->
-            <!-- Make notes directly from a player/character, or initiate a trade. -->
-            <ion-button fill="clear" color="primary">Party</ion-button>
-            <!-- View the live map session, shows campaign-wide notes and world map -->
-            <ion-button fill="clear" color="primary">Map</ion-button>
-          </ion-buttons>
-          <ion-buttons slot="end">
-            <!-- Campaign details page, view campaign specific notes made by admins, and other details. -->
-            <ion-button fill="clear" color="secondary">Details</ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-card>
-    </ion-item>
+  <ng-container>
+    <ng-container #Campaigns *ngIf="campaigns.length > 0; else noCampaigns">
+      <ion-item>
+        <ion-label>
+          <h1>Campaigns</h1>
+        </ion-label>
+      </ion-item>
+      <ion-item color="light">
+        <ion-card *ngFor="let c of campaigns" style="width: 100%">
+          <ion-card-header>
+            <ion-card-title>{{c.name}}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-text [innerHTML]="innerHtmlForDescription(c.description)">
+            </ion-text>
+          </ion-card-content>
+          <br />
+          <ion-toolbar>
+            <ion-buttons>
+              <!-- Take user to the live session or create one if not open -->
+              <!-- Open chat, have an "export chat to note" option (WAYYYY down the road) -->
+              <ion-button fill="clear" color="primary" [disabled]="true">Join</ion-button>
+              <!-- Take you to the journal with the filter pre-set to this campaign. -->
+              <ion-button fill="clear" color="primary" [disabled]="true">Notes</ion-button>
+              <!-- Take you to the party view in campaign, where all users in this campaign are visible -->
+              <!-- Eventually you can only see specific things if they are not hidden. -->
+              <!-- Make notes directly from a player/character, or initiate a trade. -->
+              <ion-button fill="clear" color="primary" [disabled]="true">Party</ion-button>
+              <!-- View the live map session, shows campaign-wide notes and world map -->
+              <ion-button fill="clear" color="primary" [disabled]="true">Map</ion-button>
+            </ion-buttons>
+            <ion-buttons slot="end">
+              <!-- Campaign details page, view campaign specific notes made by admins, and other details. -->
+              <ion-button fill="clear" color="secondary" (click)="notImplemented()">Details</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-card>
+      </ion-item>
+    </ng-container>
+
+    <ng-template #noCampaigns>
+      <ion-item>
+        <ion-label>
+          <h1>Campaigns</h1>
+        </ion-label>
+      </ion-item>
+      <ion-item color="light">
+        <ion-text>
+          <em>You have no campaigns. Eventually you will be able to join one. For now, ask an Admin!</em>
+        </ion-text>
+      </ion-item>
+    </ng-template>
   </ng-container>
 
   <!-- Notes -->
-  <ion-item>
-    <ion-label>
-      <h1>Notes</h1>
-    </ion-label>
-  </ion-item>
-  <!-- Make a note component -->
-  <ion-item color="light">
-    <ion-card *ngFor="let c of notes; trackBy: trackByNoteId" style="width: 100%">
-      <ion-card-header>
-        <ion-card-title>{{c.name}}</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <!-- <ng-container *ngFor="let part of findNoteParts(c.id)">
-          <ng-container *ngIf="part.type === 'text'">
-            <ion-text [innerHTML]="part.value"></ion-text>
-          </ng-container>
-          <ng-container *ngIf="part.type === 'component'">
-            <app-note-text [rawText]="part.value"></app-note-text>
-          </ng-container>
-        </ng-container> -->
-      </ion-card-content>
-      <br />
-      <ion-toolbar>
-        <ion-buttons>
-          <ion-button fill="clear" color="primary">Edit</ion-button>
-          <ion-button fill="clear" color="primary">Share</ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-card>
-  </ion-item>
-  <ion-item color="light">
-    <ion-button fill="clear" color="primary">
-      <ion-icon slot="start" name="add-circle-outline"></ion-icon>
-      Add Note
-    </ion-button>
-  </ion-item>
+  <ng-container #Notes>
+    <ion-item>
+      <ion-label>
+        <h1>Notes</h1>
+      </ion-label>
+    </ion-item>
+    <!-- Make a note component -->
+    <ng-container *ngIf="notes.length > 0; else noNotes">
+      <ion-item color="light" style="overflow-x: auto; display: flex; flex-wrap: nowrap; align-items: stretch;">
+        <ng-container *ngFor="let note of notes">
+          <app-note-card [note]="note" style="flex: 0 0 auto; width: 300px; height: 100%; padding: 2px"></app-note-card>
+        </ng-container>
+      </ion-item>
+      <ion-item color="light">
+        <ion-button fill="clear" color="primary" [routerLink]="['/journal/new']">
+          <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+          Add Note
+        </ion-button>
+        <ion-button fill="clear" color="primary" [routerLink]="['/journal/new']">
+          <ion-icon slot="start" name="list-circle-outline"></ion-icon>
+          View All
+        </ion-button>
+        <ion-button fill="clear" color="primary" [routerLink]="['/journal/new']">
+          <ion-icon slot="start" name="arrow-forward-circle-outline"></ion-icon>
+          Go to Directory
+        </ion-button>
+      </ion-item>
+    </ng-container>
+
+    <ng-template #noNotes>
+      <ion-item color="light">
+        <ion-button fill="clear" color="primary" [routerLink]="['/journal/new']">
+          <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+          Add Note
+        </ion-button>
+      </ion-item>
+    </ng-template>
+  </ng-container>
 </ion-content>

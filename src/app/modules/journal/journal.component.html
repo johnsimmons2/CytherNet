@@ -4,3 +4,146 @@
 <!-- Notes not owned by user (admin) should be highlighted -->
 
 <!-- Notes should have tags and heirarchies. Creating a note in one simple form -->
+
+
+
+
+<!-- Admin can reveal new notes (either by adding, sharing, etc) and users
+receive a "A new note has been revealed" with a link (can use [[NOTES.id]] since it is site-wide)
+-->
+
+<!-- Notes need tags, which need a new table. -->
+
+<!-- Notes need to have categories, a directory labeling style:
+Apricot creates a new note, so the category is:
+"Apricot/"
+
+You may add subcategories such as "Stillport Notes" which show up as
+"Apricot/Stillport Notes/"
+
+will need a table for shared note categories to bulk share
+-->
+
+
+<!-- Fab for + button? -->
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <ng-container>
+        <ion-list>
+          <ion-item>
+            <ion-segment value="directory" #filterViewControl (ionChange)="refresh(undefined)">
+
+              <ion-segment-button value="directory" content-id="directory-view">
+                <ion-label>Directory</ion-label>
+              </ion-segment-button>
+
+              <ion-segment-button value="table" content-id="table-view">
+                <ion-label>Table</ion-label>
+              </ion-segment-button>
+
+            </ion-segment>
+          </ion-item>
+
+          <ion-item>
+            <ion-segment-view style="width: 100%">
+
+              <ion-segment-content id="directory-view">
+                <ng-container *ngTemplateOutlet="directoryFilterBodyView"></ng-container>
+              </ion-segment-content>
+
+              <ion-segment-content id="table-view">
+                <ion-list style="width: 100%" #tableFilterView>
+                  <ion-item>
+                    <ion-label><strong>Filter by:</strong></ion-label>
+                    <ion-select placeholder="Select One">
+                      <ion-select-option value="all">These dont work yet lol</ion-select-option>
+                      <ion-select-option value="all">All</ion-select-option>
+                      <ion-select-option value="campaign">Campaign</ion-select-option>
+                      <ion-select-option value="character">Character</ion-select-option>
+                      <ion-select-option value="user">Directory</ion-select-option>
+                      <ion-select-option value="user">User</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                  <ion-item>
+                    <ion-searchbar animated="true" placeholder="Search by Name or Content" [debounce]="500" (ionInput)="refresh($event)"></ion-searchbar>
+                  </ion-item>
+
+                  <ion-item>
+                    <ng-container *ngTemplateOutlet="tableFilterBodyView"></ng-container>
+                  </ion-item>
+                </ion-list>
+              </ion-segment-content>
+
+            </ion-segment-view>
+          </ion-item>
+        </ion-list>
+      </ng-container>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+
+<ng-template #tableFilterBodyView>
+  <ion-grid>
+    <ion-row #headerRow class="notes-header">
+      <ion-col>
+        <ion-label>Name</ion-label>
+      </ion-col>
+      <ion-col>
+        <ion-label>Directory</ion-label>
+      </ion-col>
+      <ion-col>
+        <ion-label>Tags</ion-label>
+      </ion-col>
+      <ion-col>
+        <ion-label>Updated</ion-label>
+      </ion-col>
+      <ion-col>
+        <ion-label>Created</ion-label>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngFor="let note of notes">
+      <ion-col>
+        <ion-label>
+          <a [routerLink]="['/journal', note.id, 'view']">{{note.note?.name}}</a>
+        </ion-label>
+      </ion-col>
+      <ion-col>
+        <ion-label>{{note.note?.directory}}</ion-label>
+      </ion-col>
+      <ion-col>
+        <ion-text *ngFor="let tag of note.note?.tags">{{tag.name}}</ion-text>
+      </ion-col>
+      <ion-col>
+        <ion-label>{{note.updated | date: 'short'}}</ion-label>
+      </ion-col>
+      <ion-col>
+        <ion-label>{{note.created | date: 'short'}}</ion-label>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ng-template>
+
+<ng-template #directoryFilterBodyView>
+  <ion-list style="width: 100%">
+    <ion-item *ngFor="let directory of notesByDirectory.keys()">
+      <!-- Directory Label -->
+      <ion-label
+        slot="start"
+        style="max-width: 40%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+      >
+        <strong>{{directory}} ({{notesByDirectory.get(directory)?.length}})</strong>
+      </ion-label>
+
+      <!-- Notes List -->
+      <ion-list style="flex: 1 1 auto; overflow: hidden;" lines="none">
+        <ng-container *ngFor="let note of notesByDirectory.get(directory)">
+          <app-note-card [note]="note" [mode]="'row'"></app-note-card>
+        </ng-container>
+      </ion-list>
+    </ion-item>
+  </ion-list>
+</ng-template>

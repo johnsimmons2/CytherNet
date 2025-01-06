@@ -1,0 +1,7 @@
+<ng-container *ngFor="let part of note.parsedParts; let i = index">
+  &nbsp;
+  <ion-text *ngIf="part.type === 'text'; else component" [innerHtml]="getPartDisplayText(part)"></ion-text>
+  <ng-template #component>
+    <app-note-text [html]="getPartDisplayText(part)" [noteRef]="part.noteReference!"></app-note-text>
+  </ng-template>
+</ng-container>

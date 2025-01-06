@@ -71,7 +71,7 @@ export class LoginComponent {
   }
 
 	ngOnInit() {
-    if (!this.loginService.checkAuthentication()) {
+    if (this.loginService.getJwt() !== null) {
       this.loginService.logout();
     }
 	}

@@ -1,0 +1,17 @@
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Manage notes across the application</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <app-table [data]="notes"
+                  [columns]="cols"
+                  [actions]="getTableActions()"
+                  [primaryColumn]="'title'"
+                  [editable]="true"
+                  (valueChange)="saveChanges($event)">
+      </app-table>
+    </ion-card-content>
+    <ion-button [routerLink]="['/journal/new']">Add</ion-button>
+  </ion-card>
+</ion-content>

@@ -1,0 +1,63 @@
+<ion-content>
+  <ng-content *ngIf="!newMode && note; else isNewNote">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title [ngClass]="{'inactive-note': !note.active}">{{note?.name}}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ng-container *ngIf="!editMode; else editNote">
+          <app-notetext-block [note]="note" [maxLength]="0"></app-notetext-block>
+        </ng-container>
+        <ng-template #editNote>
+          <form [formGroup]="noteForm" (ngSubmit)="saveNote()">
+            <ion-textarea formControlName="description" [autoGrow]="true"></ion-textarea>
+            <ion-button type="submit">Confirm</ion-button>
+          </form>
+        </ng-template>
+      </ion-card-content>
+    </ion-card>
+  </ng-content>
+  <ng-template #isNewNote>
+    <ion-card>
+      <form [formGroup]="noteForm" (ngSubmit)="saveNote()">
+        <ion-card-header>
+          <ion-card-title>
+            <ion-input>
+              <ion-input formControlName="name" placeholder="New Note"></ion-input>
+            </ion-input>
+          </ion-card-title>
+          <ion-input>
+            <ion-input formControlName="directory" placeholder="Directory (default is /username)"></ion-input>
+          </ion-input>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-textarea formControlName="description" [autoGrow]="true" placeholder="Type here"></ion-textarea>
+          <ion-button type="submit">Confirm</ion-button>
+        </ion-card-content>
+      </form>
+    </ion-card>
+  </ng-template>
+</ion-content>
+
+<ion-fab slot="fixed" vertical="bottom" horizontal="end">
+  <ion-fab-button color="secondary">
+    <ion-icon name="chevron-up-outline"></ion-icon>
+  </ion-fab-button>
+  <ion-fab-list side="top">
+    <ion-fab-button *ngIf="canEditNote && !editMode">
+      <ion-button #editButton (click)="editNote()">
+        <ion-icon name="create-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-fab-button>
+    <ion-fab-button *ngIf="canEditNote && editMode">
+      <ion-button #deleteButton (click)="viewNote()">
+        <ion-icon name="eye-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-fab-button>
+    <ion-fab-button>
+      <ion-button #deleteButton (click)="deleteNote()">
+        <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-fab-button>
+  </ion-fab-list>
+</ion-fab>

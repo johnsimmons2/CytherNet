@@ -49,6 +49,10 @@ export class CharacterService extends BaseService<Character>{
     return this.getAll(`characters`);
   }
 
+  getCharactersForUser(username: string) {
+    return this.getAll(`characters?username=${username}`);
+  }
+
   /*
   * SECTION: Online mode only code
   */

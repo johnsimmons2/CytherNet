@@ -1,14 +1,12 @@
+<ion-text [innerHTML]="html" (click)="showDetails($event)"></ion-text>
 
-<ion-label color="dark" (click)="showDetails($event)">
-  {{resolvedValue.searchId}}
-</ion-label>
 <ion-popover #popover [isOpen]="showPopover" (didDismiss)="showPopover = false">
   <ng-template>
     <ion-content *ngIf="viewContent === null; else hasContent">
       <ion-card>
         <ion-card-content>
           <!-- TODO: Add a helper to show what are valid queries. -->
-          <ion-label>The query could not resolve for: {{rawText}}</ion-label>
+          <ion-label>The query could not resolve for: {{noteRef.rawText}}</ion-label>
         </ion-card-content>
       </ion-card>
     </ion-content>
@@ -23,17 +21,15 @@
   <ion-content>
     <ion-card>
       <ion-card-header>
-        <ion-card-title>Inspecting <a href="/characters">{{resolvedValue.searchId}}</a></ion-card-title>
+        <ion-card-title>Inspecting <a href="/">{{noteRef.field}}</a></ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <ion-list>
           <ion-item>
             <ion-label>First Name</ion-label>
-            <ion-text>{{resolvedValue.fName}}</ion-text>
           </ion-item>
           <ion-item>
             <ion-label>Last Name</ion-label>
-            <ion-text>{{resolvedValue.lName}}</ion-text>
           </ion-item>
           <ion-item>
             <ion-label>Campaigns</ion-label>
@@ -64,7 +60,7 @@
   <ion-content style="--min-width: 100%; width: 100%">
     <ion-card >
       <ion-card-header>
-        <ion-card-title>Inspecting <a href="/characters">{{resolvedValue.searchId}}</a></ion-card-title>
+        <ion-card-title>Inspecting <a href="/characters">{{noteRef.field}}</a></ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <ion-list>

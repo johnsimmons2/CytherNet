@@ -69,3 +69,31 @@ mat-sidenav-content {
 .mat-badge-content {
   z-index: 9999999;
 }
+
+ion-content::part(scroll) {
+	overflow-y: auto;
+	scrollbar-width: thin;
+	scrollbar-color: var(--ion-item-background) transparent;
+}
+
+.inactive-note {
+  color: var(--ion-color-warning);
+}
+
+// ion-item {
+//   scrollbar-width: thin;
+//   scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+// }
+
+// ion-item::-webkit-scrollbar {
+//   height: 8px;
+// }
+
+// ion-item::-webkit-scrollbar-thumb {
+//   background: rgba(0, 0, 0, 0.2);
+//   border-radius: 4px;
+// }
+
+// ion-item::-webkit-scrollbar-track {
+//   background: transparent;
+// }

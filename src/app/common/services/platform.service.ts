@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { ApiService } from "./api.service";
-import { map, Observable, tap } from "rxjs";
+import { BehaviorSubject, fromEvent, map, merge, Observable, tap } from "rxjs";
 import { HttpResponse } from "@angular/common/http";
 import { Capacitor } from "@capacitor/core";
 
@@ -8,7 +8,15 @@ import { Capacitor } from "@capacitor/core";
   providedIn: 'root'
 })
 export class PlatformService {
+  private onlineStatus: BehaviorSubject<boolean>;
+
   constructor(private apiService: ApiService) {
+    this.onlineStatus = new BehaviorSubject<boolean>(navigator.onLine);
+
+    const online$ = fromEvent(window, 'online').pipe(map(() => true));
+    const offline$ = fromEvent(window, 'offline').pipe(map(() => false));
+
+    merge(online$, offline$).subscribe(this.onlineStatus);
   }
 
   public get isMobile(): boolean {
@@ -21,6 +29,10 @@ export class PlatformService {
 
   public get platform(): string {
     return Capacitor.getPlatform();
+  }
+
+  public get isOnline$(): Observable<boolean> {
+    return this.onlineStatus.asObservable();
   }
 
   public get operatingSystem(): string {

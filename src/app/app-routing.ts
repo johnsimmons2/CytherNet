@@ -50,7 +50,27 @@ export const routes: Routes = [
       },
       {
         path: 'journal',
-        loadComponent: () => import('./modules/journal/journal.component').then(m => m.JournalComponent)
+        canActivate: [ RoleGuard ],
+        data: { roles: ['player', 'admin'] },
+        children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            loadComponent: () => import('./modules/journal/journal.component').then(m => m.JournalComponent)
+          },
+          {
+            path: ':id/edit',
+            loadComponent: () => import('./modules/journal/note-page/note-page.component').then(m => m.NotePageComponent)
+          },
+          {
+            path: ':id/view',
+            loadComponent: () => import('./modules/journal/note-page/note-page.component').then(m => m.NotePageComponent)
+          },
+          {
+            path: 'new',
+            loadComponent: () => import('./modules/journal/note-page/note-page.component').then(m => m.NotePageComponent)
+          }
+        ]
       },
       {
         path: 'shop',
@@ -83,6 +103,30 @@ export const routes: Routes = [
           {
             path: 'campaigns',
             loadComponent: () => import('./modules/admin/campaigns/campaigns.component').then(m => m.CampaignsComponent),
+          },
+          {
+            path: 'spells',
+            loadComponent: () => import('./modules/admin/spells/spells.component').then(m => m.SpellsComponent),
+          },
+          {
+            path: 'items',
+            loadComponent: () => import('./modules/admin/items/items.component').then(m => m.ItemsComponent),
+          },
+          {
+            path: 'races',
+            loadComponent: () => import('./modules/admin/races/races.component').then(m => m.RacesComponent),
+          },
+          {
+            path: 'classes',
+            loadComponent: () => import('./modules/admin/classes/classes.component').then(m => m.ClassesComponent),
+          },
+          {
+            path: 'items',
+            loadComponent: () => import('./modules/admin/items/items.component').then(m => m.ItemsComponent),
+          },
+          {
+            path: 'notes',
+            loadComponent: () => import('./modules/admin/notes/notes.component').then(m => m.NotesComponent),
           },
           {
             path: 'characters',

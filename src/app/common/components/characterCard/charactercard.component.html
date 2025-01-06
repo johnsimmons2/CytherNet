@@ -1,4 +1,4 @@
-<ion-card style="min-width: 300px;">
+<ion-card style="min-width: 300px;" *ngIf="_character !== null">
   <ion-card-header>
     <ion-card-title>
       <b>{{_character.name}}</b> - Lvl {{_statsheet.level}}

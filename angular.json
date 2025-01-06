@@ -30,6 +30,12 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
+              {
+                "glob": "ngsw-worker.js",
+                "input": "node_modules/@angular/service-worker",
+                "output": "."
+              },
+              "src/ngsw-config.json",
               "src/favicon.ico",
               "src/assets",
               "src/manifest.json",
@@ -111,7 +117,7 @@
               ],
               "outputHashing": "all",
               "sourceMap": false,
-              "optimization": false
+              "optimization": true
             },
             "development": {
               "optimization": true,

@@ -5,10 +5,11 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
 import { provideIonicAngular, IonicRouteStrategy } from '@ionic/angular/standalone';
 import { provideRouter, RouteReuseStrategy, withComponentInputBinding } from '@angular/router';
-import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule, provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule, provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpInterceptorService } from './app/common/services/http-interceptor.service';
 import { LoadingService } from './app/common/services/loading.service';
 import { provideServiceWorker } from '@angular/service-worker';
+import { UserService } from './app/common/services/user.service';
 
 
 if (environment.production) {
@@ -17,11 +18,14 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
   providers: [
+    provideRouter(routes, withComponentInputBinding()),
+    provideHttpClient(
+      withInterceptorsFromDi()
+    ),
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpInterceptorService,
       multi: true,
-      deps: [LoadingService, NgZone]
     },
     {
       provide: RouteReuseStrategy,
@@ -34,7 +38,18 @@ bootstrapApplication(AppComponent, {
       enabled: true,
       registrationStrategy: 'registerWhenStable:30000'
     }),
-    provideRouter(routes, withComponentInputBinding()),
-    provideHttpClient(),
   ],
-})
+});
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/ngsw-worker.js').then(
+    (registration) => {
+      console.log('Service Worker registered:', registration);
+    },
+    (error) => {
+      console.error('Service Worker registration failed:', error);
+    }
+  );
+} else {
+  console.warn('Service Worker not supported in this browser.');
+}

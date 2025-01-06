@@ -4,7 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "npx ionic serve -c production",
-    "local": "npx ionic serve -c development",
+    "local": "npx ionic serve -c development --external",
+    "pwa": "npm run build && http-server ./dist/www -p 3000",
     "build": "npx ionic build --configuration development",
     "build-prod": "npx ionic build --configuration production",
     "sync": "npx cap sync",

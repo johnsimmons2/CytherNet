@@ -7,6 +7,7 @@ export const RoleGuard: CanActivateFn = (route, state) => {
   const queryRoles = (route.data['roles'] as Array<string>).map(x => x.toLowerCase()) ?? [];
 
   const isAdmin = roles.some(role => queryRoles.includes(role.roleName.toLowerCase()));
-  console.log(isAdmin);
-  return isAdmin;
+  const isAuthenticated = localStorage.getItem('jwtToken') !== null;
+
+  return isAdmin && isAuthenticated;
 };
