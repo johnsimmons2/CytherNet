@@ -1,10 +1,10 @@
 import { User } from "mailtrap/dist/types/api/accounts";
 
 export interface Note {
-  id: number;
-  userId: number;
-  characterId: number;
-  campaignId: number;
+  id?: number;
+  userId?: number;
+  characterId?: number;
+  campaignId?: number;
   name: string;
   description: string;
   directory: string;
@@ -21,7 +21,7 @@ export interface Note {
 
 
 export interface Tag {
-  id: number;
+  id?: number;
   userId: number;
   name: string;
   description: string;

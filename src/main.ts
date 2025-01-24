@@ -10,6 +10,7 @@ import { HttpInterceptorService } from './app/common/services/http-interceptor.s
 import { LoadingService } from './app/common/services/loading.service';
 import { provideServiceWorker } from '@angular/service-worker';
 import { UserService } from './app/common/services/user.service';
+import { provideMarkdown } from 'ngx-markdown';
 
 
 if (environment.production) {
@@ -38,6 +39,7 @@ bootstrapApplication(AppComponent, {
       enabled: true,
       registrationStrategy: 'registerWhenStable:30000'
     }),
+    provideMarkdown()
   ],
 });
 

@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonGrid, IonIcon, IonItem, IonLabel, IonRow, IonText, IonToolbar } from "@ionic/angular/standalone";
+import { IonAccordion, IonAccordionGroup, IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonGrid, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonNote, IonRow, IonText, IonToolbar } from "@ionic/angular/standalone";
 import { catchError, forkJoin, map, Subject, switchMap, tap } from "rxjs";
 import { CharacterCardComponent } from "src/app/common/components/characterCard/charactercard.component";
 import { NoteCardComponent } from "src/app/common/components/noteCard/notecard.component";
@@ -18,7 +18,8 @@ import { ParsingService } from "src/app/common/services/parsing.service";
 import { ToastService } from "src/app/common/services/toast.service";
 import { UserService } from "src/app/common/services/user.service";
 import { addIcons } from "ionicons";
-import { addCircleOutline, listCircleOutline, arrowForwardCircleOutline } from "ionicons/icons";
+import { addCircleOutline, listCircleOutline, arrowForwardCircleOutline, playCircleOutline, searchCircleOutline } from "ionicons/icons";
+import { CampaignCardComponent } from "src/app/common/components/campaignCard/campaigncard.component";
 
 
 @Component({
@@ -28,9 +29,15 @@ import { addCircleOutline, listCircleOutline, arrowForwardCircleOutline } from "
   imports: [
     CommonModule,
     RouterModule,
+    IonAccordion,
+    IonAccordionGroup,
     IonContent,
     IonCard,
     IonButton,
+    IonGrid,
+    IonNote,
+    IonRow,
+    IonCol,
     IonLabel,
     IonIcon,
     IonText,
@@ -39,9 +46,12 @@ import { addCircleOutline, listCircleOutline, arrowForwardCircleOutline } from "
     IonLabel,
     IonItem,
     IonCardHeader,
+    IonList,
+    IonListHeader,
     IonCardTitle,
     IonCardContent,
     NoteTextComponent,
+    CampaignCardComponent,
     CharacterCardComponent,
     NoteCardComponent
   ],
@@ -68,7 +78,7 @@ export class LandingComponent implements OnInit {
               private toastService: ToastService,
               private parser: ParsingService,
               private changeDetectorRef: ChangeDetectorRef) {
-    addIcons({addCircleOutline, listCircleOutline, arrowForwardCircleOutline});
+    addIcons({addCircleOutline, listCircleOutline, arrowForwardCircleOutline, playCircleOutline, searchCircleOutline});
   }
 
   ngOnInit() {
@@ -122,10 +132,6 @@ export class LandingComponent implements OnInit {
     this.toastService.showUnimplemented();
   }
 
-  public innerHtmlForDescription(text: string) {
-    return this.parser.parseMarkdown(text);
-  }
-
   /**
    * TODO:
    * - This will soon become a separate service to handle this kind of transformation as well
@@ -139,6 +145,6 @@ export class LandingComponent implements OnInit {
   }
 
   public trackByPartId(index: number, part: {note: Note, part: any}) {
-    return part.note.id + index;
+    return part.note.id! + index;
   }
 }

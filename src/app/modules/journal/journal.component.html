@@ -36,11 +36,11 @@ will need a table for shared note categories to bulk share
             <ion-segment value="directory" #filterViewControl (ionChange)="refresh(undefined)">
 
               <ion-segment-button value="directory" content-id="directory-view">
-                <ion-label>Directory</ion-label>
+                <ion-label>By Directory</ion-label>
               </ion-segment-button>
 
               <ion-segment-button value="table" content-id="table-view">
-                <ion-label>Table</ion-label>
+                <ion-label>List All</ion-label>
               </ion-segment-button>
 
             </ion-segment>
@@ -48,8 +48,7 @@ will need a table for shared note categories to bulk share
 
           <ion-item>
             <ion-segment-view style="width: 100%">
-
-              <ion-segment-content id="directory-view">
+              <ion-segment-content id="directory-view" style="cursor: default;">
                 <ng-container *ngTemplateOutlet="directoryFilterBodyView"></ng-container>
               </ion-segment-content>
 
@@ -80,6 +79,11 @@ will need a table for shared note categories to bulk share
           </ion-item>
         </ion-list>
       </ng-container>
+      <br/>
+      <ion-note (click)="openGuide()" style="cursor: pointer;">
+        <ion-icon name="help-circle-outline"></ion-icon>
+        Guide
+      </ion-note>
     </ion-card-content>
   </ion-card>
 </ion-content>
@@ -128,22 +132,50 @@ will need a table for shared note categories to bulk share
 </ng-template>
 
 <ng-template #directoryFilterBodyView>
-  <ion-list style="width: 100%">
-    <ion-item *ngFor="let directory of notesByDirectory.keys()">
-      <!-- Directory Label -->
-      <ion-label
-        slot="start"
-        style="max-width: 40%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
-      >
-        <strong>{{directory}} ({{notesByDirectory.get(directory)?.length}})</strong>
-      </ion-label>
+  <ng-container *ngIf="notes && notes.length > 0; else directoryNoNotes">
+    <span style="display: flex; flex-direction: column; height: 100%; min-height: 660px;">
+      <ion-accordion-group #directoryAccordion style="flex: 1; overflow-y: auto;">
+        <ion-accordion *ngFor="let directory of directories" [value]="directory">
+          <ion-item slot="header">
+            <ion-label style="display: flex; align-items: center;">
+              <h1 [innerHTML]="directoryStylized(directory)"></h1>
+              <p style="padding-left: 5px;" class="file-count">
+                ({{notesByDirectory.get(directory)?.length ?? 0}})
+              </p>
+            </ion-label>
+            <ion-button fill="clear" size="large" color="subtlesecondary" (click)="shareDirectory(directory)">
+              <ion-icon name="share-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-item>
+          <ion-list slot="content">
+            <ng-container *ngFor="let note of notesByDirectory.get(directory)">
+              <app-note-card [note]="note" [mode]="'row'" [directory]="directory"></app-note-card>
+            </ng-container>
+            <!-- Add note to directory -->
+            <app-note-card [mode]="'row'" [directory]="directory"></app-note-card>
+          </ion-list>
+        </ion-accordion>
+      </ion-accordion-group>
 
-      <!-- Notes List -->
-      <ion-list style="flex: 1 1 auto; overflow: hidden;" lines="none">
-        <ng-container *ngFor="let note of notesByDirectory.get(directory)">
-          <app-note-card [note]="note" [mode]="'row'"></app-note-card>
-        </ng-container>
-      </ion-list>
+      <ion-item class="add-directory-item" button="true" (click)="addNewDirectory()" style="flex-shrink: 0;">
+        <ion-icon name="add" color="subtlesecondary" style="padding-right: 4px;"></ion-icon>
+        <ion-label color="subtlesecondary">
+          <h3><i>New Directory</i></h3>
+        </ion-label>
+      </ion-item>
+    </span>
+  </ng-container>
+
+  <ng-template #directoryNoNotes>
+    <ion-item>
+      <ion-label>
+        <h2>No notes found</h2>
+      </ion-label>
     </ion-item>
-  </ion-list>
+    <ion-button fill="clear" (click)="addNewDirectory()">
+      <ion-icon name="add" slot="icon-only"></ion-icon>
+      <ion-label>Add a New Directory to Start</ion-label>
+    </ion-button>
+  </ng-template>
 </ng-template>
+

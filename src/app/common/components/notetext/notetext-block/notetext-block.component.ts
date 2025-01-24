@@ -18,7 +18,7 @@ import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 export class NoteTextBlockComponent implements OnInit {
 
   @Input() note!: ParsedNote;
-  @Input() maxLength: number = 160;
+  @Input() maxLength: number = 120;
 
   constructor(private sanitizer: DomSanitizer) { }
 

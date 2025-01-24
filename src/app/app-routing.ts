@@ -46,7 +46,21 @@ export const routes: Routes = [
       },
       {
         path: 'home',
-        loadComponent: () => import('./modules/landing/landing.component').then(m => m.LandingComponent)
+        children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            loadComponent: () => import('./modules/landing/landing.component').then(m => m.LandingComponent)
+          },
+          {
+            path: 'content',
+            loadComponent: () => import('./modules/home/content/content.component').then(m => m.ContentComponent)
+          },
+          {
+            path: 'content/feats',
+            loadComponent: () => import('./modules/home/content/all-feats/all-feats.component').then(m => m.AllFeatsComponent)
+          }
+        ]
       },
       {
         path: 'journal',

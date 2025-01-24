@@ -1,38 +1,86 @@
 <ion-content>
-  <ng-content *ngIf="!newMode && note; else isNewNote">
+  <!--Not a new note -->
+  <ng-content *ngIf="!newMode && note; else isNewNote" class="notepagecontainer">
     <ion-card>
-      <ion-card-header>
-        <ion-card-title [ngClass]="{'inactive-note': !note.active}">{{note?.name}}</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <ng-container *ngIf="!editMode; else editNote">
-          <app-notetext-block [note]="note" [maxLength]="0"></app-notetext-block>
-        </ng-container>
-        <ng-template #editNote>
-          <form [formGroup]="noteForm" (ngSubmit)="saveNote()">
-            <ion-textarea formControlName="description" [autoGrow]="true"></ion-textarea>
+      <ng-container *ngIf="!editMode; else editNote">
+        <ion-card-header>
+          <ion-card-title [ngClass]="{'inactive-note': !note.active}">{{note.name}}</ion-card-title>
+          <ion-card-subtitle>
+            <ion-label color="notelabel">
+              ({{noteForm.controls['directory'].value !== '' ? noteForm.controls['directory'].value + '/' : ''}}<i>{{note.directory}}</i>)
+            </ion-label>
+          </ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <markdown [data]="note.rawText"></markdown>
+        </ion-card-content>
+      </ng-container>
+
+      <!-- Edit mode -->
+      <ng-template #editNote>
+        <form [formGroup]="noteForm" (ngSubmit)="saveNote()">
+          <ion-card-header>
+            <ion-card-title style="display: flex; justify-content: space-between;">
+              <ion-input formControlName="name"></ion-input>
+              <span style="display: flex; align-items: flex-start; flex-direction: column; min-width: 160px;">
+                <ion-note>Created {{ note.created | date }}</ion-note>
+                <ion-note>Updated {{ note.updated | date }}</ion-note>
+              </span>
+            </ion-card-title>
+
+            <ion-card-subtitle>
+              <ion-input formControlName="directory"></ion-input>
+            </ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-textarea formControlName="description"
+                          fill="solid"
+                          [counter]="true"
+                          maxlength="6000"
+                          [autofocus]="true"
+                          [autoGrow]="true">
+            </ion-textarea>
             <ion-button type="submit">Confirm</ion-button>
-          </form>
-        </ng-template>
-      </ion-card-content>
+            <ion-button color="secondary" (click)="viewNote()">Cancel</ion-button>
+          </ion-card-content>
+        </form>
+      </ng-template>
+
+      <ion-button fill="clear" color="subtlesecondary" (click)="cancelAll()">
+        <ion-icon slot="icon-only" name="arrow-back-circle-outline" style="padding-right: 5px;"></ion-icon>
+        <ion-label>
+          Back
+        </ion-label>
+      </ion-button>
     </ion-card>
   </ng-content>
+
+  <!-- New Notes -->
   <ng-template #isNewNote>
     <ion-card>
       <form [formGroup]="noteForm" (ngSubmit)="saveNote()">
         <ion-card-header>
           <ion-card-title>
-            <ion-input>
-              <ion-input formControlName="name" placeholder="New Note"></ion-input>
-            </ion-input>
+            <ion-input formControlName="name" placeholder="Untitled Note"></ion-input>
           </ion-card-title>
-          <ion-input>
-            <ion-input formControlName="directory" placeholder="Directory (default is /username)"></ion-input>
-          </ion-input>
+
+          <ion-input formControlName="directory" placeholder="Subdirectory name"></ion-input>
+          <br/>
+          <label>
+            A note will be created as "{{ username }}/{{ noteForm.controls['directory'].value !== '' ? noteForm.controls['directory'].value + '/' : '' }}<i>{{ noteForm.controls['name'].value }}</i>"
+          </label>
         </ion-card-header>
         <ion-card-content>
-          <ion-textarea formControlName="description" [autoGrow]="true" placeholder="Type here"></ion-textarea>
+          <ion-textarea formControlName="description"
+                        [counter]="true"
+                        maxlength="6000"
+                        [autoGrow]="true"
+                        rows="16"
+                        placeholder="Type here"
+                        fill="solid">
+          </ion-textarea>
           <ion-button type="submit">Confirm</ion-button>
+          <ion-button color="secondary" (click)="cancelAll()">Cancel</ion-button>
         </ion-card-content>
       </form>
     </ion-card>
@@ -40,22 +88,32 @@
 </ion-content>
 
 <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-  <ion-fab-button color="secondary">
+  <ion-fab-button color="primary">
     <ion-icon name="chevron-up-outline"></ion-icon>
   </ion-fab-button>
   <ion-fab-list side="top">
     <ion-fab-button *ngIf="canEditNote && !editMode">
-      <ion-button #editButton (click)="editNote()">
+      <ion-button #editButton (click)="editNote()" color="tertiary">
         <ion-icon name="create-outline" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-fab-button>
     <ion-fab-button *ngIf="canEditNote && editMode">
-      <ion-button #deleteButton (click)="viewNote()">
+      <ion-button #deleteButton (click)="confirmCancelEdit()">
         <ion-icon name="eye-outline" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-fab-button>
+    <ion-fab-button *ngIf="canEditNote">
+      <ion-button #shareButton color="secondary">
+        <ion-icon name="pricetag-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-fab-button>
+    <ion-fab-button *ngIf="canEditNote">
+      <ion-button #shareButton color="subtlesecondary">
+        <ion-icon name="share-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-fab-button>
     <ion-fab-button>
-      <ion-button #deleteButton (click)="deleteNote()">
+      <ion-button #deleteButton (click)="confirmDeleteNote()" color="warning">
         <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-fab-button>

@@ -6,6 +6,7 @@ import { ApiResult } from "../model/apiresult";
 import { ParsingService } from "./parsing.service";
 import { BaseService } from "./base.service";
 import { DatabaseService } from "./database.service";
+import { User } from "../model/user";
 
 @Injectable({
   providedIn: 'root'
@@ -62,19 +63,29 @@ export class NoteService extends BaseService<Note> {
   }
 
   public updateNote(note: Note): Observable<ApiResult> {
-    return this.update('notes/' + note.id, note.id, { description: note.description });
+    return this.update('notes/' + note.id, note.id!, { description: note.description, name: note.name, directory: note.directory });
+  }
+
+  public shareDirectory(directory: string, users: User[]): Observable<ApiResult> {
+    return this.apiService.post('notes/share', {
+      directory: directory,
+      userIds: users.map(u => u.id)
+    });
+  }
+
+  public shareNote(note: Note, userIds: number[]): Observable<ApiResult> {
+    return this.apiService.post('notes/share', {
+      noteId: note.id,
+      userIds: userIds
+    });
   }
 
   public createNote(note: Note) {
     return this.create('notes', {
       description: note.description,
-      id: 0,
-      userId: 0,
-      characterId: 0,
-      campaignId: 0,
       name: note.name,
       directory: note.directory,
-      active: false
+      active: true
     });
   }
 }

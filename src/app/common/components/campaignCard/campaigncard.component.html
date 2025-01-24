@@ -1,0 +1,32 @@
+<!-- User Campaigns -->
+
+<ng-container *ngIf="campaign !== undefined">
+  <ion-card style="width: 100%; height: 200px; display: flex; flex-direction: column;">
+    <ion-card-header>
+      <ion-card-title>{{campaign.name}}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content style="flex: 1; margin-bottom: 0;">
+      <ion-text [innerHTML]="innerHtmlForDescription(campaign.description)">
+      </ion-text>
+    </ion-card-content>
+    <ion-toolbar>
+      <ion-buttons>
+        <!-- Take user to the live session or create one if not open -->
+        <!-- Open chat, have an "export chat to note" option (WAYYYY down the road) -->
+        <ion-button fill="clear" color="primary" [disabled]="true">Join</ion-button>
+        <!-- Take you to the journal with the filter pre-set to this campaign. -->
+        <ion-button fill="clear" color="primary" [disabled]="true">Notes</ion-button>
+        <!-- Take you to the party view in campaign, where all users in this campaign are visible -->
+        <!-- Eventually you can only see specific things if they are not hidden. -->
+        <!-- Make notes directly from a player/character, or initiate a trade. -->
+        <ion-button fill="clear" color="primary" [disabled]="true">Party</ion-button>
+        <!-- View the live map session, shows campaign-wide notes and world map -->
+        <ion-button fill="clear" color="primary" [disabled]="true">Map</ion-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <!-- Campaign details page, view campaign specific notes made by admins, and other details. -->
+        <ion-button fill="clear" color="secondary" (click)="notImplemented()">Details</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-card>
+</ng-container>

@@ -1,15 +1,18 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Compiler, Component, Input, ModuleWithComponentFactories, NgModule, OnChanges, OnInit, SimpleChanges, TemplateRef, ViewChild } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { IonBadge, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonIcon, IonItem, IonLabel, IonNote, IonPopover, IonSelect, IonText } from "@ionic/angular/standalone";
+import { AlertController, IonBadge, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonIcon, IonItem, IonLabel, IonNote, IonPopover, IonSelect, IonText } from "@ionic/angular/standalone";
 import { IParsedNoteReference, ParsedNote, ParsedNotePart } from "../../model/parsednote";
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 import { NoteTextComponent } from "../notetext/notetext.component";
 import { UserService } from "../../services/user.service";
 import { User } from "../../model/user";
 import { addIcons } from "ionicons";
-import { shareOutline, peopleOutline } from "ionicons/icons";
+import { shareOutline, peopleOutline, chevronForwardOutline, add, pricetagOutline } from "ionicons/icons";
 import { Router, RouterModule } from "@angular/router";
 import { NoteTextBlockComponent } from "../notetext/notetext-block/notetext-block.component";
+import { Note } from "../../model/note";
+import { NoteService } from "../../services/note.service";
+import { tap } from "rxjs";
 
 
 @Component({
@@ -25,6 +28,7 @@ import { NoteTextBlockComponent } from "../notetext/notetext-block/notetext-bloc
     IonCardSubtitle,
     IonCardHeader,
     IonCardContent,
+    IonText,
     IonItem,
     IonButton,
     IonIcon,
@@ -49,12 +53,15 @@ import { NoteTextBlockComponent } from "../notetext/notetext-block/notetext-bloc
 export class NoteCardComponent implements OnInit, OnChanges, AfterViewInit {
 
   @Input() note!: ParsedNote;
+  @Input() directory!: string;
   @Input() mode: 'card' | 'row' = 'card';
 
   @ViewChild('cardView') cardView!: TemplateRef<any>;
   @ViewChild('rowView') rowView!: TemplateRef<any>;
 
   noteParts: ParsedNotePart[] = [];
+
+  title: string = 'New Note';
 
   get viewTemplate() {
     if (this.mode === 'card') {
@@ -75,9 +82,11 @@ export class NoteCardComponent implements OnInit, OnChanges, AfterViewInit {
 
   constructor(private sanitizer: DomSanitizer,
     private userService: UserService,
+    private alert: AlertController,
+    private noteService: NoteService,
     private cdr: ChangeDetectorRef,
     private router: Router) {
-    addIcons({ shareOutline, peopleOutline });
+    addIcons({ shareOutline, peopleOutline, chevronForwardOutline, add, pricetagOutline });
   }
 
   ngAfterViewInit(): void {
@@ -86,6 +95,7 @@ export class NoteCardComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngOnChanges(): void {
     if (this.note) {
+      this.title = this.note.name;
       this.noteParts.forEach(part => {
         if (part.type === 'reference') {
           this.cdr.markForCheck();
@@ -96,6 +106,7 @@ export class NoteCardComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngOnInit(): void {
     if (this.note) {
+      this.title = this.note.name;
       this.noteParts = this.note.parsedParts;
       this.noteParts.forEach(part => {
         if (part.type === 'reference') {
@@ -112,6 +123,8 @@ export class NoteCardComponent implements OnInit, OnChanges, AfterViewInit {
           this.cdr.markForCheck();
         });
       }
+    } else {
+
     }
   }
 
@@ -165,6 +178,64 @@ export class NoteCardComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   openNote(): void {
-    this.router.navigate(['/journal', this.note.id, 'view']);
+    if (this.note) {
+      this.router.navigate(['/journal', this.note.id, 'view']);
+    } else {
+      if (this.directory !== this.userService.currentUsername) {
+        this.router.navigate(['/journal', 'new'], {
+          queryParams: {
+            directory: this.directory.replace(this.userService.currentUsername + '/', '')
+          }
+        });
+      } else {
+        this.router.navigate(['/journal', 'new']);
+      }
+    }
+  }
+
+  shareIndividualNote(): void {
+    this.alert.create({
+      header: 'Share Note with Users',
+      message: `<p>Enter the usernames to share this note with (comma separated):</p>`,
+      inputs: [
+        {
+          name: 'usernames',
+          type: 'text',
+          placeholder: 'Usernames'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Share',
+          handler: (data) => {
+            const userIds = data.usernames.split(',').map((username: any) => {
+              return this.userService.getUserByUsername(username).subscribe(user => {
+                return user.id;
+              });
+            });
+
+            console.log(this.note, userIds);
+            this.noteService.shareNote(this.note.note!, userIds).subscribe();
+          }
+        }
+      ]
+    }).then(alert => {
+      alert.present().then(() => {
+        // const input = alert.querySelector('input') as HTMLInputElement;
+        // console.log('input', input);
+        // if (input) {
+        //   input.addEventListener('input', (event: any) => {
+        //     console.log('hi', event);
+        //     const fullPath = baseDirectory + event.target.value;
+        //     document.getElementById('resolved-directory')!.textContent = fullPath;
+        //   });
+        // }
+      });
+
+    });
   }
 }

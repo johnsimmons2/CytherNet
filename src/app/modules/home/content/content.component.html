@@ -1,0 +1,55 @@
+<!-- Item Table Component -->
+
+<!-- Feat Table Component -->
+
+<!-- Class / Subclass Table Component -->
+
+<!-- Spell Table Component -->
+
+<!-- Race Table Component -->
+
+<ion-content>
+  <ion-list style="width: 100%" #tableFilterView>
+    <ion-button lines="none" fill="clear">
+      <ion-icon name="list-circle-outline" slot="start"></ion-icon>
+      <ion-label>All Items</ion-label>
+    </ion-button>
+    <ion-button lines="none" fill="clear" [routerLink]="['feats']">
+      <ion-icon name="list-circle-outline" slot="start"></ion-icon>
+      <ion-label>All Feats</ion-label>
+    </ion-button>
+    <ion-button lines="none" fill="clear">
+      <ion-icon name="list-circle-outline" slot="start"></ion-icon>
+      <ion-label>All Spells</ion-label>
+    </ion-button>
+    <ion-button lines="none" fill="clear">
+      <ion-icon name="list-circle-outline" slot="start"></ion-icon>
+      <ion-label>All Classes</ion-label>
+    </ion-button>
+    <ion-button lines="none" fill="clear">
+      <ion-icon name="list-circle-outline" slot="start"></ion-icon>
+      <ion-label>All Races</ion-label>
+    </ion-button>
+    <ion-item>
+      <ion-label><strong>Filter by:</strong></ion-label>
+      <ion-select placeholder="Select One">
+        <ion-select-option value="all">All</ion-select-option>
+        <ion-select-option value="spell">Spell</ion-select-option>
+        <ion-select-option value="feat">Feat</ion-select-option>
+        <ion-select-option value="subclass">Subclass</ion-select-option>
+        <ion-select-option value="class">Class</ion-select-option>
+        <ion-select-option value="race">Race</ion-select-option>
+        <ion-select-option value="item">Item</ion-select-option>
+        <ion-select-option value="character">Character</ion-select-option>
+        <ion-select-option value="language">Language</ion-select-option>
+        <ion-select-option value="conditions">Conditions</ion-select-option>
+        <ion-select-option value="skill">Skill</ion-select-option>
+        <ion-select-option value="user">User</ion-select-option>
+      </ion-select>
+      <!-- Logic based on selection; if I select item, I can narrow search by item material for example. -->
+    </ion-item>
+    <ion-item>
+      <ion-searchbar animated="true" placeholder="Search by Name" [debounce]="500" ></ion-searchbar>
+    </ion-item>
+  </ion-list>
+</ion-content>

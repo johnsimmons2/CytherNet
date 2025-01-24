@@ -73,7 +73,7 @@ export class ParsingService {
             active: note.active,
           });
         }
-        return this.userService.getUser(note.userId).pipe(
+        return this.userService.getUser(note.userId!).pipe(
           map((user) => ({
               rawText: note.description,
               parsedParts: parsedParts,
