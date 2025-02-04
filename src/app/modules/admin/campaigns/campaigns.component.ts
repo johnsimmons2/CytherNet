@@ -11,8 +11,6 @@ import { CampaignService } from "src/app/common/services/campaign.service";
 import { TableColumn } from "src/app/common/components/table/table.column";
 import { ApiResult } from "src/app/common/model/apiresult";
 import { ToastService } from "src/app/common/services/toast.service";
-import { addCircleOutline } from "ionicons/icons";
-import { addIcons } from "ionicons";
 import { RouterModule } from "@angular/router";
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 
@@ -94,7 +92,6 @@ export class CampaignsComponent implements OnInit {
   @ViewChild('addCharacterToCampaignModal') addCharacterToCampaignModal!: IonModal;
 
   constructor(private campaignService: CampaignService, private toastService: ToastService, private userService: UserService) {
-    addIcons({addCircleOutline});
   }
 
   get rightNow() {

@@ -39,8 +39,11 @@ export class UserService extends BaseService<User> {
     if (user) {
       return user;
     }
-    // Blah blah something wrong do something
     return null;
+  }
+
+  get currentUserId(): string | null {
+    return localStorage.getItem('userId') ?? null;
   }
 
   public login(user: User): Observable<ApiResult> {
@@ -63,6 +66,7 @@ export class UserService extends BaseService<User> {
           }
           // Use the username we received from the server, not the one the user entered.
           localStorage.setItem('username', decoded.username);
+          localStorage.setItem('userId', decoded.userId);
           localStorage.setItem('rolesLastUpdate', Date.now().toString());
           localStorage.setItem('roles', JSON.stringify(decoded.roles));
           this.isAuthenticatedSubject.next(true);
@@ -105,7 +109,6 @@ export class UserService extends BaseService<User> {
       return false;
     });
   }
-
 
   public resetPasswordLink(user: any): Observable<ApiResult> {
     return this.apiService.post('auth/get-password-reset-link', user);

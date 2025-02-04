@@ -1,0 +1,74 @@
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Encyclopedia</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-segment value="all" scrollable>
+        <ion-segment-button value="all" content-id="all">
+          <!-- <ion-icon name="globe-outline"></ion-icon> -->
+          <ion-label>All</ion-label>
+        </ion-segment-button>
+        <ion-segment-button *ngFor="let col of collections" [value]="col.name" [contentId]="col.name">
+          <!-- <ion-icon name="globe-outline"></ion-icon> -->
+          <ion-label>{{col.name}}</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-grid style="display: flex; flex-direction: column;">
+    <ion-row style="flex: 1;">
+      <ion-col>
+        <ion-card>
+          <ion-segment-view>
+            <ion-segment-content id="all">
+              <ng-container *ngTemplateOutlet="allView"></ng-container>
+            </ion-segment-content>
+            <ion-segment-content id="Items">
+              <ng-container *ngTemplateOutlet="allItemsView"></ng-container>
+            </ion-segment-content>
+          </ion-segment-view>
+        </ion-card>
+      </ion-col>
+      <ion-col>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Select an Item</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+</ion-content>
+
+<ng-template #allView>
+  <ion-card-header>
+    <ion-card-title>All content</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-list>
+      <ion-item>
+        <ion-label>All Item 1</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-card-content>
+</ng-template>
+
+<ng-template #allItemsView>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>All Items</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-label>Item 1</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ng-template>

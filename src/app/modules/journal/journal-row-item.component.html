@@ -1,0 +1,60 @@
+<ion-accordion-group style="width: 100%;">
+  <!-- One accordion per directory -->
+  <ion-accordion [value]="currentKey">
+    <!-- Accordion header -->
+    <ion-item slot="header">
+      <ion-label style="display: flex; align-items: center;">
+        <h1 [innerHTML]="directoryStylized(directoryNote.fullName)"></h1>
+        <p style="padding-left: 5px;" class="file-count">
+          ({{directoryNote.notes?.length ?? 0}})
+        </p>
+      </ion-label>
+      <ion-button *ngIf="canCreate && ownsRow" fill="clear" size="large" color="subtlesecondary" (click)="openShareDirectory($event, directoryNote.fullName)">
+        <ion-icon name="share-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-item>
+
+    <!-- Accordion content -->
+    <ion-list slot="content">
+      <ng-container *ngFor="let childKey of getDirectoryKeys()">
+        <!-- We pass the child node to the same component recursively -->
+        <ion-item [style.padding-left.px]="depth * 10">
+          <app-journal-row-item style="width: 100%;"
+                                [directoryNote]="directoryNote.directories[childKey]"
+                                [directoryName]="childKey"
+                                [canCreate]="canCreate"
+                                [depth]="depth + 1">
+          </app-journal-row-item>
+        </ion-item>
+      </ng-container>
+
+      <ng-container *ngIf="parsedNotes$ | async as parsedNotes" style="height: 100%;">
+        <ion-item *ngFor="let note of parsedNotes" lines="none">
+          <app-note-card style="width: 100%;" [note]="note" [mode]="'row'" [directory]="directoryName"></app-note-card>
+        </ion-item>
+        <ion-item lines="none" *ngIf="canCreate">
+          <app-note-card style="width: 100%;" [mode]="'row'" [directory]="directoryNote.fullName"></app-note-card>
+        </ion-item>
+      </ng-container>
+    </ion-list>
+  </ion-accordion>
+</ion-accordion-group>
+
+
+<ion-popover [isOpen]="showShareDirPopover" class="dir-share-popover" (ionPopoverDidDismiss)="closeShareDirectory()">
+  <ng-template>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Share Directory</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <app-user-select  [selectedUsers]="this.directoryNote.sharedWith ?? []"
+                          [showDone]="true"
+                          (doneClicked)="closeShareDirectory()"
+                          (addedUser)="shareDirectory($event)"
+                          (removedUser)="unShareDirectory($event)">
+        </app-user-select>
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
+</ion-popover>

@@ -1,4 +1,5 @@
 import { User } from "mailtrap/dist/types/api/accounts";
+import { Tag } from "./tag";
 
 export interface Note {
   id?: number;
@@ -17,18 +18,4 @@ export interface Note {
   character?: string; // Character name
   shared_users?: number[]; // List of IDs
   tags?: Tag[];
-}
-
-
-export interface Tag {
-  id?: number;
-  userId: number;
-  name: string;
-  description: string;
-  created: Date;
-  updated: Date;
-  active: boolean;
-
-  creator?: User;
-  sharedUsers?: User[];
 }

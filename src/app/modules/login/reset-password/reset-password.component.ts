@@ -3,7 +3,6 @@ import { Component } from "@angular/core";
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonInput, IonItem, IonLabel, IonList, IonText, IonToast } from "@ionic/angular/standalone";
-import { addIcons } from "ionicons";
 import { eyeOffOutline, eyeOutline } from "ionicons/icons";
 import { tap } from "rxjs";
 import { ApiResult } from "src/app/common/model/apiresult";
@@ -46,7 +45,6 @@ export class ResetPasswordComponent {
   });
 
   constructor(private router: Router, private userService: UserService) {
-    addIcons({ eyeOutline, eyeOffOutline });
   }
 
   get eyeCon() {

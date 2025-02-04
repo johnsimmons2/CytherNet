@@ -52,13 +52,25 @@ export const routes: Routes = [
             pathMatch: 'full',
             loadComponent: () => import('./modules/landing/landing.component').then(m => m.LandingComponent)
           },
+        ]
+      },
+      {
+        path: 'encyclopedia',
+        canActivate: [ RoleGuard ],
+        data: { roles: ['player', 'admin'] },
+        children: [
           {
-            path: 'content',
-            loadComponent: () => import('./modules/home/content/content.component').then(m => m.ContentComponent)
+            path: '',
+            pathMatch: 'full',
+            loadComponent: () => import('./modules/encyclopedia/encyclopedia.component').then(m => m.EncyclopediaComponent)
           },
           {
-            path: 'content/feats',
-            loadComponent: () => import('./modules/home/content/all-feats/all-feats.component').then(m => m.AllFeatsComponent)
+            path: 'all',
+            loadComponent: () => import('./modules/encyclopedia/content/content.component').then(m => m.ContentComponent)
+          },
+          {
+            path: 'all/feats',
+            loadComponent: () => import('./modules/encyclopedia/content/all-feats/all-feats.component').then(m => m.AllFeatsComponent)
           }
         ]
       },

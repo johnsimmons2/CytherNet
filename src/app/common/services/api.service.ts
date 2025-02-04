@@ -82,8 +82,8 @@ export class ApiService {
     return this.wrapper(this.http.post, this.ROOT_URL + endpoint, { headers: this.getHeaders() }, payload);
   }
 
-  delete(endpoint: string): Observable<any> {
-    return this.wrapper(this.http.delete, this.ROOT_URL + endpoint, { headers: this.getHeaders() });
+  delete(endpoint: string, payload: any | undefined = undefined): Observable<any> {
+    return this.wrapper(this.http.delete, this.ROOT_URL + endpoint, { headers: this.getHeaders(), body: payload });
   }
 
   get(endpoint: string, options?: any, headers?: any): Observable<any> {

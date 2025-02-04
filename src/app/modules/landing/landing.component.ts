@@ -17,8 +17,6 @@ import { NoteService } from "src/app/common/services/note.service";
 import { ParsingService } from "src/app/common/services/parsing.service";
 import { ToastService } from "src/app/common/services/toast.service";
 import { UserService } from "src/app/common/services/user.service";
-import { addIcons } from "ionicons";
-import { addCircleOutline, listCircleOutline, arrowForwardCircleOutline, playCircleOutline, searchCircleOutline } from "ionicons/icons";
 import { CampaignCardComponent } from "src/app/common/components/campaignCard/campaigncard.component";
 
 
@@ -78,7 +76,6 @@ export class LandingComponent implements OnInit {
               private toastService: ToastService,
               private parser: ParsingService,
               private changeDetectorRef: ChangeDetectorRef) {
-    addIcons({addCircleOutline, listCircleOutline, arrowForwardCircleOutline, playCircleOutline, searchCircleOutline});
   }
 
   ngOnInit() {

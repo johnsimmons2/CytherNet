@@ -1,18 +1,38 @@
-<ion-content>
-  <!--Not a new note -->
-  <ng-content *ngIf="!newMode && note; else isNewNote" class="notepagecontainer">
+<ion-content #mainContent>
+  <ng-container *ngIf="!newMode && note; else isNewNote" class="notepagecontainer">
     <ion-card>
+      <!--View Mode -->
       <ng-container *ngIf="!editMode; else editNote">
         <ion-card-header>
-          <ion-card-title [ngClass]="{'inactive-note': !note.active}">{{note.name}}</ion-card-title>
+          <ion-card-title [ngClass]="{'inactive-note': !note.active || isCampaignNote}" style="display: flex; justify-content: space-between;">
+            {{note.name}}
+            <span style="display: flex; align-items: flex-start; flex-direction: column; min-width: 160px;">
+              <ion-note>Created {{ note.created | date }}</ion-note>
+              <ion-note>Updated {{ note.updated | date }}</ion-note>
+            </span>
+          </ion-card-title>
           <ion-card-subtitle>
             <ion-label color="notelabel">
-              ({{noteForm.controls['directory'].value !== '' ? noteForm.controls['directory'].value + '/' : ''}}<i>{{note.directory}}</i>)
+              <i>({{noteForm.controls['directory'].value !== '' ? noteForm.controls['directory'].value + '/' : ''}}</i>
+              <i>{{note.directory}}</i>)
+              <br/>
+              <div *ngIf="selectedTags.length > 0" style="padding-top: 10px;">
+                <div >
+                  <app-tag *ngFor="let tag of selectedTags" [tag]="tag"></app-tag>
+                </div>
+              </div>
             </ion-label>
           </ion-card-subtitle>
         </ion-card-header>
         <ion-card-content>
-          <markdown [data]="note.rawText"></markdown>
+          <app-note-text-block [note]="note"></app-note-text-block>
+          <br/>
+          <ion-button fill="clear" color="subtlesecondary" (click)="cancelAll()">
+            <ion-icon slot="icon-only" name="arrow-back-circle-outline" style="padding-right: 5px;"></ion-icon>
+            <ion-label>
+              Back to Journal
+            </ion-label>
+          </ion-button>
         </ion-card-content>
       </ng-container>
 
@@ -20,40 +40,62 @@
       <ng-template #editNote>
         <form [formGroup]="noteForm" (ngSubmit)="saveNote()">
           <ion-card-header>
+            <ion-label color="notelabel"><i>Title:</i></ion-label>
             <ion-card-title style="display: flex; justify-content: space-between;">
-              <ion-input formControlName="name"></ion-input>
-              <span style="display: flex; align-items: flex-start; flex-direction: column; min-width: 160px;">
-                <ion-note>Created {{ note.created | date }}</ion-note>
-                <ion-note>Updated {{ note.updated | date }}</ion-note>
-              </span>
+              <ion-input formControlName="name" fill="solid"></ion-input>
             </ion-card-title>
 
+            <br/>
+
             <ion-card-subtitle>
-              <ion-input formControlName="directory"></ion-input>
+              <ion-label color="notelabel"><i>Subdirectory:</i></ion-label>
+              <ion-input formControlName="directory" fill="solid"></ion-input>
+              <label>
+                <b>{{ username }}</b>/{{ noteForm.controls['directory'].value !== '' ? noteForm.controls['directory'].value + '/' : '' }}<i>{{ noteForm.controls['name'].value }}</i>
+              </label>
+              <ion-item lines="none">
+                <div *ngIf="selectedTags.length > 0">
+                  <ion-chip *ngFor="let tag of selectedTags" [style.background-color]="'#' + tag.color">
+                    <ion-icon [name]="iconNameWithDash(tag.icon)"></ion-icon>
+                    <ion-label>{{tag.name}}</ion-label>
+                  </ion-chip>
+                </div>
+                <ion-button color="secondary" fill="clear" (click)="openTagMenu()" slot="end">
+                  <ion-label>Edit Tags</ion-label>
+                </ion-button>
+              </ion-item>
             </ion-card-subtitle>
           </ion-card-header>
           <ion-card-content>
+            <ion-label>Note Content:</ion-label>
             <ion-textarea formControlName="description"
                           fill="solid"
                           [counter]="true"
                           maxlength="6000"
-                          [autofocus]="true"
                           [autoGrow]="true">
             </ion-textarea>
-            <ion-button type="submit">Confirm</ion-button>
-            <ion-button color="secondary" (click)="viewNote()">Cancel</ion-button>
+            <ion-item lines="none">
+              <ion-button type="submit" slot="start" fill="clear" color="secondary">Confirm</ion-button>
+              <ion-button (click)="viewNote()" fill="clear" slot="start">Cancel</ion-button>
+              <ion-item lines="none" slot="end" style="right: -30px;">
+                <span style="display: flex; align-items: flex-start; flex-direction: column; min-width: 160px;">
+                  <ion-note>Created {{ note.created | date: 'd/M/yyyy h:mm a' }}</ion-note>
+                  <ion-note>Updated {{ note.updated | date: 'd/M/yyyy h:mm a' }}</ion-note>
+                </span>
+              </ion-item>
+            </ion-item>
           </ion-card-content>
         </form>
+        <br/>
+        <ion-item lines="none">
+          <ion-note (click)="openGuide()" style="cursor: pointer;">
+            <ion-icon name="help-circle-outline"></ion-icon>
+            Guide
+          </ion-note>
+        </ion-item>
       </ng-template>
-
-      <ion-button fill="clear" color="subtlesecondary" (click)="cancelAll()">
-        <ion-icon slot="icon-only" name="arrow-back-circle-outline" style="padding-right: 5px;"></ion-icon>
-        <ion-label>
-          Back
-        </ion-label>
-      </ion-button>
     </ion-card>
-  </ng-content>
+  </ng-container>
 
   <!-- New Notes -->
   <ng-template #isNewNote>
@@ -66,9 +108,30 @@
 
           <ion-input formControlName="directory" placeholder="Subdirectory name"></ion-input>
           <br/>
-          <label>
-            A note will be created as "{{ username }}/{{ noteForm.controls['directory'].value !== '' ? noteForm.controls['directory'].value + '/' : '' }}<i>{{ noteForm.controls['name'].value }}</i>"
-          </label>
+
+          <ng-container *ngIf="noteForm.controls['campaign'].value === false; else campaignDir">
+            <label>
+              A note will be created as "{{ username }}/{{ noteForm.controls['directory'].value !== '' ? noteForm.controls['directory'].value + '/' : '' }}<i>{{ noteForm.controls['name'].value }}</i>"
+            </label>
+          </ng-container>
+          <ng-template #campaignDir>
+            <label>
+              A note will be created as "{{ noteForm.controls['directory'].value !== '' ? noteForm.controls['directory'].value + '/' : '' }}<i>{{ noteForm.controls['name'].value }}</i>"
+            </label>
+            <ion-select placeholder="Select a Campaign" formControlName="campaignId">
+              <ion-select-option *ngFor="let c of campaigns" [value]="c.id">
+                {{ c.name }}
+              </ion-select-option>
+            </ion-select>
+          </ng-template>
+
+          <br/>
+
+          <ng-container *ngIf="amAdmin">
+            <ion-label>Campaign Note</ion-label>
+            <ion-checkbox formControlName="campaign">
+            </ion-checkbox>
+          </ng-container>
         </ion-card-header>
         <ion-card-content>
           <ion-textarea formControlName="description"
@@ -87,35 +150,116 @@
   </ng-template>
 </ion-content>
 
-<ion-fab slot="fixed" vertical="bottom" horizontal="end">
+<!-- Menu buttons fab -->
+<ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="canEditNote && canFabButton">
   <ion-fab-button color="primary">
-    <ion-icon name="chevron-up-outline"></ion-icon>
+    <ion-icon name="chevron-up"></ion-icon>
   </ion-fab-button>
   <ion-fab-list side="top">
-    <ion-fab-button *ngIf="canEditNote && !editMode">
-      <ion-button #editButton (click)="editNote()" color="tertiary">
-        <ion-icon name="create-outline" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-fab-button>
-    <ion-fab-button *ngIf="canEditNote && editMode">
-      <ion-button #deleteButton (click)="confirmCancelEdit()">
-        <ion-icon name="eye-outline" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-fab-button>
-    <ion-fab-button *ngIf="canEditNote">
-      <ion-button #shareButton color="secondary">
-        <ion-icon name="pricetag-outline" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-fab-button>
-    <ion-fab-button *ngIf="canEditNote">
-      <ion-button #shareButton color="subtlesecondary">
-        <ion-icon name="share-outline" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-fab-button>
-    <ion-fab-button>
-      <ion-button #deleteButton (click)="confirmDeleteNote()" color="warning">
-        <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-fab-button>
+    <ng-container *ngIf="canEditNote && !editMode" style="display: flex; flex-direction: row; width: 200px;">
+      <ion-fab-button #editButton (click)="editNote()" color="tertiary">
+        <ion-icon name="create-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-label class="fab-label">Edit</ion-label>
+    </ng-container>
+
+    <ng-container *ngIf="canEditNote && editMode" style="display: flex; flex-direction: row;">
+      <ion-fab-button #viewButton (click)="confirmCancelEdit()">
+        <ion-icon name="eye-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-label class="fab-label">View</ion-label>
+    </ng-container>
+
+    <ng-container *ngIf="canEditNote">
+      <ion-fab-button #tagButton (click)="openTagMenu()" color="secondary">
+        <ion-icon name="pricetag-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-label class="fab-label">Tag</ion-label>
+    </ng-container>
+
+    <ng-container *ngIf="canEditNote">
+      <ion-fab-button #shareButton color="subtlesecondary" (click)="openShareNote()">
+        <ion-icon name="share-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-label class="fab-label">Share</ion-label>
+    </ng-container>
+
+    <ng-container *ngIf="canEditNote">
+      <ion-fab-button #deleteButton (click)="confirmDeleteNote()" color="warning">
+        <ion-icon name="trash-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-label class="fab-label">Delete</ion-label>
+    </ng-container>
   </ion-fab-list>
 </ion-fab>
+
+<!-- Modals -->
+<ion-modal #tagMenuModal>
+  <ng-template>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Tag {{note?.name}}</ion-card-title>
+        <ion-card-subtitle>
+          Add or remove tags from this note, or share tags with other users.
+        </ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label>Tags</ion-label>
+          <div *ngIf="selectedTags.length > 0">
+            <!-- Use tags instead, so you can manage from this view too. -->
+            <ion-chip *ngFor="let tag of selectedTags" [style.background-color]="'#' + tag.color" [style.cursor]="'default'">
+              <ion-icon [name]="iconNameWithDash(tag.icon)"></ion-icon>
+              <ion-label>{{tag.name}}</ion-label>
+            </ion-chip>
+          </div>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-button slot="end" fill="outline" (click)="tagPopoverOpen = true" color="secondary">
+            Select tags
+          </ion-button>
+
+          <ion-popover [isOpen]="tagPopoverOpen" (ionPopoverDidDismiss)="closeTagPopOver()">
+            <!-- The ng-template can be *completely inline* here -->
+            <ng-template>
+              <ion-content>
+                <ion-list>
+                  <ion-item *ngFor="let tag of tags" (click)="toggleTagSelection($event, tag)">
+                    <ion-icon [name]="iconNameWithDash(tag.icon)" slot="start"></ion-icon>
+                    <ion-label>{{tag.name}}</ion-label>
+                    <ion-checkbox slot="end" [checked]="isTagSelected(tag)"></ion-checkbox>
+                  </ion-item>
+                  <ion-item lines="none">
+                    <ion-button fill="clear" slot="start" color="secondary" (click)="tagPopoverOpen = false">Done</ion-button>
+                    <ion-button fill="clear" slot="end" (click)="unTagAll()">Clear</ion-button>
+                  </ion-item>
+                </ion-list>
+              </ion-content>
+            </ng-template>
+          </ion-popover>
+
+        </ion-item>
+
+        <ion-button fill="clear" (click)="closeTagMenu()" color="secondary">Done</ion-button>
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
+</ion-modal>
+
+<ion-popover [isOpen]="shareNotePopoverOpen" class="share-popover" (ionPopoverDidDismiss)="closeShareNote()">
+  <ng-template>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Share Directory</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <app-user-select  [selectedUsers]="noteSharedUsers"
+                          [showDone]="true"
+                          (doneClicked)="closeShareNote()"
+                          (addedUser)="shareNote($event)"
+                          (removedUser)="unShareNote($event)">
+        </app-user-select>
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
+</ion-popover>

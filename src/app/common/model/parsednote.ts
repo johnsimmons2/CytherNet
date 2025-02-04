@@ -13,7 +13,12 @@ export interface ParsedNote {
 
   note?: Note;
   creator?: User;
+  sharedWith?: User[];
   creatorUsername?: string;
+  campaignId?: number;
+  campaignName?: string;
+  shared?: boolean;
+  directoryShared?: boolean;
 }
 
 export interface ParsedNotePart {

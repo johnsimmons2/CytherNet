@@ -173,7 +173,6 @@ export abstract class BaseService<T> {
   protected get(endpoint: string, kvp: {[key: string]: any}, options?: any): Observable<T[]> {
     return this.pullIfDatabaseOutOfDate().pipe(
       switchMap(() => {
-        //
         const [key, value] = [Object.keys(kvp)[0], Object.values(kvp)[0]];
         return from(this._getByKeyValue(key, value)).pipe(
           switchMap((item: T | undefined) => {
@@ -183,6 +182,10 @@ export abstract class BaseService<T> {
             return this._fetchAndCache(endpoint, options);
           })
         )
+      }),
+      catchError((error) => {
+        console.error(`Error getting ${endpoint}`, kvp, options, error);
+        return of([]);
       })
     );
   }
@@ -191,8 +194,14 @@ export abstract class BaseService<T> {
     return this.apiService.post(endpoint, item).pipe(
       map((res: ApiResult) => {
         if (res.success) {
-          this._save(item);
-          return item;
+          console.log(`Created ${endpoint}`, res.data);
+          console.log(`Saving ${endpoint} to database`, res.data);
+          try {
+            this._save(res.data);
+          } catch (error) {
+            console.error(`Error saving ${endpoint} to database`, error);
+          }
+          return res.data;
         }
         throw new Error(`Failed to create ${endpoint}`);
       }),

@@ -3,8 +3,7 @@ import { Component } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { IonContent, IonCardHeader, IonCard, IonCardTitle, IonCardContent, IonText, IonItem, IonButton, IonIcon, IonCardSubtitle, IonNote, IonInput, IonModal, IonToast } from "@ionic/angular/standalone";
-import { addIcons } from 'ionicons';
-import { warningOutline } from "ionicons/icons";
+
 
 
 @Component({
@@ -75,7 +74,6 @@ import { warningOutline } from "ionicons/icons";
 export class ConnectionStatusComponent {
 
   constructor() {
-    addIcons({ warningOutline });
   }
 
   get isOnline() {

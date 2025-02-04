@@ -30,7 +30,7 @@
     <!-- Actions -->
     <ion-col [style.width.px]="actionsColumnWidth" class="shrinkable">
       <span *ngFor="let action of actions">
-        <ion-button size="small"  [color]="action.color" (click)="action.action(i)" [disabled]="action.disabled(i)">
+        <ion-button size="small"  [color]="action.color" (click)="action.action(d)" [disabled]="action.disabled(d)">
           {{ action.label }}
         </ion-button>
       </span>
@@ -39,7 +39,7 @@
 </ion-grid>
 
 
-<ion-modal #contextModal>
+<ion-modal #contextModal style="--height: auto;">
   <ng-template>
     <ion-card>
       <ion-card-header>
@@ -47,32 +47,34 @@
         <ion-card-subtitle>Edit and confirm changes</ion-card-subtitle>
       </ion-card-header>
       <ion-card-content>
-        <ng-container *ngTemplateOutlet="contextTemplate || defaultTemplate;
-        context: {$implicit: data[contextIndex], column: columns[contextColumnIndex]}"></ng-container>
+        <div style="overflow-y: auto; max-height: 80vh;">
+          <ng-container *ngTemplateOutlet="contextTemplate || defaultTemplate;
+          context: {$implicit: data[contextIndex], column: columns[contextColumnIndex]}"></ng-container>
 
-        <ng-template #defaultTemplate let-row let-column="column">
-          <ion-list>
-            <ion-item>
-              <ion-label>
-                <h2>Before</h2>
-                <span *ngIf="contextRow[contextHeaderColumn] !== null && contextRow[contextHeaderColumn] !== ''; else noContentRow">
-                  {{contextRow[contextHeaderColumn]}}
-                </span>
-                <ng-template #noContentRow>
-                  <i>(No data)</i>
-                </ng-template>
-              </ion-label>
-            </ion-item>
-            <ion-item>
-              <ion-label>
-                <h2>After</h2>
-                <ion-input [placeholder]="contextRow[contextHeaderColumn]" [ngModel]="contextNewValue" (change)="setNewValue($event)"></ion-input>
-              </ion-label>
-            </ion-item>
-          </ion-list>
-          <ion-button fill="outline" color="primary" (click)="confirmChange()">Confirm</ion-button>
-          <ion-button fill="outline" color="secondary" (click)="cancel()">Cancel</ion-button>
-        </ng-template>
+          <ng-template #defaultTemplate let-row let-column="column">
+            <ion-list>
+              <ion-item>
+                <ion-label>
+                  <h2>Before</h2>
+                  <span *ngIf="contextRow[contextHeaderColumn] !== null && contextRow[contextHeaderColumn] !== ''; else noContentRow">
+                    {{contextRow[contextHeaderColumn]}}
+                  </span>
+                  <ng-template #noContentRow>
+                    <i>(No data)</i>
+                  </ng-template>
+                </ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>
+                  <h2>After</h2>
+                  <ion-input [placeholder]="contextRow[contextHeaderColumn]" [ngModel]="contextNewValue" (change)="setNewValue($event)"></ion-input>
+                </ion-label>
+              </ion-item>
+            </ion-list>
+            <ion-button fill="outline" color="primary" (click)="confirmChange()">Confirm</ion-button>
+            <ion-button fill="outline" color="secondary" (click)="cancel()">Cancel</ion-button>
+          </ng-template>
+        </div>
       </ion-card-content>
     </ion-card>
   </ng-template>

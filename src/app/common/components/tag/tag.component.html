@@ -1,0 +1,9 @@
+<ion-chip [style.background-color]="'#' + tag.color"
+          [outline]="isGlobalTag"
+          (click)="tagClicked($event)">
+  <ion-icon [name]="iconNameWithDash(tag.icon)"
+            [style.margin]="size === 'small' ? '0' : '0 0.5rem 0 0'"
+            [size]="size"
+            color="white"></ion-icon>
+  <ion-label *ngIf="size === 'medium' || size === 'large'">{{tag.name}}</ion-label>
+</ion-chip>

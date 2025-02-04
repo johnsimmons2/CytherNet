@@ -8,9 +8,6 @@ import { Class, Subclass } from "../../model/class";
 import { Race } from "../../model/race";
 import { combineLatest, tap } from "rxjs";
 import { Statsheet } from "../../model/statsheet";
-import { addIcons } from "ionicons";
-import { helpCircleOutline } from "ionicons/icons";
-
 
 @Component({
   selector: 'app-character-card',
@@ -50,7 +47,6 @@ export class CharacterCardComponent implements OnInit {
               private classService: ClassService,
               private raceService: RaceService,
               private changeDetectionRef: ChangeDetectorRef) {
-    addIcons({ helpCircleOutline });
   }
 
   get classname(): string {

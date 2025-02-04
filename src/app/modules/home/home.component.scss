@@ -2,6 +2,25 @@ ion-tab-bar {
   --ion-tab-bar-text-size: 14px;
 }
 
+.tooltip-container:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+.tooltip {
+  visibility: hidden;
+  background-color: black;
+  color: white;
+  text-align: center;
+  border-radius: 4px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+}
+
 @media (max-width: 600px) {
   ion-tab-bar ion-label {
     display: none;

@@ -2,9 +2,6 @@ import { CommonModule } from "@angular/common";
 import { AfterViewInit, Component, EventEmitter, forwardRef, Input, Output } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { IonButton, IonIcon, IonInput, IonItem } from "@ionic/angular/standalone";
-import { addIcons } from 'ionicons';
-import { createOutline, checkboxOutline, closeCircleOutline } from 'ionicons/icons';
-
 
 @Component({
   selector: 'app-editable-field',
@@ -57,7 +54,6 @@ export class EditableFieldComponent implements ControlValueAccessor {
   private onTouchedFn: () => void = () => {};
 
   constructor() {
-    addIcons({ createOutline, checkboxOutline, closeCircleOutline });
   }
 
   writeValue(obj: any): void {

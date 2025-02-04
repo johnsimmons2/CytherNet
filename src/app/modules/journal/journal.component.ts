@@ -1,9 +1,9 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
-import { AlertController, IonAccordion, IonAccordionGroup, IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonNote, IonRow, IonSearchbar, IonSegment, IonSegmentButton, IonSegmentContent, IonSegmentView, IonSelect, IonSelectOption, IonText, IonTitle, IonToolbar, ModalController } from "@ionic/angular/standalone";
+import { AlertController, IonAccordion, IonAccordionGroup, IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonFab, IonFabButton, IonFabList, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonNote, IonRow, IonSearchbar, IonSegment, IonSegmentButton, IonSegmentContent, IonSegmentView, IonSelect, IonSelectOption, IonText, IonTitle, IonToolbar, ModalController, PopoverController, ViewWillEnter } from "@ionic/angular/standalone";
 import { NoteFilter } from "./note-filter";
 import { CommonModule } from "@angular/common";
 import { ParsedNote } from "src/app/common/model/parsednote";
-import { NoteService } from "src/app/common/services/note.service";
+import { NoteService, DirectoryNote } from "src/app/common/services/note.service";
 import { ParsingService } from "src/app/common/services/parsing.service";
 import { Note } from "src/app/common/model/note";
 import { tap, forkJoin, map } from "rxjs";
@@ -11,12 +11,12 @@ import { TableComponent } from "src/app/common/components/table/table.component"
 import { TableColumn } from "src/app/common/components/table/table.column";
 import { TableActon } from "src/app/common/components/table/table.actions";
 import { NavigationEnd, Router, RouterModule } from "@angular/router";
-import { addIcons } from "ionicons";
-import { add, pencilOutline, shareOutline, trashBinOutline, helpCircleOutline } from "ionicons/icons";
 import { NoteCardComponent } from "../../common/components/noteCard/notecard.component";
 import { ApiResult } from "src/app/common/model/apiresult";
 import { UserService } from "src/app/common/services/user.service";
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
+import { JournalRowItemComponent } from "./journal-row-item.component";
+import { User } from "src/app/common/model/user";
 
 /**
  * TODO:
@@ -51,6 +51,9 @@ import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
     IonSelectOption,
     IonNote,
     IonInput,
+    IonFab,
+    IonFabButton,
+    IonFabList,
     IonGrid,
     IonRow,
     IonCol,
@@ -62,10 +65,22 @@ import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
     IonSegmentView,
     IonSearchbar,
     TableComponent,
-    NoteCardComponent
+    NoteCardComponent,
+    JournalRowItemComponent
   ],
   encapsulation: ViewEncapsulation.None,
   styles: [`
+    .fab-label {
+      position: relative;
+      left: -4rem;
+      bottom: -2.8rem;
+      background-color: var(--ion-color-light);
+      align-self: end;
+      border-radius: 0.5rem;
+      padding: 0.5rem;
+      padding-right: 0.8rem;
+    }
+
     .selfdir {
       color: var(--ion-color-primary);
     }
@@ -104,7 +119,7 @@ import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class JournalComponent implements OnInit, AfterViewInit {
+export class JournalComponent implements AfterViewInit, ViewWillEnter {
 
   @ViewChild('directoryAccordion') directoryAccordion!: IonAccordionGroup;
   @ViewChild('shareDirectoryModal') shareModalTemplate!: TemplateRef<any>;
@@ -112,25 +127,40 @@ export class JournalComponent implements OnInit, AfterViewInit {
   filterString: string = '';
   filter: NoteFilter | undefined;
 
+  sortByDate: boolean = true;
+
   _notes: ParsedNote[] = [];
+  _myNotes: ParsedNote[] = [];
+  _rawNotes: Note[] = [];
+  _rawMyNotes: Note[] = [];
+  myNotes: ParsedNote[] = [];
   notes: ParsedNote[] = [];
   notesByDirectory: Map<string, ParsedNote[]> = new Map<string, ParsedNote[]>();
   directories: string[] = [];
+  noteDirectoryMap: DirectoryNote = { directories: {}, name: '', fullName: '' };
+  myNoteDirectoryMap: DirectoryNote = { directories: {}, name: '', fullName: '' };
 
   get firstDirectory(): string | undefined {
     return this.notesByDirectory.keys().next().value;
   }
 
+  get userId(): number | undefined {
+    if (this.userService.currentUserId) {
+      return +this.userService.currentUserId;
+    }
+    return undefined;
+  }
+
   constructor(private noteService: NoteService,
               private userService: UserService,
               private parser: ParsingService,
+              private popover: PopoverController,
               private alert: AlertController,
               private sanitizer: DomSanitizer,
               private modal: ModalController,
               private router: Router,
               private changeDetectorRef: ChangeDetectorRef)
   {
-    addIcons({ pencilOutline, trashBinOutline, add, shareOutline, helpCircleOutline });
   }
 
   directoryStylized(directory: string): SafeHtml {
@@ -146,15 +176,19 @@ export class JournalComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       if (this.directoryAccordion && this.directories.length > 0) {
         this.directoryAccordion.value = this.directories[0];
-        console.log('should open?');
       }
     }, 500);
   }
 
-  refreshNotes() {
+  refreshNotes(secondPass: boolean = false) {
     this.directories = [];
     this.notes = [];
+    this._rawNotes = [];
     this._notes = [];
+    this.myNoteDirectoryMap = { directories: {}, name: '', fullName: '' };
+    this.noteDirectoryMap = { directories: {}, name: '', fullName: '' };
+    this._myNotes = [];
+    this._rawMyNotes = [];
     this.notesByDirectory.clear();
 
     this.noteService.getPlayerNotes().pipe(
@@ -165,7 +199,7 @@ export class JournalComponent implements OnInit, AfterViewInit {
         return [];
       }),
       tap((res: Note[]) => {
-        if (res.length === 0) {
+        if (res.length === 0 && !secondPass) {
           // New user, has no directories / notes. Pre-make a note for them.
           const note: Note = {
             name: 'My First Note',
@@ -173,12 +207,15 @@ export class JournalComponent implements OnInit, AfterViewInit {
             directory: this.userService.currentUsername + '/',
             active: true,
             created: new Date(),
-            updated: new Date()
+            updated: new Date(),
+            userId: this.userId
           };
-          this.noteService.createNote(note).subscribe();
+          this.noteService.createNote(note).subscribe(() => this.refreshNotes(true));
         }
+        this._rawNotes = res.filter(n => n.campaignId && n.campaignId !== undefined);
         const parseObservables = res.map(note => this.parser.parseNote(note));
         forkJoin(parseObservables).subscribe(parsedNotes => {
+          console.log(parsedNotes);
           parsedNotes.forEach(pn => {
             if (!this.notesByDirectory.has(pn.directory)) {
               this.notesByDirectory.set(pn.directory, []);
@@ -188,74 +225,94 @@ export class JournalComponent implements OnInit, AfterViewInit {
             this.notesByDirectory.get(pn.directory)!.push(pn);
           });
           this.directories = this.directories.sort();
-          this.notes = this.notes.sort((a, b) => a.updated > b.updated ? -1 : 1);
-          this._notes = this.notes;
-          this.changeDetectorRef.markForCheck();
+          this.notes = this.sorted(this.notes);
+
+          this._notes = this.notes.filter(n => n.campaignId && n.campaignId !== undefined);
+          this.myNotes = this.notes.filter(n => !n.campaignId || n.campaignId === undefined);
+          this._myNotes = this.myNotes;
+          console.log(this.myNotes, this._notes);
+          this._rawMyNotes = res.filter(n => !n.campaignId || n.campaignId === undefined);
+          this.noteService.buildNestedDirectories(this._rawNotes).subscribe(res => {
+            this.noteDirectoryMap = res;
+            this.changeDetectorRef.detectChanges();
+          });
+
+          this.noteService.buildNestedDirectories(this._rawMyNotes).subscribe(res => {
+            this.myNoteDirectoryMap = res;
+            this.changeDetectorRef.detectChanges();
+          });
         });
       })
     ).subscribe();
   }
 
-  ngOnInit(): void {
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd && event.urlAfterRedirects === '/journal') {
-        this.refreshNotes();
-      }
-    });
+  sorted(notes: ParsedNote[]): ParsedNote[] {
+    if (this.sortByDate) {
+      return notes.sort((a, b) => a.updated > b.updated ? -1 : 1);
+    } else {
+      return notes.sort((a, b) => a.name > b.name ? 1 : -1);
+    }
+  }
+
+  ionViewWillEnter(): void {
+    this.refreshNotes(true);
   }
 
   refresh(event: any): void {
     if (event !== undefined) {
-      if (event.target.value !== '') {
-        const val = event.target.value;
-        console.log(val);
+      if (event.detail.value !== '') {
+        const val = event.detail.value;
         this.notes = this._notes.filter(note => {
+          return note.name.toLowerCase().includes(val) || note.rawText.includes(val)
+        });
+        this.myNotes = this._myNotes.filter(note => {
           return note.name.toLowerCase().includes(val) || note.rawText.includes(val)
         });
       } else {
         this.notes = this._notes;
+        this.myNotes = this._myNotes;
       }
+      const newMyRawNotes = this.myNotes.map(note => note.note!);
+      this.noteService.buildNestedDirectories(newMyRawNotes).subscribe(res => {
+        this.myNoteDirectoryMap = res;
+        this.changeDetectorRef.markForCheck();
+      });
+
+      const newRawNotes = this.notes.map(note => note.note!);
+      this.noteService.buildNestedDirectories(newRawNotes).subscribe(res => {
+        this.noteDirectoryMap = res;
+        this.changeDetectorRef.markForCheck();
+      });
     }
     this.changeDetectorRef.markForCheck();
   }
 
-  async shareDirectory(directory: string) {
-    this.alert.create({
-      header: 'Share Directory',
-      message: `Enter usernames to share [${directory}] with (comma separated).`,
-      inputs: [
-        {
-          name: 'username',
-          type: 'text',
-          placeholder: 'Username(s)'
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel'
-        },
-        {
-          text: 'Share',
-          handler: (data) => {
-            this.userService.getUsers().pipe(
-              map(users => {
-                return data.username.split(',').map((username: string) => {
-                  return users.find(user => user.username === username.trim());
-                }).filter((user: any) => user !== undefined);
-              })
-            ).subscribe(users => {
-              console.log('Share', data, users);
-              this.noteService.shareDirectory(directory, users).subscribe(res => {
-                console.log('Share result', res);
-              });
-            });
-          }
-        }
-      ]
-    }).then(alert => {
-      alert.present();
-    });
+  addNewNote(event: any) {
+    this.router.navigate(['/journal', 'new']);
+  }
+
+  getDirSharedUsers(directory: string): User[] {
+    try {
+      return this.noteDirectoryMap.directories[directory].sharedWith ?? [];
+    } catch {
+      return [];
+    }
+  }
+
+  getMyDirSharedUsers(directory: string): User[] {
+    try {
+      return this.myNoteDirectoryMap.directories[directory].sharedWith ?? [];
+    } catch {
+      return [];
+    }
+  }
+
+  getDirectoryKeys(): string[] {
+    return Object.keys(this.noteDirectoryMap.directories || {});
+  }
+
+  getMyDirectoryKeys(): string[] {
+    return Object.keys(this.myNoteDirectoryMap.directories || {});
   }
 
   openGuide() {
@@ -283,9 +340,12 @@ export class JournalComponent implements OnInit, AfterViewInit {
 
   }
 
-  addNewDirectory() {
+  async addNewDirectory(event: any) {
+    event.stopPropagation();
     const baseDirectory = this.userService.currentUsername + "/";
-    this.alert.create({
+    let alertInstance: HTMLIonAlertElement;
+
+    const alert = await this.alert.create({
       header: 'Add a Directory',
       message: `<p>Enter the name of the subdirectory under your username:</p><p><span id="resolved-directory"><strong>${baseDirectory}</strong></span></p>`,
       inputs: [
@@ -313,25 +373,29 @@ export class JournalComponent implements OnInit, AfterViewInit {
             };
             this.noteService.createNote(note).pipe(
               tap((note: Note | undefined) => {
-                this.router.navigate(['/journal', note?.id, 'edit'], { replaceUrl: true });
+                alert.dismiss().then(() => {
+                  this.router.navigate(['/journal', note?.id, 'edit']).then(() => {
+                    location.reload();
+                  });
+                });
               })
             ).subscribe();
           }
         }
       ]
-    }).then(alert => {
+    });
+
+    alert.present().then(() => {
+      alertInstance = alert;
       alert.present().then(() => {
         const input = alert.querySelector('input') as HTMLInputElement;
-        console.log('input', input);
         if (input) {
           input.addEventListener('input', (event: any) => {
-            console.log('hi', event);
             const fullPath = baseDirectory + event.target.value;
             document.getElementById('resolved-directory')!.textContent = fullPath;
           });
         }
       });
-
     });
   }
 }

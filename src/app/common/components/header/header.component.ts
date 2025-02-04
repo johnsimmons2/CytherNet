@@ -4,8 +4,6 @@ import { UserService } from "../../services/user.service";
 import { CommonModule } from "@angular/common";
 import { NavigationEnd, Router, RouterModule } from "@angular/router";
 import { take, tap } from "rxjs/operators";
-import { addIcons } from 'ionicons';
-import { personOutline, cartOutline } from "ionicons/icons";
 import { ConnectionStatusComponent } from "../connectionStatus/connectionstatus.component";
 import { PlatformService } from "../../services/platform.service";
 
@@ -54,7 +52,6 @@ export class HeaderComponent implements OnInit {
   }
 
   constructor(private userService: UserService, private router: Router, private platform: PlatformService) {
-    addIcons({ personOutline, cartOutline });
   }
 
   ngOnInit() {

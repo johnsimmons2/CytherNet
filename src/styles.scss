@@ -66,12 +66,24 @@ mat-sidenav-content {
   width: 100px;
 }
 
+ion-popover {
+  &::part(content) {
+    scrollbar-width: thin;
+    scrollbar-color: var(--ion-item-background) transparent;
+  }
+}
+
 .mat-badge-content {
   z-index: 9999999;
 }
 
 ion-content::part(scroll) {
 	overflow-y: auto;
+	scrollbar-width: thin;
+	scrollbar-color: var(--ion-item-background) transparent;
+}
+
+ion-item::part(scroll) {
 	scrollbar-width: thin;
 	scrollbar-color: var(--ion-item-background) transparent;
 }

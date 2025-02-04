@@ -11,7 +11,7 @@ export class DatabaseService extends Dexie {
     'db_version': '++id, updated, version',
     'users': '++id, &username, &email, firstName, lastName, lastOnline, created, roles',
     'characters': '++id, &name, &statsheetId, classId, subclassId, raceId, languages, speed, type, proficiencyBonus',
-    'notes': '++id, name, description, type, creator, created, updated, tags, directory',
+    'notes': '++id, name, description, campaign, creator, created, updated, tags, directory',
   };
 
   constructor() {

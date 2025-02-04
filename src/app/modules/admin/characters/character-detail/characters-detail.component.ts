@@ -18,7 +18,6 @@ import { Class, Subclass } from "src/app/common/model/class";
 import { RaceService } from "src/app/common/services/race.service";
 import { Race } from "src/app/common/model/race";
 import { addCircleOutline } from 'ionicons/icons';
-import { addIcons } from 'ionicons';
 
 
 @Component({
@@ -109,7 +108,6 @@ export class CharactersDetailComponent {
               private classService: ClassService,
               private raceService: RaceService,
               private toastService: ToastService) {
-                addIcons({addCircleOutline});
   }
 
   confirmRoleChange(row: User) {

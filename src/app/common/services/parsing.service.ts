@@ -4,6 +4,9 @@ import { IParsedNoteReference, ParsedNote, ParsedNotePart } from "../model/parse
 import { UserService } from "./user.service";
 import { Note } from "../model/note";
 import { CharacterService } from "./character.service";
+import { CampaignService } from "./campaign.service";
+import { Campaign } from "../model/campaign";
+import { User } from "../model/user";
 
 @Injectable({
   providedIn: 'root'
@@ -49,7 +52,13 @@ export class ParsingService {
     }
   ];
 
-  constructor(private userService: UserService, private characterService: CharacterService) {
+  get currentUsername(): string {
+    return this.userService.currentUsername ?? '';
+  }
+
+  constructor(private userService: UserService,
+              private campaignService: CampaignService,
+              private characterService: CharacterService) {
 
   }
 
@@ -60,33 +69,63 @@ export class ParsingService {
         return of([]);
       }),
       switchMap((parsedParts: ParsedNotePart[]) => {
-        if (note.userId === null) {
+        // CAMPAIGN NOTE: no userId, but has campaignId
+        if (!note.userId && note.campaignId) {
+          return this.campaignService.getCampaign(note.campaignId).pipe(
+            catchError((error) => {
+              console.error('Failed to get campaign:', note.campaignId, error);
+              return of(undefined);
+            }),
+            map((campaign: Campaign | undefined) => {
+              return {
+                rawText: note.description,
+                parsedParts: parsedParts,
+                id: note.id,
+                name: note.name,
+                created: note.created ?? new Date(),
+                updated: note.updated ?? new Date(),
+                directory: note.directory,
+                note: note,
+                active: note.active,
+                campaignId: note.campaignId ?? undefined,
+                campaignName: campaign?.name ?? undefined,
+              }
+            })
+          );
+
+        // USER NOTE: has userId, no campaignId
+        } else if (note.userId && !note.campaignId) {
+          return this.userService.getUser(note.userId!).pipe(
+            switchMap((user: User) => {
+              return of({
+                rawText: note.description,
+                parsedParts: parsedParts,
+                id: note.id,
+                name: note.name,
+                created: note.created ?? new Date(),
+                updated: note.updated ?? new Date(),
+                directory: note.directory,
+                note: note,
+                active: note.active,
+                creatorUsername: user.username,
+                sharedWith: note.shared_users || [],
+              });
+            })
+          );
+        } else {
+          console.warn("Note has no user or campaign:", note);
           return of({
-            rawText: note.description,
-            parsedParts: parsedParts,
-            id: note.id,
-            name: note.name,
-            created: note.created ?? new Date(),
-            updated: note.updated ?? new Date(),
-            directory: note.directory,
-            note: note,
-            active: note.active,
+                rawText: note.description,
+                parsedParts: parsedParts,
+                id: note.id,
+                name: note.name,
+                created: note.created ?? new Date(),
+                updated: note.updated ?? new Date(),
+                directory: note.directory,
+                note: note,
+                active: note.active,
           });
         }
-        return this.userService.getUser(note.userId!).pipe(
-          map((user) => ({
-              rawText: note.description,
-              parsedParts: parsedParts,
-              id: note.id,
-              name: note.name,
-              created: note.created ?? new Date(),
-              updated: note.updated ?? new Date(),
-              directory: note.directory,
-              note: note,
-              active: note.active,
-              creatorUsername: user?.username || undefined
-          }))
-        );
       })
     );
   }
@@ -275,6 +314,7 @@ export class ParsingService {
       }),
 
       catchError((error) => {
+        console.error('Failed to parse user reference:', field, equals, error);
         return of(undefined);
       })
     );
@@ -297,6 +337,7 @@ export class ParsingService {
       }),
 
       catchError((error) => {
+        console.error('Failed to parse character reference:', field, equals, error);
         return of(undefined);
       })
     );

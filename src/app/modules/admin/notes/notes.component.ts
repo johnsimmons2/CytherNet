@@ -33,6 +33,9 @@ export class NotesComponent  implements OnInit {
       name: 'name',
     },
     {
+      name: 'id'
+    },
+    {
       name: 'description',
     }
   ]
@@ -42,6 +45,7 @@ export class NotesComponent  implements OnInit {
   ngOnInit() {
     this.noteService.notes$.subscribe(notes => {
       this.notes = notes;
+      console.log('Notes', notes);
     });
   }
 
@@ -64,7 +68,11 @@ export class NotesComponent  implements OnInit {
         disabled: ((note: Note) => false),
         color: 'primary',
         action: (note: Note) => {
-          console.log('Edit', note);
+          this.noteService.deleteNote(note.id!).subscribe(() => {
+            this.noteService.notes$.subscribe(notes => {
+              this.notes = notes;
+            });
+          });
         }
       }
     ];

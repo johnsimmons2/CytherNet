@@ -6,8 +6,9 @@
   Loading...
 </ng-template>
 
+<!-- CARD VIEW -->
 <ng-template #cardView>
-  <ion-card style="width: 100%; height: 100%">
+  <ion-card style="width: 100%; height: 100%" *ngIf="note">
     <ion-card-header>
       <ion-card-title>
         <ion-item lines="none" [button]="true" (click)="openNote()">
@@ -39,24 +40,25 @@
     </ion-card-header>
 
     <ion-card-content *ngIf="noteParts !== null">
-      <app-notetext-block [note]="note"></app-notetext-block>
+      <app-note-text-block [note]="note"></app-note-text-block>
     </ion-card-content>
   </ion-card>
 
   <!-- Popover -->
-  <ion-popover [trigger]="'card-shared-with-' + note.id" triggerAction="click">
+  <ion-popover [trigger]="'card-shared-with-' + note!.id" triggerAction="click">
     <ng-template>
       <ion-content class="ion-padding">
         <!-- Show who shared the note with you -->
-        {{note.rawText}}
+        {{note!.rawText}}
       </ion-content>
     </ng-template>
   </ion-popover>
 </ng-template>
 
 
+<!-- ROW VIEW -->
 <ng-template #rowView>
-  <ion-item style="width: 100%" [button]="true" (click)="openNote()">
+  <ion-item style="width: 100%" [button]="true" (click)="openNote()" lines="none">
     <ng-container *ngIf="note; else noNoteLabel">
       <ion-icon name="chevron-forward-outline" size="small"></ion-icon>
 
@@ -72,48 +74,29 @@
     </ng-template>
 
     <ng-container *ngIf="note">
+      <ng-container *ngIf="note.note?.tags">
+        <app-tag *ngFor="let tag of note.note!.tags!" [canEdit]="false" [tag]="tag" [size]="'small'" class="note-updated"></app-tag>
+      </ng-container>
+
+      <ng-container *ngIf="isNoteSharedWithMe">
+        <ion-button [id]="'shared-with-' + note.id" slot="start" color="subtlesecondary" size="small" (click)="$event.stopPropagation()">
+          <ion-icon slot="icon-only" name="people-outline"></ion-icon>
+        </ion-button>
+
+        <!-- Popover -->
+        <ion-popover [trigger]="'shared-with-' + note.id" triggerAction="click">
+          <ng-template>
+            <ion-content class="ion-padding">
+              <!-- Show who shared the note with you -->
+              Shared by: {{note.creatorUsername}}
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+      </ng-container>
+
       <ion-note style="align-self: center;" class="note-updated">
         {{ note.updated | date: 'short' }}
       </ion-note>
-
-      <ion-button [id]="'tagged-to-' + note.id" slot="end" color="secondary" size="small" (click)="$event.stopPropagation()">
-        <ion-icon slot="icon-only" name="pricetag-outline"></ion-icon>
-      </ion-button>
-
-      <!-- Popover -->
-      <ion-popover [trigger]="'tagged-to-' + note.id" triggerAction="click">
-        <ng-template>
-          <ion-content class="ion-padding">
-            <!-- Show who shared the note with you -->
-            Eventually you will be able to view and edit tags, and even share all notes under specific tags.
-          </ion-content>
-        </ng-template>
-      </ion-popover>
     </ng-container>
-
-    <ng-container *ngIf="isNoteSharedWithMe; else shareNote">
-      <ion-button [id]="'shared-with-' + note.id" slot="end" color="subtlesecondary" size="small" (click)="$event.stopPropagation()">
-        <ion-icon slot="icon-only" name="people-outline"></ion-icon>
-      </ion-button>
-
-      <!-- Popover -->
-      <ion-popover [trigger]="'shared-with-' + note.id" triggerAction="click">
-        <ng-template>
-          <ion-content class="ion-padding">
-            <!-- Show who shared the note with you -->
-            Shared by: {{note.creatorUsername}}
-          </ion-content>
-        </ng-template>
-      </ion-popover>
-    </ng-container>
-
-    <ng-template #shareNote>
-      <!-- For now they have to view the note to share -->
-
-      <ion-button slot="end" color="t" size="small" (click)="shareIndividualNote()" color="subtlesecondary">
-        <ion-icon slot="icon-only" name="share-outline"></ion-icon>
-      </ion-button>
-    </ng-template>
-
   </ion-item>
 </ng-template>

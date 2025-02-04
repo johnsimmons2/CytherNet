@@ -18,7 +18,6 @@ import { Class, Subclass } from "src/app/common/model/class";
 import { RaceService } from "src/app/common/services/race.service";
 import { Race } from "src/app/common/model/race";
 import { addCircleOutline } from 'ionicons/icons';
-import { addIcons } from 'ionicons';
 import { RouterModule } from "@angular/router";
 
 
@@ -103,7 +102,6 @@ export class CharactersComponent {
               private raceService: RaceService,
               private toastService: ToastService,
               private userService: UserService) {
-                addIcons({addCircleOutline});
   }
 
   get contextUsername() {

@@ -6,7 +6,6 @@ import { Router, RouterModule } from "@angular/router";
 import { ApiResult } from "src/app/common/model/apiresult";
 import { CommonModule, DatePipe } from "@angular/common";
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonIcon, IonInput, IonItem, IonModal, IonNote, IonText, IonToast } from "@ionic/angular/standalone";
-import { addIcons } from 'ionicons';
 import { eyeOutline, eyeOffOutline, refreshOutline } from 'ionicons/icons';
 import { tap } from "rxjs";
 
@@ -45,7 +44,6 @@ export class LoginComponent {
   toastOpen: boolean = false;
 
 	constructor(private loginService: UserService, public router: Router) {
-		addIcons({ eyeOutline, eyeOffOutline });
 	}
 
 	loginFormGroup = new FormGroup({

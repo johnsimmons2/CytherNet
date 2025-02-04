@@ -5,6 +5,8 @@ import { ApiService } from './api.service';
 import jwtDecode from 'jwt-decode';
 import { Campaign } from '../model/campaign';
 import { query } from '@angular/animations';
+import { ApiResult } from '../model/apiresult';
+import { map } from 'rxjs';
 
 
 @Injectable({ providedIn: 'root' })
@@ -13,6 +15,17 @@ export class CampaignService {
       private router: Router,
       private apiService: ApiService
   ) {}
+
+  getCampaign(id: number) {
+    return this.apiService.get(`campaigns/${id}`).pipe(
+      map((res: ApiResult) => {
+        if (res.success) {
+          return res.data;
+        }
+        return [];
+      })
+    );
+  }
 
   getCampaigns() {
     return this.apiService.get('campaigns');

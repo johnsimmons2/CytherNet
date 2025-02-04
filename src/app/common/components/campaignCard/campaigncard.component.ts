@@ -8,7 +8,6 @@ import { Class, Subclass } from "../../model/class";
 import { Race } from "../../model/race";
 import { combineLatest, tap } from "rxjs";
 import { Statsheet } from "../../model/statsheet";
-import { addIcons } from "ionicons";
 import { helpCircleOutline } from "ionicons/icons";
 import { Campaign } from "../../model/campaign";
 import { CampaignService } from "../../services/campaign.service";
@@ -51,7 +50,6 @@ export class CampaignCardComponent implements OnInit {
               private classService: ClassService,
               private raceService: RaceService,
               private changeDetectionRef: ChangeDetectorRef) {
-    addIcons({ helpCircleOutline });
   }
 
   ngOnInit(): void {

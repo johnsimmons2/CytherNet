@@ -6,13 +6,12 @@ import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 import { NoteTextComponent } from "../notetext/notetext.component";
 import { UserService } from "../../services/user.service";
 import { User } from "../../model/user";
-import { addIcons } from "ionicons";
-import { shareOutline, peopleOutline, chevronForwardOutline, add, pricetagOutline } from "ionicons/icons";
 import { Router, RouterModule } from "@angular/router";
 import { NoteTextBlockComponent } from "../notetext/notetext-block/notetext-block.component";
 import { Note } from "../../model/note";
 import { NoteService } from "../../services/note.service";
 import { tap } from "rxjs";
+import { TagComponent } from "../tag/tag.component";
 
 
 @Component({
@@ -35,7 +34,8 @@ import { tap } from "rxjs";
     IonLabel,
     IonPopover,
     IonNote,
-    NoteTextBlockComponent
+    NoteTextBlockComponent,
+    TagComponent
 ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [`
@@ -52,7 +52,7 @@ import { tap } from "rxjs";
 })
 export class NoteCardComponent implements OnInit, OnChanges, AfterViewInit {
 
-  @Input() note!: ParsedNote;
+  @Input() note: ParsedNote | undefined | null;
   @Input() directory!: string;
   @Input() mode: 'card' | 'row' = 'card';
 
@@ -86,7 +86,6 @@ export class NoteCardComponent implements OnInit, OnChanges, AfterViewInit {
     private noteService: NoteService,
     private cdr: ChangeDetectorRef,
     private router: Router) {
-    addIcons({ shareOutline, peopleOutline, chevronForwardOutline, add, pricetagOutline });
   }
 
   ngAfterViewInit(): void {
@@ -117,14 +116,14 @@ export class NoteCardComponent implements OnInit, OnChanges, AfterViewInit {
       if (this.note.note?.userId) {
         this.userService.getUser(this.note.note.userId).subscribe(user => {
           if (user) {
-            this.note.creatorUsername = user.username;
-            this.note.creator = user;
+            this.note!.creatorUsername = user.username;
+            this.note!.creator = user;
           }
           this.cdr.markForCheck();
         });
       }
     } else {
-
+      this.cdr.markForCheck();
     }
   }
 
@@ -219,7 +218,7 @@ export class NoteCardComponent implements OnInit, OnChanges, AfterViewInit {
             });
 
             console.log(this.note, userIds);
-            this.noteService.shareNote(this.note.note!, userIds).subscribe();
+            this.noteService.shareNote(this.note!.note!, userIds).subscribe();
           }
         }
       ]

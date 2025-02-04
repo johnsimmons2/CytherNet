@@ -4,8 +4,6 @@ import { UserService } from "src/app/common/services/user.service";
 import { CommonModule } from "@angular/common";
 import { IonicModule } from "@ionic/angular";
 import { tap } from "rxjs";
-import { addIcons } from 'ionicons';
-import { createOutline, checkboxOutline, closeCircleOutline } from 'ionicons/icons';
 import { EditableFieldComponent } from "../../common/components/editableField/editable-field.component";
 import { User } from "src/app/common/model/user";
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonInput, IonItem, IonLabel, IonList, IonText, IonToast } from "@ionic/angular/standalone";
@@ -58,7 +56,6 @@ export class ProfileComponent {
   users: User[] = [];
 
   constructor(private userService: UserService) {
-    addIcons({ createOutline, checkboxOutline, closeCircleOutline });
   }
 
   get username() {

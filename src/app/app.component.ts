@@ -10,6 +10,7 @@ import { FooterComponent } from './common/components/footer/footer.component';
 import { environment } from 'src/environments/environment';
 import { PlatformService } from './common/services/platform.service';
 import { ApiService } from './common/services/api.service';
+import { IconImportService } from './common/services/iconimport.service';
 
 /**
  * Todo:
@@ -115,7 +116,9 @@ export class AppComponent {
     private router: Router,
     private userService: UserService,
     private platformService: PlatformService,
+    private iconService: IconImportService,
     private apiService: ApiService) {
+      this.iconService.loadIcons();
       this.cytherVersion = environment.api_version ?? environment.version;
       this.browser = this.platformService.browser;
       this.browserVersion = this.platformService.browserVersion;
