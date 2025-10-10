@@ -1,13 +1,9 @@
-import { LowerCasePipe } from "@angular/common";
 import { CanActivateFn } from "@angular/router";
+import { UserService } from "../services/user.service";
+import { inject } from "@angular/core";
 
 export const RoleGuard: CanActivateFn = (route, state) => {
-  const rolesJson = localStorage.getItem('roles') ?? '[]';
-  const roles = JSON.parse(rolesJson) as Array<{ level: number; roleName: string}>;
-  const queryRoles = (route.data['roles'] as Array<string>).map(x => x.toLowerCase()) ?? [];
-
-  const isAdmin = roles.some(role => queryRoles.includes(role.roleName.toLowerCase()));
-  const isAuthenticated = localStorage.getItem('jwtToken') !== null;
-
-  return isAdmin && isAuthenticated;
+    const authService = inject(UserService);
+    const queryRoles = (route.data['roles'] as Array<string>).map(x => x.toLowerCase()) ?? [];
+    return authService.userHasRoles(queryRoles);
 };

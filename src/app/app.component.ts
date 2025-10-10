@@ -1,16 +1,19 @@
-import { Component } from '@angular/core';
+import { APP_INITIALIZER, Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { UserService } from './common/services/user.service';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { IonContent, IonHeader, IonMenu, IonToolbar, IonTitle, IonList, IonItemDivider, IonItem, IonAccordionGroup, IonAccordion, IonLabel, IonApp, IonRouterOutlet, IonFooter } from '@ionic/angular/standalone';
-import { HeaderComponent} from './common/components/header/header.component';
+import { HeaderComponent } from './common/components/header/header.component';
 import { FooterComponent } from './common/components/footer/footer.component';
 import { environment } from 'src/environments/environment';
 import { PlatformService } from './common/services/platform.service';
 import { ApiService } from './common/services/api.service';
 import { IconImportService } from './common/services/iconimport.service';
+import { interval, tap, switchMap } from 'rxjs';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { CsrfInterceptor } from './common/services/csrf-interceptor.service';
 
 /**
  * Todo:
@@ -48,98 +51,121 @@ import { IconImportService } from './common/services/iconimport.service';
  */
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    CommonModule,
-    FormsModule,
-    ServiceWorkerModule,
-    RouterModule,
-    IonApp,
-    IonRouterOutlet,
-    IonHeader,
-    IonContent,
-    HeaderComponent,
-    IonFooter,
-    FooterComponent,
-    //LoadingSpinnerComponent
-  ],
-  providers: [Router]
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    standalone: true,
+    imports: [
+        ReactiveFormsModule,
+        CommonModule,
+        FormsModule,
+        ServiceWorkerModule,
+        RouterModule,
+        IonApp,
+        IonRouterOutlet,
+        IonHeader,
+        IonContent,
+        HeaderComponent,
+        IonFooter,
+        FooterComponent,
+        //LoadingSpinnerComponent
+    ],
+    providers: [
+        Router,
+        {
+            provide: APP_INITIALIZER,
+            useFactory: (a: UserService) => () => a.checkAuthentication(),
+            deps: [UserService],
+            multi: true
+        }
+    ]
 })
 export class AppComponent {
-  title = 'Cyther.online';
+    title = 'Cyther.online';
 
-  // Update on significant changes
-  cytherVersion: string = '';
-  opened: boolean = false;
-  browserVersion: string = '';
-  browser: string = '';
-  ipAddress: string = '-.-.-.-';
-  operatingSystem: string = '';
-  apiVersion: string = '';
-  platform: string = '';
+    // Update on significant changes
+    cytherVersion: string = '';
+    opened: boolean = false;
+    browserVersion: string = '';
+    browser: string = '';
+    ipAddress: string = '-.-.-.-';
+    operatingSystem: string = '';
+    apiVersion: string = '';
+    platform: string = '';
 
-  get showSpinner() {
-    //return this.spinnerService.spinnerVisible;
-    return false;
-  }
-
-  get isAdmin() {
-    return this.userService.hasRoleLevel(0);
-  }
-
-  get username() {
-    return localStorage.getItem('username');
-  }
-
-  get selectedCampaign() {
-    const campaign = localStorage.getItem('campaign');
-    if (campaign) {
-      return campaign;
-    }
-    return '';
-  }
-
-  get toolbarTitle(): string {
-    const campaign = localStorage.getItem('campaign');
-    if (campaign) {
-      return campaign;
+    get showSpinner() {
+        //return this.spinnerService.spinnerVisible;
+        return false;
     }
 
-    return this.title;
-  }
+    get username() {
+        return localStorage.getItem('username');
+    }
 
-  constructor(
-    private router: Router,
-    private userService: UserService,
-    private platformService: PlatformService,
-    private iconService: IconImportService,
-    private apiService: ApiService) {
-      this.iconService.loadIcons();
-      this.cytherVersion = environment.api_version ?? environment.version;
-      this.browser = this.platformService.browser;
-      this.browserVersion = this.platformService.browserVersion;
-      this.operatingSystem = this.platformService.operatingSystem;
-      this.platformService.getIpAddress().subscribe((ip) => {
-        this.ipAddress = ip;
-      });
-      this.apiService.healthCheck().subscribe((res) => {
-        this.apiVersion = res.data;
-      });
-      this.platform = this.platformService.platform;
-  }
+    get selectedCampaign() {
+        const campaign = localStorage.getItem('campaign');
+        if (campaign) {
+            return campaign;
+        }
+        return '';
+    }
 
+    get toolbarTitle(): string {
+        const campaign = localStorage.getItem('campaign');
+        if (campaign) {
+            return campaign;
+        }
 
-  toggleNav(value: boolean) {
-    this.opened = value;
-  }
+        return this.title;
+    }
 
-  routeTo(route: string) {
-    this.router.navigate([route]).then(() => {
-        this.opened = false;
-    });
-  }
+    constructor(
+        private router: Router,
+        private userService: UserService,
+        private platformService: PlatformService,
+        private iconService: IconImportService,
+        private apiService: ApiService
+    ) {
+        this.iconService.loadIcons();
+        this.cytherVersion = environment.api_version ?? environment.version;
+        this.browser = this.platformService.browser;
+        this.browserVersion = this.platformService.browserVersion;
+        this.operatingSystem = this.platformService.operatingSystem;
+
+        this.platformService.getIpAddress().subscribe((ip) => {
+            this.ipAddress = ip;
+        });
+
+        this.apiService.healthCheck().subscribe((res) => {
+            this.apiVersion = res.data;
+        });
+
+        this.platform = this.platformService.platform;
+    }
+
+    ngAfterViewInit(): void {
+        console.log("Am I logged in?");
+        this.userService.checkAuthentication().subscribe();
+
+        this.startAuthCheckClock();
+    }
+
+    private startAuthCheckClock(): void {
+        interval(300_000).pipe(
+            tap(() => {
+                console.log('Checking authentication status...');
+            }),
+            switchMap(() => this.userService.checkAuthentication())
+        ).subscribe();
+    }
+
+    toggleNav(value: boolean) {
+        this.opened = value;
+    }
+
+    routeTo(route: string) {
+        this.router.navigate([route]).then(() => {
+            this.opened = false;
+        });
+    }
 }

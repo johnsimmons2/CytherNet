@@ -1,86 +1,116 @@
 <ion-content>
-  <form [formGroup]="registerForm" (ngSubmit)="register()">
-    <!-- Main card for required fields -->
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>
-          <h2>Register an Account</h2>
-        </ion-card-title>
-        <ion-card-subtitle>
-          <h3>Required Fields</h3>
-        </ion-card-subtitle>
-      </ion-card-header>
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
+        <!-- Main card for required fields -->
+        <ion-card>
+            <ion-card-header>
+                <ion-card-title>
+                    <h2>Register an Account</h2>
+                </ion-card-title>
+                <ion-card-subtitle>
+                    <h3>Required Fields</h3>
+                </ion-card-subtitle>
+            </ion-card-header>
 
-      <ion-card-content>
-        <ion-item>
-          <ion-input id="username" placeholder="Username*" type="text" formControlName="username"></ion-input>
-        </ion-item>
-        <ion-text color="danger" *ngIf="registerForm.controls.username.hasError('nameTaken')">
-          <p>A user with this username (or email if provided) already exists.</p>
-        </ion-text>
-        <ion-text color="danger" *ngIf="registerForm.controls.username.hasError('required')">
-          <p>Username is required.</p>
-        </ion-text>
+            <ion-card-content>
+                <ion-note>
+                    <ul>
+                        <li>Username must be at least {{USERNAME_LENGTH}} characters long.</li>
+                        <li>Password must be at least {{PASSWORD_LENGTH}} characters long.</li>
+                        <li>Email is required for password recovery.</li>
+                    </ul>
+                </ion-note>
 
-        <ion-item>
-          <ion-input id="password" placeholder="Password*" [type]="showPassword ? 'text' : 'password'"
-            formControlName="password"></ion-input>
-          <ion-icon slot="end" [name]="showPassword ? 'eye-off' : 'eye'"
-            (click)="showPassword = !showPassword"></ion-icon>
-        </ion-item>
-        <ion-text color="danger" *ngIf="registerForm.controls.password.errors?.['required']">
-          Password is required.
-        </ion-text>
+                <ion-item>
+                    <ion-input id="username" placeholder="Username*" type="text" formControlName="username"></ion-input>
+                </ion-item>
+                <ion-text color="danger" *ngIf="registerForm.controls.username.hasError('taken')">
+                    <p>A user with this username already exists.</p>
+                </ion-text>
+                <ion-text color="danger" *ngIf="registerForm.controls.username.hasError('required')">
+                    <p>Username is required.</p>
+                </ion-text>
+                <ion-text color="danger" *ngIf="registerForm.controls.username.hasError('minlength')">
+                    <p>Username is too short.</p>
+                </ion-text>
 
-        <ion-item>
-          <ion-input id="passwordConfirm" placeholder="Confirm Password*" [type]="showPassword ? 'text' : 'password'"
-            formControlName="passwordConfirm"></ion-input>
-          <ion-icon slot="end" [name]="showPassword ? 'eye-off' : 'eye'"
-            (click)="showPassword = !showPassword"></ion-icon>
-        </ion-item>
-        <ion-text color="danger" *ngIf="registerForm.controls.passwordConfirm.errors?.['mismatch']">
-          Passwords do not match.
-        </ion-text>
-        <ion-text color="danger" *ngIf="registerForm.controls.passwordConfirm.errors?.['required']">
-          Confirm password.
-        </ion-text>
-      </ion-card-content>
+                <br/>
 
-      <!-- Action Buttons -->
-      <ion-button fill="clear" type="submit" [disabled]="!registerForm.valid">Register</ion-button>
-      <ion-button fill="clear" color="secondary" (click)="router.navigate(['/'])">Cancel</ion-button>
-    </ion-card>
+                <ion-item>
+                    <ion-input id="email" placeholder="Email*" type="email" formControlName="email"></ion-input>
+                    <!-- <ion-note>
+                        <app-subtle-modal title="Why do you want my email?" text="We will not use your email for marketing or any nefarious purposes. When implemented down the road, you will be able to use your email (if provided) to reset your password.">
+                        </app-subtle-modal>
+                    </ion-note> -->
+                </ion-item>
+                <ion-text color="danger" *ngIf="registerForm.controls.email.hasError('taken')">
+                    A user with this email address already exists.
+                </ion-text>
+                <ion-text color="danger" *ngIf="registerForm.controls.email.hasError('email')">
+                    Please enter a valid email address.
+                </ion-text>
+                <ion-text color="danger" *ngIf="registerForm.controls.email.hasError('required')">
+                    <p>Email Address is required.</p>
+                </ion-text>
 
-    <br />
+                <br/>
 
-    <!-- Optional Fields card -->
-    <ion-card>
-      <ion-card-header>
-        <ion-card-subtitle>
-          <h3>Optional Fields</h3>
-        </ion-card-subtitle>
-      </ion-card-header>
+                <ion-item>
+                    <ion-input id="password" placeholder="Password*" [type]="showPassword ? 'text' : 'password'"
+                        formControlName="password"></ion-input>
+                    <ion-icon slot="end" [name]="showPassword ? 'eye-off' : 'eye'"
+                        (click)="showPassword = !showPassword"></ion-icon>
+                </ion-item>
+                <ion-text color="danger" *ngIf="registerForm.controls.password.errors?.['required']">
+                    Password is required.
+                </ion-text>
+                <ion-text color="danger" *ngIf="registerForm.controls.password.hasError('minlength')">
+                    <p>Password is too short.</p>
+                </ion-text>
 
-      <ion-card-content>
-        <ion-item>
-          <ion-input id="firstName" placeholder="First Name" type="text" formControlName="firstName"></ion-input>
-        </ion-item>
+                <ion-item>
+                    <ion-input id="passwordConfirm" placeholder="Confirm Password*"
+                        [type]="showPassword ? 'text' : 'password'" formControlName="passwordConfirm"></ion-input>
+                    <ion-icon slot="end" [name]="showPassword ? 'eye-off' : 'eye'"
+                        (click)="showPassword = !showPassword"></ion-icon>
+                </ion-item>
+                <ion-text color="danger" *ngIf="registerForm.controls.passwordConfirm.errors?.['mismatch']">
+                    Passwords do not match.
+                </ion-text>
+                <ion-text color="danger" *ngIf="registerForm.controls.passwordConfirm.errors?.['required']">
+                    Confirm password.
+                </ion-text>
 
-        <ion-item>
-          <ion-input id="lastName" placeholder="Last Name" type="text" formControlName="lastName"></ion-input>
-        </ion-item>
+            </ion-card-content>
 
-        <ion-item>
-          <ion-input id="email" placeholder="Email" type="email" formControlName="email"></ion-input>
-          <ion-note slot="error" *ngIf="registerForm.controls.email.errors?.['email']">
-            Enter a valid email address.
-          </ion-note>
-          <ion-note>
-            <!-- <app-subtle-modal title="Why do you want my email?" text="We will not use your email for marketing or any nefarious purposes. When implemented down the road, you will be able to use your email (if provided) to reset your password.">
-              </app-subtle-modal> -->
-          </ion-note>
-        </ion-item>
-      </ion-card-content>
-    </ion-card>
-  </form>
+            <br/>
+
+            <!-- Action Buttons -->
+            <ion-button fill="clear" type="submit" [disabled]="!registerForm.valid">Register</ion-button>
+            <ion-button fill="clear" color="secondary" (click)="router.navigate(['/'])">Cancel</ion-button>
+        </ion-card>
+
+        <br />
+
+        <!-- Optional Fields card -->
+        <ion-card>
+            <ion-card-header>
+                <ion-card-subtitle>
+                    <h3>Optional Fields</h3>
+                </ion-card-subtitle>
+            </ion-card-header>
+
+            <ion-card-content>
+                <ion-item>
+                    <ion-input id="firstName" placeholder="First Name" type="text"
+                        formControlName="firstName"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                    <ion-input id="lastName" placeholder="Last Name" type="text" formControlName="lastName"></ion-input>
+                </ion-item>
+
+                <br/>
+            </ion-card-content>
+        </ion-card>
+    </form>
 </ion-content>

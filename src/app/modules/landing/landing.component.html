@@ -1,21 +1,21 @@
 <ion-content>
 
-  <ion-accordion-group [multiple]="true" value="notes">
-    <ng-container *ngIf="campaigns.length > 0; else noCampaigns">
-      <ion-accordion value="campaigns">
-        <ion-item slot="header">
-          <ion-label>
-            <h1>Campaigns</h1>
-          </ion-label>
-        </ion-item>
-        <ion-item color="light" slot="content">
-          <div style="display: flex; flex-direction: row; gap: 1rem;">
-            <div>
-              <ng-container *ngFor="let campaign of campaigns">
-                <app-campaign-card [campaign]="campaign"></app-campaign-card>
-              </ng-container>
-            </div>
-            <!-- <div>
+    <ion-accordion-group [multiple]="true" value="notes">
+        <ng-container *ngIf="campaigns.length > 0; else noCampaigns">
+            <ion-accordion value="campaigns">
+                <ion-item slot="header">
+                    <ion-label>
+                        <h1>Campaigns</h1>
+                    </ion-label>
+                </ion-item>
+                <ion-item color="light" slot="content">
+                    <div style="display: flex; flex-direction: row; gap: 1rem;">
+                        <div>
+                            <ng-container *ngFor="let campaign of campaigns">
+                                <app-campaign-card [campaign]="campaign"></app-campaign-card>
+                            </ng-container>
+                        </div>
+                        <!-- <div>
               <ion-card style="width: 100%; height: 200px; display: flex; flex-direction: column;">
                 <ion-card-header>
                   <ion-card-title>Join a Campaign</ion-card-title>
@@ -33,139 +33,141 @@
                 </ion-toolbar>
               </ion-card>
             </div> -->
-          </div>
-        </ion-item>
-      </ion-accordion>
-    </ng-container>
-    <ng-template #noCampaigns>
-      <ion-accordion>
-        <ion-item slot="header">
-          <ion-label>
-            <h1>Campaigns</h1>
-          </ion-label>
-        </ion-item>
-        <ion-item color="light" slot="content">
-          <ion-text>
-            <em>You have no campaigns. Eventually you will be able to create one. For now, ask an Admin!</em>
-          </ion-text>
-        </ion-item>
-      </ion-accordion>
-    </ng-template>
+                    </div>
+                </ion-item>
+            </ion-accordion>
+        </ng-container>
+        <ng-template #noCampaigns>
+            <ion-accordion>
+                <ion-item slot="header">
+                    <ion-label>
+                        <h1>Campaigns</h1>
+                    </ion-label>
+                </ion-item>
+                <ion-item color="light" slot="content">
+                    <ion-text>
+                        <em>You have no campaigns. Eventually you will be able to create one. For now, ask an
+                            Admin!</em>
+                    </ion-text>
+                </ion-item>
+            </ion-accordion>
+        </ng-template>
 
-    <!-- User Characters -->
-    <ng-container *ngIf="characters.length > 0; else noCharacters">
-      <ion-accordion value="characters">
-        <ion-item slot="header">
-          <ion-label>
-            <h1>Characters</h1>
-          </ion-label>
-        </ion-item>
-        <ion-item color="light" slot="content">
-          <ng-container *ngFor="let char of characters">
-            <app-character-card [character]="char"></app-character-card>
-          </ng-container>
-          <!-- Eventually, show the current active character's allies-->
-        </ion-item>
-      </ion-accordion>
-    </ng-container>
-    <ng-template #noCharacters>
-      <ion-accordion value="characters">
-        <ion-item slot="header">
-          <ion-label>
-            <h1>Characters</h1>
-          </ion-label>
-        </ion-item>
-        <ion-item color="light" slot="content">
-          <ion-text>
-            <em>You have no characters. Eventually you will be able to create one. For now, ask an Admin!</em>
-          </ion-text>
-        </ion-item>
-      </ion-accordion>
-    </ng-template>
+        <!-- User Characters -->
+        <ng-container *ngIf="characters.length > 0; else noCharacters">
+            <ion-accordion value="characters">
+                <ion-item slot="header">
+                    <ion-label>
+                        <h1>Characters</h1>
+                    </ion-label>
+                </ion-item>
+                <ion-item color="light" slot="content">
+                    <ng-container *ngFor="let char of characters">
+                        <app-character-card [character]="char"></app-character-card>
+                    </ng-container>
+                    <!-- Eventually, show the current active character's allies-->
+                </ion-item>
+            </ion-accordion>
+        </ng-container>
+        <ng-template #noCharacters>
+            <ion-accordion value="characters">
+                <ion-item slot="header">
+                    <ion-label>
+                        <h1>Characters</h1>
+                    </ion-label>
+                </ion-item>
+                <ion-item color="light" slot="content">
+                    <ion-text>
+                        <em>You have no characters. Eventually you will be able to create one. For now, ask an
+                            Admin!</em>
+                    </ion-text>
+                </ion-item>
+            </ion-accordion>
+        </ng-template>
 
-    <!-- Notes -->
-    <ng-container *ngIf="notes.length > 0; else noNotes">
-      <ion-accordion value="notes">
-        <ion-item slot="header">
-          <ion-label>
-            <h1>Notes</h1>
-          </ion-label>
-        </ion-item>
-        <ion-item color="light" slot="content">
-          <div style="display: flex; flex-direction: column; width: 100%;">
-            <ion-note>
-              <br/>
-              Most recent notes
-            </ion-note>
-            <div style="overflow-x: auto; white-space: nowrap; max-width: 100%; height: 345px;">
-              <div style="display: inline-flex; gap: 1rem; overflow: hidden;">
-                <ng-container *ngFor="let note of notes">
-                  <div style="width: 340px; flex: 0 0 auto;">
-                    <app-note-card [note]="note"></app-note-card>
-                  </div>
-                </ng-container>
-              </div>
-            </div>
+        <!-- Notes -->
+        <ng-container *ngIf="notes.length > 0; else noNotes">
+            <ion-accordion value="notes">
+                <ion-item slot="header">
+                    <ion-label>
+                        <h1>Notes</h1>
+                    </ion-label>
+                </ion-item>
+                <ion-item color="light" slot="content">
+                    <div style="display: flex; flex-direction: column; width: 100%;">
+                        <ion-note>
+                            <br />
+                            Most recent notes
+                        </ion-note>
+                        <div style="overflow-x: auto; white-space: nowrap; max-width: 100%; height: 345px;">
+                            <div style="display: inline-flex; gap: 1rem; overflow: hidden;">
+                                <ng-container *ngFor="let note of notes">
+                                    <div style="width: 340px; flex: 0 0 auto;">
+                                        <app-note-card [note]="note"></app-note-card>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
 
-            <div style="margin-top: 1rem;">
-              <ion-button fill="clear" color="primary" [routerLink]="['/journal/new']">
-                <ion-icon slot="start" name="add-circle-outline"></ion-icon>
-                Add Note
-              </ion-button>
+                        <div style="margin-top: 1rem;">
+                            <ion-button fill="clear" color="primary" [routerLink]="['/journal/new']">
+                                <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+                                Add Note
+                            </ion-button>
 
-              <ion-button fill="clear" color="primary" [routerLink]="['/journal']">
-                <ion-icon slot="start" name="list-circle-outline"></ion-icon>
-                View All
-              </ion-button>
-            </div>
-          </div>
-        </ion-item>
-      </ion-accordion>
-    </ng-container>
+                            <ion-button fill="clear" color="primary" [routerLink]="['/journal']">
+                                <ion-icon slot="start" name="list-circle-outline"></ion-icon>
+                                View All
+                            </ion-button>
+                        </div>
+                    </div>
+                </ion-item>
+            </ion-accordion>
+        </ng-container>
 
-    <ng-template #noNotes>
-      <ion-accordion value="notes">
-        <ion-item slot="header">
-          <ion-label>
-            <h1>Notes</h1>
-          </ion-label>
-        </ion-item>
-        <ion-item color="light" slot="content">
-          <ion-button fill="clear" color="primary" [routerLink]="['/journal/new']">
-            <ion-icon slot="start" name="add-circle-outline"></ion-icon>
-            Add Note
-          </ion-button>
-        </ion-item>
-      </ion-accordion>
-    </ng-template>
-  </ion-accordion-group>
+        <ng-template #noNotes>
+            <ion-accordion value="notes">
+                <ion-item slot="header">
+                    <ion-label>
+                        <h1>Notes</h1>
+                    </ion-label>
+                </ion-item>
+                <ion-item color="light" slot="content">
+                    <ion-button fill="clear" color="primary" [routerLink]="['/journal/new']">
+                        <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+                        Add Note
+                    </ion-button>
+                </ion-item>
+            </ion-accordion>
+        </ng-template>
+    </ion-accordion-group>
 
-  <br/>
+    <br />
 
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Quick Links</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <!-- <ion-button fill="clear" color="primary" [routerLink]="['/journal/new']">
+    <ion-card>
+        <ion-card-header>
+            <ion-card-title>Quick Links</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            <!-- <ion-button fill="clear" color="primary" [routerLink]="['/journal/new']">
         -- Only if a session is currently active --
         <ion-icon slot="start" name="play-circle-outline"></ion-icon>
         Join [campaign name here]
       </ion-button> -->
-      <ion-button fill="clear" color="primary" [routerLink]="['/home/content']">
-        <ion-icon slot="start" name="search-circle-outline"></ion-icon>
-        Search content
-      </ion-button>
-      <ion-list>
-        <ion-list-header>
-          <!-- Track most recently viewed content of certain types, list them here for quick link back. -->
-          <!-- Characters, items, spells, feats, skills, notes -->
-          <h2>Recently Viewed</h2>
-        </ion-list-header>
-        <br/>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
+            <ion-button fill="clear" color="primary" [routerLink]="['/home/content']">
+                <ion-icon slot="start" name="search-circle-outline"></ion-icon>
+                Search content
+            </ion-button>
+            <ion-list>
+                <ion-list-header>
+                    <!-- Track most recently viewed content of certain types, list them here for quick link back. -->
+                    <!-- Characters, items, spells, feats, skills, notes -->
+                    <h2>Recently Viewed</h2>
+                </ion-list-header>
+                <br />
+            </ion-list>
+        </ion-card-content>
+    </ion-card>
 
 
 </ion-content>

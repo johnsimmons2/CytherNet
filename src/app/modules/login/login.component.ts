@@ -10,119 +10,114 @@ import { eyeOutline, eyeOffOutline, refreshOutline } from 'ionicons/icons';
 import { tap } from "rxjs";
 
 @Component({
-	selector: 'login',
-	templateUrl: './login.component.html',
-	styleUrls: ['./login.component.scss',],
-	standalone: true,
-	imports: [
-		CommonModule,
-		FormsModule,
-		ReactiveFormsModule,
-    IonContent,
-    IonCardHeader,
-    IonCard,
-    IonCardTitle,
-    IonCardContent,
-    IonText,
-    IonItem,
-    IonButton,
-    IonIcon,
-    IonCardSubtitle,
-    IonNote,
-    IonInput,
-    IonModal,
-    RouterModule,
-    IonToast
-	],
-  providers: [DatePipe]
+    selector: 'login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss',],
+    standalone: true,
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        IonContent,
+        IonCardHeader,
+        IonCard,
+        IonCardTitle,
+        IonCardContent,
+        IonText,
+        IonItem,
+        IonButton,
+        IonIcon,
+        IonCardSubtitle,
+        IonNote,
+        IonInput,
+        IonModal,
+        RouterModule,
+        IonToast
+    ],
+    providers: [DatePipe]
 })
 export class LoginComponent {
 
-  @ViewChild(IonModal) modal!: IonModal;
+    @ViewChild(IonModal) modal!: IonModal;
 
-	hidePassword: boolean = true;
-  toastOpen: boolean = false;
+    hidePassword: boolean = true;
+    toastOpen: boolean = false;
 
-	constructor(private loginService: UserService, public router: Router) {
-	}
-
-	loginFormGroup = new FormGroup({
-		username: new FormControl('', [Validators.required]),
-		password: new FormControl('', [Validators.required])
-	});
-
-	passwordFormGroup = new FormGroup({
-		email: new FormControl('', [Validators.required, Validators.email])
-	});
-
-	get eyeCon() {
-		return this.hidePassword ? eyeOutline : eyeOffOutline;
-	}
-
-  get resetIcon() {
-    return refreshOutline;
-  }
-
-  ionViewWillEnter() {
-    this.loginFormGroup.reset();
-    this.passwordFormGroup.reset();
-  }
-
-	ngOnInit() {
-    if (this.loginService.getJwt() !== null) {
-      this.loginService.logout();
+    constructor(private loginService: UserService, public router: Router) {
     }
-	}
 
-	togglePasswordVisibility() {
-		this.hidePassword = !this.hidePassword;
-	}
+    loginFormGroup = new FormGroup({
+        username: new FormControl('', [Validators.required]),
+        password: new FormControl('', [Validators.required])
+    });
 
-	resetPassword() {
-		if (this.passwordFormGroup.valid) {
-			this.loginService.getPasswordResetToken(this.passwordFormGroup.value.email!).pipe(
-        tap((res: ApiResult) => {
-          this.toastOpen = true;
-        })
-      ).subscribe();
-      this.modal.dismiss(null, 'submit');
-		}
-	}
+    passwordFormGroup = new FormGroup({
+        email: new FormControl('', [Validators.required, Validators.email])
+    });
 
-	submit() {
-		if (this.loginFormGroup.valid) {
-			var user: User = {
-				password: this.loginFormGroup.value.password!,
-				username: this.loginFormGroup.value.username!
-			};
+    get eyeCon() {
+        return this.hidePassword ? eyeOutline : eyeOffOutline;
+    }
 
-			this.loginService.login(user).pipe(
-        tap((res: ApiResult) => {
-          if (res.status === 401) {
-            this.loginFormGroup.controls.password.setErrors({ 'loginError': true });
-          } else if (res.status !== 200) {
-            console.log(res);
-            this.loginFormGroup.controls.password.setErrors({ 'genericError': true });
-          }
-        })).subscribe();
-		}
-	}
+    get resetIcon() {
+        return refreshOutline;
+    }
 
-  cancel() {
-    this.modal.dismiss(null, 'cancel');
-    this.loginFormGroup.reset();
-    this.toastOpen = false;
-    this.hidePassword = true;
-  }
+    ionViewWillEnter() {
+        this.loginFormGroup.reset();
+        this.passwordFormGroup.reset();
+    }
 
-  onWillDismiss(event: any) {
-    this.loginFormGroup.reset();
-    this.toastOpen = false;
-    this.hidePassword = true;
-  }
+    togglePasswordVisibility() {
+        this.hidePassword = !this.hidePassword;
+    }
 
-	registerUser() {
-		this.router.navigate(['/register']);
-	}
+    resetPassword() {
+        if (this.passwordFormGroup.valid) {
+            this.loginService.getPasswordResetToken(this.passwordFormGroup.value.email!).pipe(
+                tap((res: ApiResult) => {
+                    this.toastOpen = true;
+                })
+            ).subscribe();
+            this.modal.dismiss(null, 'submit');
+        }
+    }
+
+    submit() {
+        if (this.loginFormGroup.valid) {
+            var user: User = {
+                password: this.loginFormGroup.value.password!,
+                username: this.loginFormGroup.value.username!
+            };
+
+            // TODO: Make this use email OR username
+            this.loginService.login(user).pipe(
+                tap((res: ApiResult) => {
+                    if (res.status === 401) {
+                        this.loginFormGroup.controls.password.setErrors({ 'loginError': true });
+                    } else if (res.status !== 200) {
+                        console.log(res);
+                        this.loginFormGroup.controls.password.setErrors({ 'genericError': true });
+                    }
+                })).subscribe();
+        }
+    }
+
+    cancel() {
+        this.modal.dismiss(null, 'cancel');
+        this.loginFormGroup.reset();
+        this.toastOpen = false;
+        this.hidePassword = true;
+    }
+
+    onWillDismiss(event: any) {
+        this.loginFormGroup.reset();
+        this.toastOpen = false;
+        this.hidePassword = true;
+    }
+
+    registerUser() {
+        this.router.navigate(['/register']);
+    }
 
 }

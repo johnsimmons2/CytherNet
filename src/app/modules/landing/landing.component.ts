@@ -83,7 +83,6 @@ export class LandingComponent implements OnInit {
       tap((res: ApiResult) => {
         if (res.success) {
           this.campaigns = res.data.map((campaign: Campaign) => {
-            campaign.description = "this is a test!\nSo _anyway_ I started blasting.\n\nI said. **blasting**!!!"
             this.changeDetectorRef.markForCheck();
             return campaign;
           });

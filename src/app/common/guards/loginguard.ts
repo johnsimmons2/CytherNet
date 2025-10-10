@@ -5,22 +5,22 @@ import { ApiService } from '../services/api.service';
 import { take, map, tap, catchError } from 'rxjs';
 
 
-@Injectable({ providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class LoginGuard implements CanActivate {
-  constructor(
-    private router: Router,
-    private accountService: UserService,
-  ) { }
+    constructor(
+        private router: Router,
+        private accountService: UserService,
+    ) { }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.accountService.isAuthenticated$.pipe(
-      take(1), // Ensures the observable completes
-      map((isAuth) => {
-        if (isAuth) {
-          return false;
-        }
-        return true;
-      }),
-    );
-  }
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        return this.accountService.isAuthenticated$.pipe(
+            take(1), // Ensures the observable completes
+            map((isAuth) => {
+                if (isAuth) {
+                    return false;
+                }
+                return true;
+            }),
+        );
+    }
 }

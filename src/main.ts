@@ -11,47 +11,48 @@ import { LoadingService } from './app/common/services/loading.service';
 import { provideServiceWorker } from '@angular/service-worker';
 import { UserService } from './app/common/services/user.service';
 import { provideMarkdown } from 'ngx-markdown';
+import { CsrfInterceptor } from './app/common/services/csrf-interceptor.service';
 
 
 if (environment.production) {
-  enableProdMode();
+    enableProdMode();
 }
 
 bootstrapApplication(AppComponent, {
-  providers: [
-    provideRouter(routes, withComponentInputBinding()),
-    provideHttpClient(
-      withInterceptorsFromDi()
-    ),
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: HttpInterceptorService,
-      multi: true,
-    },
-    {
-      provide: RouteReuseStrategy,
-      useClass: IonicRouteStrategy
-    },
-    provideIonicAngular({
-      innerHTMLTemplatesEnabled: true
-    }),
-    provideServiceWorker('ngsw-worker.js', {
-      enabled: true,
-      registrationStrategy: 'registerWhenStable:30000'
-    }),
-    provideMarkdown()
-  ],
+    providers: [
+        provideRouter(routes, withComponentInputBinding()),
+        provideHttpClient(
+            withInterceptorsFromDi()
+        ),
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: CsrfInterceptor,
+            multi: true
+        },
+        {
+            provide: RouteReuseStrategy,
+            useClass: IonicRouteStrategy
+        },
+        provideIonicAngular({
+            innerHTMLTemplatesEnabled: true
+        }),
+        provideServiceWorker('ngsw-worker.js', {
+            enabled: true,
+            registrationStrategy: 'registerWhenStable:30000'
+        }),
+        provideMarkdown()
+    ],
 });
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/ngsw-worker.js').then(
-    (registration) => {
-      console.log('Service Worker registered:', registration);
-    },
-    (error) => {
-      console.error('Service Worker registration failed:', error);
-    }
-  );
+    navigator.serviceWorker.register('/ngsw-worker.js').then(
+        (registration) => {
+            console.log('Service Worker registered:', registration);
+        },
+        (error) => {
+            console.error('Service Worker registration failed:', error);
+        }
+    );
 } else {
-  console.warn('Service Worker not supported in this browser.');
+    console.warn('Service Worker not supported in this browser.');
 }

@@ -8,49 +8,49 @@ import { ApiService } from "../../services/api.service";
 
 
 @Component({
-  selector: 'app-footer',
-  templateUrl: './footer.component.html',
-  standalone: true,
-  imports: [
-    CommonModule,
-    IonToolbar,
-    IonCardTitle,
-    IonCardSubtitle,
-    IonHeader,
-    IonButton,
-    RouterModule,
-    IonCard,
-    IonCardHeader,
-    IonCardContent,
-    IonModal,
-    IonList,
-    IonItem,
-    IonLabel,
-    IonNote,
-    IonGrid,
-    IonRow,
-    IonCol
-  ],
+    selector: 'app-footer',
+    templateUrl: './footer.component.html',
+    standalone: true,
+    imports: [
+        CommonModule,
+        IonToolbar,
+        IonCardTitle,
+        IonCardSubtitle,
+        IonHeader,
+        IonButton,
+        RouterModule,
+        IonCard,
+        IonCardHeader,
+        IonCardContent,
+        IonModal,
+        IonList,
+        IonItem,
+        IonLabel,
+        IonNote,
+        IonGrid,
+        IonRow,
+        IonCol
+    ],
 })
 export class FooterComponent {
 
-  public title: string = 'Cyther.online';
+    public title: string = 'Cyther.online';
 
-  @ViewChild(IonModal) modal!: IonModal;
+    @ViewChild(IonModal) modal!: IonModal;
 
-  @Input() apiVersion!: string;
-  @Input() appVersion!: string;
-  @Input() browser!: string;
-  @Input() browserVersion!: string;
-  @Input() ipAddress!: string;
-  @Input() operatingSystem!: string;
-  @Input() platform!: string;
+    @Input() apiVersion!: string;
+    @Input() appVersion!: string;
+    @Input() browser!: string;
+    @Input() browserVersion!: string;
+    @Input() ipAddress!: string;
+    @Input() operatingSystem!: string;
+    @Input() platform!: string;
 
-  constructor(private apiService: ApiService, private router: Router) {
-  }
+    constructor(private apiService: ApiService, private router: Router) {
+    }
 
-  close() {
-    this.modal.dismiss(null, 'cancel');
-  }
+    close() {
+        this.modal.dismiss(null, 'cancel');
+    }
 }
 

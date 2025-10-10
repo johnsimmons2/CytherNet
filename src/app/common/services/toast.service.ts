@@ -12,31 +12,31 @@ export interface ToastMessage {
 @Injectable({ providedIn: 'root' })
 export class ToastService {
 
-  constructor(private toastController: ToastController) {
+    constructor(private toastController: ToastController) {
 
-  }
+    }
 
-  public async show(message: ToastMessage): Promise<void> {
-    const toast = await this.toastController.create({
-      message: message.message,
-      duration: message.duration || 2500,
-      position: 'bottom',
-      color: message.type,
-      buttons: [
-        {
-          text: 'Close',
-          role: 'cancel'
-        }
-      ]
-    })
+    public async show(message: ToastMessage): Promise<void> {
+        const toast = await this.toastController.create({
+            message: message.message,
+            duration: message.duration || 2500,
+            position: 'bottom',
+            color: message.type,
+            buttons: [
+                {
+                    text: 'Close',
+                    role: 'cancel'
+                }
+            ]
+        })
 
-    await toast.present();
-  }
+        await toast.present();
+    }
 
-  public async showUnimplemented(): Promise<void> {
-    this.show({
-      message: 'This feature is not implemented yet. Please check back again later!',
-      type: 'warning'
-    });
-  }
+    public async showUnimplemented(): Promise<void> {
+        this.show({
+            message: 'This feature is not implemented yet. Please check back again later!',
+            type: 'warning'
+        });
+    }
 }

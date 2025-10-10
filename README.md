@@ -8,9 +8,20 @@ Run `ng serve` for a static dev server. Navigate to `http://localhost:4200/`.
 
 For a production build `npm run build-prod` and `npm run start`
 
-For local development with hot reload via nodemon, `npm run start-local`
+For local development with hot reload via nodemon, `npm run local`
 
 Using Express, an API proxy forwards local requests on `/api` to port `:5000`, where the API runs by default. The web can be accessed via localhost on `:8080`.
+
+### HTTPS / SSL
+For HTTPS you will need to run `npm run local-ssl`; but you need to have first created and signed certificates, and placed them in a new directory under the root of this project called `'./certs'`.
+
+1. Download `mkcert`, use `choco install mkcert` if you have chocolatey.
+2. Generate a local Certificate Authority (CA): `mkcert -install`
+3. Open the hosts file: `C:\Windows\System32\drivers\etc\hosts`
+4. Add custom .local domain for local HTTPS cross-site sessions: `127.0.0.1 cyther.local api.cyther.local`
+5. Change directory to this project's `.\certs\` directory.
+6. Generate certificate files from the hosts: `mkcert cyther.local api.cyther.local`
+7. Rename the files so that they appear as `cyther.local.pem`, `cyther.local-key.pem`.
 
 ## Build & Deploy (API)
 Navigate to subdirectory `/CytherApi`, the API is a Python Flask project. To run the API (default port `:5000`) run `flask run` or simply `python3 app.py`.

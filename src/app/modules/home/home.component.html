@@ -1,53 +1,54 @@
 <ion-content>
-  <ion-tabs>
-    <ion-tab-bar slot="bottom">
-      <ng-container *ngIf="navHistory.length > 1">
-        <div class="tooltip-container">
-          <ion-button shape="round" (click)="goBack()">
-            <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
-          </ion-button>
-          <ion-note class="tooltip">Go back</ion-note>
-        </div>
-      </ng-container>
-      <ion-tab-button tab="home">
-        <ion-icon name="home-outline"></ion-icon>
-        Home
-      </ion-tab-button>
+    <ion-tabs>
+        <ion-tab-bar slot="bottom">
+            <ng-container *ngIf="navHistory.length > 1">
+                <div class="tooltip-container">
+                    <ion-button shape="round" (click)="goBack()">
+                        <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
+                    </ion-button>
+                    <ion-note class="tooltip">Go back</ion-note>
+                </div>
+            </ng-container>
+            <ion-tab-button tab="home">
+                <ion-icon name="home-outline"></ion-icon>
+                Home
+            </ion-tab-button>
 
-      <ng-container *ngIf="isPlayer">
-        <ng-container *ngIf="selectedCharacter === null; else hasCharacter">
-          <ion-tab-button tab="characters">
-            <ion-icon name="people-outline"></ion-icon>
-            Characters
-          </ion-tab-button>
-        </ng-container>
+            <!-- Players Only -->
+            <ng-container *ngIf="userService.isPlayer() | async">
+                <!-- <ng-container *ngIf="selectedCharacter === null; else hasCharacter">
+                    <ion-tab-button tab="characters">
+                        <ion-icon name="people-outline"></ion-icon>
+                        Characters
+                    </ion-tab-button>
+                </ng-container>
 
-        <ng-template #hasCharacter>
-          <ion-tab-button tab="characters">
-            <ion-icon name="accessibility-outline"></ion-icon>
-            {{selectedCharacter!.name}}
-          </ion-tab-button>
-        </ng-template>
+                <ng-template #hasCharacter>
+                    <ion-tab-button tab="characters">
+                        <ion-icon name="accessibility-outline"></ion-icon>
+                        {{selectedCharacter!.name}}
+                    </ion-tab-button>
+                </ng-template> -->
 
-        <ion-tab-button tab="journal">
-          <ion-icon name="book-outline"></ion-icon>
-          Journal
-        </ion-tab-button>
+                <ion-tab-button tab="journal">
+                    <ion-icon name="book-outline"></ion-icon>
+                    Journal
+                </ion-tab-button>
 
-        <ion-tab-button tab="encyclopedia">
-          <ion-icon name="globe-outline"></ion-icon>
-          Encyclopedia
-        </ion-tab-button>
-      </ng-container>
+                <!-- <ion-tab-button tab="encyclopedia">
+                    <ion-icon name="globe-outline"></ion-icon>
+                    Encyclopedia
+                </ion-tab-button> -->
+            </ng-container>
 
-      <!-- Admin is last -->
-      <ng-container *ngIf="isAdmin">
-        <ion-tab-button tab="admin">
-          <ion-icon name="hammer-outline"></ion-icon>
-          Admin
-        </ion-tab-button>
-      </ng-container>
-    </ion-tab-bar>
-  </ion-tabs>
-  <app-download></app-download>
+            <!-- Admins Only -->
+            <ng-container *ngIf="userService.isAdmin() | async">
+                <ion-tab-button tab="admin">
+                    <ion-icon name="hammer-outline"></ion-icon>
+                    Admin
+                </ion-tab-button>
+            </ng-container>
+        </ion-tab-bar>
+    </ion-tabs>
+    <app-download></app-download>
 </ion-content>

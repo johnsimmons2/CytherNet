@@ -8,103 +8,71 @@ import { ApiResult } from '../model/apiresult';
 @Injectable({ providedIn: 'root' })
 export class ApiService {
 
-  readonly ROOT_URL = environment.apiUrl;
+    readonly ROOT_URL = environment.apiUrl;
 
-  constructor(
-      private http: HttpClient
-  ) {
-  }
-
-  private getHeaders() {
-    const token = localStorage.getItem('jwtToken')
-    var headers = new HttpHeaders()
-    if (token !== null) {
-      headers = headers.append('Authorization', 'Bearer ' + token)
+    constructor(
+        private http: HttpClient
+    ) {
     }
-    return headers;
-  }
 
-  private getHeadersWithToken(token: string) {
-    var headers = new HttpHeaders()
-    if (token !== null) {
-      headers = headers.append('Authorization', 'Bearer ' + token)
-    }
-    return headers;
-  }
-
-  private wrapper(action: (...args: any[]) => Observable<any>,
-                  path: string,
-                  options: any,
-                  payload?: any): any {
-    options.observe = 'response';
-    var actualConductedAction = payload === undefined ? action.call(this.http, path, options) : action.call(this.http, path, payload, options);
-
-      /**
-       * Try to subscribe to the action, and pass the result
-       * as an ApiResult object to the observer.
-       */
-    return actualConductedAction.pipe(
-      catchError((error) => {
-        return of<ApiResult>({
-          success: false,
-          status: error.status,
-          data: error,
-          errors: [error.error],
-          headers: error.headers
-        });
-      }),
-      map((res) => {
-        let body = res.body;
-        let success = res.status >= 200 && res.status < 300;
-        if (body?.data !== undefined) {
-          body = body.data;
-          if (body?.data?.success !== undefined) {
-            success = body.data.success;
-          }
+    private wrapper(
+        action: (...args: any[]) => Observable<any>,
+        path: string,
+        options: any,
+        payload?: any
+    ): Observable<ApiResult> {
+        if (options === undefined || options == null) {
+            options = {};
         }
+        options.observe = 'response';
+        options.withCredentials = true;
 
-        let result: ApiResult = {
-          success: success,
-          status: res.status,
-          data: body,
-          headers: res.headers
-        }
-        return result;
-      })
-    );
-  }
+        var actualConductedAction = payload === undefined
+            ? action.call(this.http, path, options)
+            : action.call(this.http, path, payload, options);
 
-  patch(endpoint: string, payload: any): Observable<any> {
-    return this.wrapper(this.http.patch, this.ROOT_URL + endpoint, { headers: this.getHeaders() }, payload);
-  }
+        return actualConductedAction.pipe(
+            catchError((error) =>
+                of<ApiResult>({
+                    success: false,
+                    status: error.status,
+                    data: error,
+                    errors: [error.error],
+                    headers: error.headers
+                })
+            ),
+            map((res) => {
+                let body = res.body?.data ?? res.body;
+                let success = res.status >= 200 && res.status < 300;
 
-  post(endpoint: string, payload: any): Observable<any> {
-    return this.wrapper(this.http.post, this.ROOT_URL + endpoint, { headers: this.getHeaders() }, payload);
-  }
-
-  delete(endpoint: string, payload: any | undefined = undefined): Observable<any> {
-    return this.wrapper(this.http.delete, this.ROOT_URL + endpoint, { headers: this.getHeaders(), body: payload });
-  }
-
-  get(endpoint: string, options?: any, headers?: any): Observable<any> {
-    if (headers === undefined && options === undefined) {
-      options = { headers: this.getHeaders() };
-    } else if (headers !== undefined && options === undefined) {
-      options = { headers: headers };
-    } else if (headers !== undefined && options !== undefined) {
-      options.headers = headers;
-    } else if (headers === undefined && options !== undefined) {
-      options.headers = this.getHeaders();
+                return {
+                    success,
+                    status: res.status,
+                    data: body,
+                    headers: res.headers
+                }
+            })
+        );
     }
-    return this.wrapper(this.http.get, this.ROOT_URL + endpoint, options);
-  }
 
-  validateToken(substitutedToken: any) {
-    return this.get(this.ROOT_URL + 'auth', { headers: this.getHeadersWithToken(substitutedToken) });
-  }
+    patch(endpoint: string, payload: any): Observable<any> {
+        return this.wrapper(this.http.patch, this.ROOT_URL + endpoint, {}, payload);
+    }
 
-  public healthCheck(): Observable<any> {
-    return this.get('health');
-  }
+    post(endpoint: string, payload: any): Observable<any> {
+        return this.wrapper(this.http.post, this.ROOT_URL + endpoint, {}, payload);
+    }
+
+    delete(endpoint: string, payload: any | undefined = undefined): Observable<any> {
+        return this.wrapper(this.http.delete, this.ROOT_URL + endpoint, { body: payload });
+    }
+
+    get(endpoint: string, options?: any): Observable<any> {
+        return this.wrapper(this.http.get, this.ROOT_URL + endpoint, options);
+    }
+
+    public healthCheck(): Observable<any> {
+        return this.get('health');
+    }
 
 }

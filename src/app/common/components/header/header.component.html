@@ -1,31 +1,31 @@
 <ion-toolbar color="primary">
-  <ion-title routerLink="/">
-    <a routerLink="/" style="text-decoration: inherit; cursor: pointer; color: inherit">
-      {{title}}
-    </a>
-  </ion-title>
+    <ion-title routerLink="/">
+        <a routerLink="/" style="text-decoration: inherit; cursor: pointer; color: inherit">
+            {{title}}
+        </a>
+    </ion-title>
 
-  <ion-buttons slot="start">
-    <app-connection-status></app-connection-status>
-  </ion-buttons>
+    <ion-buttons slot="start">
+        <app-connection-status></app-connection-status>
+    </ion-buttons>
 
-  <ion-buttons slot="end">
-    <ion-button [routerLink]="['/shop']" *ngIf="authenticated" [color]="onShop ? 'secondary' : 'dark'">
-      <ion-icon slot="icon-only" name="cart-outline"></ion-icon>
-    </ion-button>
+    <ion-buttons slot="end">
+        <ion-button [routerLink]="['/shop']" *ngIf="authenticated" [color]="onShop ? 'secondary' : 'dark'">
+            <ion-icon slot="icon-only" name="cart-outline"></ion-icon>
+        </ion-button>
 
-    <!-- dropdown on small screens -->
-    <ion-chip [routerLink]="['/profile']" *ngIf="authenticated" [color]="onProfile ? 'secondary' : 'dark'">
-      <ion-icon name="person-outline"></ion-icon>
-      <ion-label>{{username}}</ion-label>
-    </ion-chip>
+        <!-- dropdown on small screens -->
+        <ion-chip [routerLink]="['/profile']" *ngIf="authenticated" [color]="onProfile ? 'secondary' : 'dark'">
+            <ion-icon name="person-outline"></ion-icon>
+            <ion-label>{{username}}</ion-label>
+        </ion-chip>
 
-    <ion-button *ngIf="!authenticated && !onAbout" routerLink="about">About</ion-button>
+        <ion-button *ngIf="!authenticated && !onAbout" routerLink="about">About</ion-button>
 
-    <ion-button *ngIf="!authenticated && onAbout" routerLink="login">Login</ion-button>
+        <ion-button *ngIf="!authenticated && onAbout" routerLink="login">Login</ion-button>
 
-    <ng-container *ngIf="authenticated">
-      <ion-button (click)="logout()">Logout</ion-button>
-    </ng-container>
-  </ion-buttons>
+        <ng-container *ngIf="authenticated">
+            <ion-button (click)="logout()">Logout</ion-button>
+        </ng-container>
+    </ion-buttons>
 </ion-toolbar>

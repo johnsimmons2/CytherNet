@@ -78,14 +78,14 @@ ion-popover {
 }
 
 ion-content::part(scroll) {
-	overflow-y: auto;
-	scrollbar-width: thin;
-	scrollbar-color: var(--ion-item-background) transparent;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--ion-item-background) transparent;
 }
 
 ion-item::part(scroll) {
-	scrollbar-width: thin;
-	scrollbar-color: var(--ion-item-background) transparent;
+    scrollbar-width: thin;
+    scrollbar-color: var(--ion-item-background) transparent;
 }
 
 .inactive-note {

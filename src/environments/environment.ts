@@ -3,10 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  version: require('../../package.json').version,
-  apiUrl: 'http://127.0.0.1:5000/api/',
-  api_version: '1.0.0',
+    production: false,
+    version: require('../../package.json').version,
+    apiUrl: 'https://api.cyther.local:5000/api/',
+    api_version: '1.0.0',
 };
 
 /*

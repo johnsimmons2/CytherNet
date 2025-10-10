@@ -1,19 +1,14 @@
 <ion-app>
-  <ion-header>
-    <app-header></app-header>
-  </ion-header>
-  <ion-content>
-    <ion-router-outlet></ion-router-outlet>
-  </ion-content>
-  <ion-footer [translucent]="true">
-    <app-footer [appVersion]="cytherVersion"
-                [apiVersion]="apiVersion"
-                [browser]="browser"
-                [browserVersion]="browserVersion"
-                [ipAddress]="ipAddress"
-                [operatingSystem]="operatingSystem"
-                [platform]="platform"
-                style="height: 20px; max-height: 20px">
-    </app-footer>
-  </ion-footer>
+    <ion-header>
+        <app-header></app-header>
+    </ion-header>
+    <ion-content>
+        <ion-router-outlet></ion-router-outlet>
+    </ion-content>
+    <ion-footer [translucent]="true">
+        <app-footer [appVersion]="cytherVersion" [apiVersion]="apiVersion" [browser]="browser"
+            [browserVersion]="browserVersion" [ipAddress]="ipAddress" [operatingSystem]="operatingSystem"
+            [platform]="platform" style="height: 20px; max-height: 20px">
+        </app-footer>
+    </ion-footer>
 </ion-app>
