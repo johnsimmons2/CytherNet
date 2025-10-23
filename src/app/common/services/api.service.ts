@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { catchError, map, Observable, of, tap } from 'rxjs';
+import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ApiResult } from '../model/apiresult';
 
@@ -27,11 +27,18 @@ export class ApiService {
         options.observe = 'response';
         options.withCredentials = true;
 
-        var actualConductedAction = payload === undefined
+        const method = (action === this.http.post ? 'POST' :
+                action === this.http.patch ? 'PATCH' :
+                action === this.http.delete ? 'DELETE' : 'GET');
+        if (this.isUnsafe(method)) {
+            const csrf = this.getCookie('csrftoken');
+            options.headers = new HttpHeaders({ ...(options.headers || {}), ...(csrf ? { 'X-CSRFToken': csrf } : {}) });
+        }
+        const doCall = () => (payload === undefined
             ? action.call(this.http, path, options)
-            : action.call(this.http, path, payload, options);
+            : action.call(this.http, path, payload, options));
 
-        return actualConductedAction.pipe(
+        return doCall().pipe(
             catchError((error) =>
                 of<ApiResult>({
                     success: false,
@@ -41,16 +48,32 @@ export class ApiService {
                     headers: error.headers
                 })
             ),
+            // CSRF one-shot retry on 403
+            switchMap((res: any) => {
+                if (res?.success === false && res.status === 403 && this.isUnsafe(method)) {
+                    // One retry: prime CSRF then repeat original call
+                    return this.asyncCsrfPrime().then(() => doCall().pipe(
+                        catchError((error) =>
+                            of<ApiResult>({
+                                success: false,
+                                status: error.status,
+                                data: error,
+                                errors: [error.error],
+                                headers: error.headers
+                            })
+                        )
+                    )).then(obs => obs);
+                }
+                return of(res);
+            }),
             map((res) => {
-                let body = res.body?.data ?? res.body;
-                let success = res.status >= 200 && res.status < 300;
-
+                const body = res.body?.data ?? res.body;
+                const success = res.status >= 200 && res.status < 300;
                 return {
                     success,
                     status: res.status,
                     data: body,
-                    headers: res.headers
-                }
+                    headers: res.headers };
             })
         );
     }
@@ -73,6 +96,20 @@ export class ApiService {
 
     public healthCheck(): Observable<any> {
         return this.get('health');
+    }
+
+    getCookie(name: string): string | null {
+        const m = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([$?*|{}\]\\^])/g, '\\$1') + '=([^;]*)'));
+        return m ? decodeURIComponent(m[1]) : null;
+    }
+
+    isUnsafe(method: string) {
+        return ['POST','PUT','PATCH','DELETE'].includes(method.toUpperCase());
+    }
+
+    asyncCsrfPrime(): Promise<void> {
+        // hit your existing endpoint that has @ensure_csrf_cookie
+        return fetch(this.ROOT_URL + 'auth/check/', { credentials: 'include' }).then(() => {});
     }
 
 }

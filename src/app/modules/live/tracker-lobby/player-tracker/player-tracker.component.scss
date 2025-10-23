@@ -1,0 +1,71 @@
+/* kill card padding so abs buttons sit on true edges */
+.square {
+  aspect-ratio: 1 / 1;
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
+}
+
+/* relative box that fills the card */
+.viewport {
+  position: relative;
+  inline-size: 100%;
+  block-size: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* keep content above bg but below buttons if needed */
+ion-card-header,
+ion-card-content { z-index: 1; text-align: center; }
+
+/* full-height side buttons */
+.health-btn {
+  position: absolute;
+  inset-block: 0;          /* top:0; bottom:0; */
+  inline-size: 3.25rem;    /* button width */
+  z-index: 10;
+  width: 100%;
+  --border-radius: 0;
+  --box-shadow: none;
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
+}
+
+.health-row.delta {
+    font-size: 2.5rem;
+}
+
+.hotzone {
+  position: absolute;
+  inset-block: 0;
+  inline-size: var(--hotzone-w, 20%);       /* width of interactive edge */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  padding: 0;
+  transition: background .12s ease;
+}
+.hotzone.left  { inset-inline-start: 0; }
+.hotzone.right { inset-inline-end: 0; }
+
+/* visual feedback */
+.hotzone:hover,
+.hotzone.pressed { background: rgba(255, 255, 255, 0.041); } /* highlight on hover/touch */
+
+/* sides */
+.health-btn.left  { inset-inline-start: 0; }  /* left in LTR, right in RTL */
+.health-btn.right { inset-inline-end: 0; }
+
+/* icon sizing lives on the icon, not the button */
+.health-btn ion-icon { font-size: 2rem; }
+
+/* existing styles */
+.health { font-weight: 700; font-size: 5rem; margin-top: 1rem; }
+.health-row { display: flex; align-items: center; justify-content: center; gap: .75rem; }
+.cmdr-list { overflow: auto; border-radius: .5rem; --background: rgba(0,0,0,.25); }
+.muted { opacity: .7; text-align: center; font-size: .9rem; }

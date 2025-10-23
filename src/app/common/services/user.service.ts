@@ -46,7 +46,7 @@ export class UserService extends BaseService<User> {
     }
 
     get currentUserId(): string | null {
-        return localStorage.getItem('username') ?? null;
+        return localStorage.getItem('uid') ?? null;
     }
 
     public userHasRoles(roleNames: Array<string>): Observable<boolean> {
@@ -55,7 +55,6 @@ export class UserService extends BaseService<User> {
         const queryRoles = (roleNames).map(x => x.toLowerCase()) ?? [];
 
         const hasRole = roles.some(role => queryRoles.includes(role.toLowerCase()));
-
         return this.isAuthenticated$.pipe(
             take(1),
             map(isAuth => isAuth === true && hasRole)
@@ -85,15 +84,18 @@ export class UserService extends BaseService<User> {
      */
 
     public saveUserToLocalStorage(data: any) {
-        const validateString = (val: any) => (typeof val === 'string' ? val : 'N/A')
+        console.log(`User data received: ${JSON.stringify(data)}`);
+        console.log(`Test 1: ${data.user.username}`);
+        const validateString = (val: any) => `${val}`;
 
         localStorage.setItem('username', validateString(data.user.username));
+        localStorage.setItem('uid', validateString(data.user.id));
         localStorage.setItem('email', validateString(data.user.email));
         localStorage.setItem('first_name', validateString(data.user.first_name));
         localStorage.setItem('last_name', validateString(data.user.last_name));
         localStorage.setItem('date_joined', validateString(data.user.date_joined));
 
-        localStorage.setItem('groups', JSON.stringify(data.user_groups));
+        localStorage.setItem('groups', JSON.stringify(data.user.groups));
     }
 
     public login(user: User): Observable<ApiResult> {
@@ -104,12 +106,11 @@ export class UserService extends BaseService<User> {
             }),
             map((res: ApiResult) => {
                 if (res.success && res.data) {
-                    console.log('Login successful:', res.data);
 
                     setTimeout(() => {
                         this.saveUserToLocalStorage(res.data);
                         this.isAuthenticatedSubject.next(true);
-                        this.router.navigate(['/']);
+                        this.router.navigate(['/']).then();
                     }, 0);
                 } else {
                     this.isAuthenticatedSubject.next(false);

@@ -5,29 +5,29 @@ import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, Ion
 
 
 @Component({
-  selector: 'app-content',
-  templateUrl: './content.component.html',
-  standalone: true,
-  imports: [
-    CommonModule,
-    RouterLink,
-    IonList,
-    IonItem,
-    IonLabel,
-    IonSelect,
-    IonSelectOption,
-    IonSearchbar,
-    IonContent,
-    IonCard,
-    IonCardContent,
-    IonCardHeader,
-    IonButton,
-    IonCardSubtitle,
-    IonCardTitle,
-    IonIcon,
-  ]
+    selector: 'app-content',
+    templateUrl: './content.component.html',
+    standalone: true,
+    imports: [
+        CommonModule,
+        RouterLink,
+        IonList,
+        IonItem,
+        IonLabel,
+        IonSelect,
+        IonSelectOption,
+        IonSearchbar,
+        IonContent,
+        IonCard,
+        IonCardContent,
+        IonCardHeader,
+        IonButton,
+        IonCardSubtitle,
+        IonCardTitle,
+        IonIcon,
+    ]
 })
 export class ContentComponent {
-  constructor() {
-  }
+    constructor() {
+    }
 }

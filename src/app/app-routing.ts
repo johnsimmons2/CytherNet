@@ -52,6 +52,10 @@ export const routes: Routes = [
                         pathMatch: 'full',
                         loadComponent: () => import('./modules/landing/landing.component').then(m => m.LandingComponent)
                     },
+                    {
+                        path: 'live',
+                        loadComponent: () => import('./modules/live/tracker-lobby/trackerlobby.component').then(m => m.TrackerLobbyComponent)
+                    }
                 ]
             },
             {

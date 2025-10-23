@@ -6,7 +6,6 @@ import { AppComponent } from './app/app.component';
 import { provideIonicAngular, IonicRouteStrategy } from '@ionic/angular/standalone';
 import { provideRouter, RouteReuseStrategy, withComponentInputBinding } from '@angular/router';
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule, provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
-import { HttpInterceptorService } from './app/common/services/http-interceptor.service';
 import { LoadingService } from './app/common/services/loading.service';
 import { provideServiceWorker } from '@angular/service-worker';
 import { UserService } from './app/common/services/user.service';

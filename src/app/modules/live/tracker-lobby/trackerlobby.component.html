@@ -1,0 +1,160 @@
+<ion-content>
+    <ion-card>
+        <ion-card-header>
+            <ion-grid style="width: 100%">
+                <ion-row>
+                    <ion-col size="10">
+                        <ion-card-title>Tracker Lobby</ion-card-title>
+                    </ion-col>
+                    <ion-col size="2">
+                        <ion-button fill="clear" id="open-settings">
+                            <ion-icon name="cog-outline"></ion-icon>
+                        </ion-button>
+
+                        <ion-modal trigger="open-settings" (willDismiss)="onWillDismiss($event)">
+                            <ng-template>
+                                <ion-header>
+                                    <ion-toolbar>
+                                    <ion-buttons slot="start">
+                                        <ion-button (click)="cancel()">Cancel</ion-button>
+                                    </ion-buttons>
+                                    <ion-title>Change settings for <b>{{username}}</b></ion-title>
+                                    <ion-buttons slot="end">
+                                        <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
+                                    </ion-buttons>
+                                    </ion-toolbar>
+                                </ion-header>
+                                <ion-content class="ion-padding">
+                                    <ion-item>
+                                        <ion-input
+                                            label="Choose a color"
+                                            labelPlacement="stacked"
+                                            type="text"
+                                            placeholder="Your name"
+                                            [(ngModel)]="colorInput"
+                                        ></ion-input>
+                                    </ion-item>
+                                    <ion-item>
+                                        <ion-input
+                                            label="Enter an image URL"
+                                            labelPlacement="stacked"
+                                            type="text"
+                                            placeholder="Your name"
+                                            [(ngModel)]="imgInput"
+                                        ></ion-input>
+                                    </ion-item>
+                                </ion-content>
+                            </ng-template>
+                        </ion-modal>
+
+
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col size="12">
+                        <ion-card-subtitle *ngIf="connected$ | async; else offline">Connected</ion-card-subtitle>
+                        <ng-template #offline>
+                            <ion-card-subtitle>Reconnecting…</ion-card-subtitle>
+                        </ng-template>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-card-header>
+
+    <!-- BROWSE ROOMS -->
+        <ng-container *ngIf="!currentRoom; else inRoomView">
+            <ion-card-content>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size="6">
+                            <ion-item>
+                                <ion-label position="stacked">Room Name</ion-label>
+                                <ion-input [(ngModel)]="inputRoomName" placeholder="My room"></ion-input>
+                            </ion-item>
+                        </ion-col>
+                        <ion-col size="3">
+                            <ion-item>
+                                <ion-label position="stacked">Max Players</ion-label>
+                                <ion-input type="number" [(ngModel)]="inputMaxPlayers"></ion-input>
+                            </ion-item>
+                        </ion-col>
+                        <ion-col size="3">
+                            <ion-item>
+                                <ion-label position="stacked">Max HP</ion-label>
+                                <ion-input type="number" [(ngModel)]="inputMaxHealth"></ion-input>
+                            </ion-item>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col>
+                            <ion-button (click)="createRoom()">Create</ion-button>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+
+                <ng-container *ngIf="rooms$ | async as rooms">
+                <ion-card *ngFor="let room of rooms; trackBy: trackRoom">
+                    <ion-card-header>
+                    <ion-card-title>{{ room.name }}</ion-card-title>
+                    <ion-card-subtitle>
+                        Players: {{ room.players.length }}{{ room.max_players ? ('/' + room.max_players) : '' }}
+                    </ion-card-subtitle>
+                    </ion-card-header>
+                    <ion-card-content>
+                    <ion-button (click)="joinRoom(room.room_id)" [disabled]="!!currentRoom || (room.max_players && room.players.length >= room.max_players)">
+                        Join
+                    </ion-button>
+                    </ion-card-content>
+                </ion-card>
+                </ng-container>
+            </ion-card-content>
+        </ng-container>
+
+    <!-- IN ROOM -->
+    <ng-template #inRoomView>
+      <ion-card-content *ngIf="currentRoom as room">
+        <h1>{{ room.name }}</h1>
+
+        <!-- Owner drag-to-order -->
+        <h3>Players</h3>
+
+
+        <!-- Hide turn order stuff if room started -->
+        <div *ngIf="isOwner(room)">
+          <h3>Set Turn Order</h3>
+          <ion-list>
+              <ion-reorder-group [disabled]="false" (ionItemReorder)="handleDragDrop($event)">
+                <ion-item *ngFor="let occ of room.players; trackBy: trackPlayer">
+                    <ion-label>
+                        {{ occ.player.name }}
+                        <span *ngIf="occ.player.id === room.turn_user_id" aria-label="Current turn">•</span>
+                    </ion-label>
+                    <ion-reorder slot="start"></ion-reorder>
+                </ion-item>
+              </ion-reorder-group>
+          </ion-list>
+        </div>
+
+        <!-- Non-owner sees fixed order -->
+        <div *ngIf="!isOwner(room)">
+            <ion-list>
+                <ion-item *ngFor="let occ of room.players; trackBy: trackPlayer">
+                    <span>{{ occ.player.name }}</span>
+                    <span *ngIf="occ.player.id === room.turn_user_id" aria-label="Current turn">•</span>
+                </ion-item>
+            </ion-list>
+        </div>
+
+        <ion-grid>
+            <ion-row>
+                <ion-col *ngFor="let occ of room.players; trackBy: trackPlayer">
+                    <player-tracker [player]="occ.player"></player-tracker>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+
+        <ion-button (click)="leaveRoom(room)">Leave Room</ion-button>
+      </ion-card-content>
+    </ng-template>
+  </ion-card>
+</ion-content>

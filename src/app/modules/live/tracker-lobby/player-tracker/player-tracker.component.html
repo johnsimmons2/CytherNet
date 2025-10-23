@@ -1,0 +1,79 @@
+<ng-container *ngIf="player; else noPlayer">
+  <ion-card
+    class="square"
+    [style.background-image]="player?.image ? 'url(' + img + ')' : 'none'"
+    [style.background-size]="'cover'"
+    [style.background-position]="'center'"
+    [style.background-color]="normalizeHex(player.color)"
+    [style.color]="fgColor()">
+
+
+    <!-- LEFT hotzone -->
+    <div class="hotzone left"
+        [class.pressed]="pressedSide==='left'"
+        (pointerdown)="onPressStart('left', $event)"
+        (pointerup)="onPressEnd($event)">
+        <ion-button [style.color]="fgColor()" class="health-btn" fill="clear">
+            <ion-icon slot="icon-only" name="remove-outline"></ion-icon>
+        </ion-button>
+    </div>
+
+    <!-- RIGHT hotzone -->
+    <div class="hotzone right"
+        [class.pressed]="pressedSide==='right'"
+        (pointerdown)="onPressStart('right', $event)"
+        (pointerup)="onPressEnd($event)">
+        <ion-button [style.color]="fgColor()" class="health-btn" fill="clear">
+            <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+        </ion-button>
+    </div>
+
+    <ion-card-header>
+      <ion-card-title><h1 [style.color]="fgColor()">{{ player.name }}</h1></ion-card-title>
+
+      <ng-container *ngIf="player.id !== currentUserId">
+          <ion-segment value="{{ commanderMode ? 'on' : 'off' }}"
+                     (ionChange)="setCommanderMode($event.detail.value === 'on')"
+                     class="cmdr-toggle" >
+              <ion-segment-button value="off">
+                  <ion-icon [style.color]="fgColor()" name="fitness-outline"></ion-icon>
+                  <ion-label [style.color]="fgColor()">Life</ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="on">
+                  <ion-icon [style.color]="fgColor()" name="skull-outline"></ion-icon>
+                  <ion-label [style.color]="fgColor()">Cmdr</ion-label>
+              </ion-segment-button>
+        </ion-segment>
+      </ng-container>
+    </ion-card-header>
+
+    <ion-card-content>
+      <div class="health-row">
+        <div class="health">{{ player.health }}</div>
+      </div>
+      <div class="health-row delta" *ngIf="delta !== 0">
+        {{delta}}
+      </div>
+
+      <ion-list class="cmdr-list" *ngIf="commanderList().length; else noCmdr">
+        <ion-item lines="none" *ngFor="let c of commanderList()">
+          <ion-label>{{ c.name }}</ion-label>
+          <ion-badge slot="end" color="warning">{{ c.dmg }}</ion-badge>
+        </ion-item>
+      </ion-list>
+
+      <ng-template #noCmdr>
+        <div class="muted">No commander damage.</div>
+      </ng-template>
+    </ion-card-content>
+  </ion-card>
+</ng-container>
+
+<ng-template #noPlayer>
+  <ion-card class="square">
+    <ion-card-header>
+        <ion-card-title>Unknown</ion-card-title>
+    </ion-card-header>
+    <ion-card-content></ion-card-content>
+  </ion-card>
+</ng-template>

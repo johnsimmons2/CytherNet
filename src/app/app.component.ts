@@ -12,7 +12,6 @@ import { PlatformService } from './common/services/platform.service';
 import { ApiService } from './common/services/api.service';
 import { IconImportService } from './common/services/iconimport.service';
 import { interval, tap, switchMap } from 'rxjs';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { CsrfInterceptor } from './common/services/csrf-interceptor.service';
 
 /**

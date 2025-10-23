@@ -5,7 +5,10 @@
 export const environment = {
     production: false,
     version: require('../../package.json').version,
-    apiUrl: 'https://api.cyther.local:5000/api/',
+    apiUrl: 'http://localhost:5000/api/',
+    wsApiUrl: 'http://localhost:5000/ws/',
+    //apiUrl: 'http://api.cyther.local:5000/api/',
+    //wsApiUrl: 'http://api.cyther.local:5000/ws/',
     api_version: '1.0.0',
 };
 

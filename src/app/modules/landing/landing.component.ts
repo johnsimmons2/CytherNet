@@ -21,126 +21,130 @@ import { CampaignCardComponent } from "src/app/common/components/campaignCard/ca
 
 
 @Component({
-  selector: 'app-landing',
-  templateUrl: './landing.component.html',
-  standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    IonAccordion,
-    IonAccordionGroup,
-    IonContent,
-    IonCard,
-    IonButton,
-    IonGrid,
-    IonNote,
-    IonRow,
-    IonCol,
-    IonLabel,
-    IonIcon,
-    IonText,
-    IonButtons,
-    IonToolbar,
-    IonLabel,
-    IonItem,
-    IonCardHeader,
-    IonList,
-    IonListHeader,
-    IonCardTitle,
-    IonCardContent,
-    NoteTextComponent,
-    CampaignCardComponent,
-    CharacterCardComponent,
-    NoteCardComponent
-  ],
-  styles: [`
-  `],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-landing',
+    templateUrl: './landing.component.html',
+    standalone: true,
+    imports: [
+        CommonModule,
+        RouterModule,
+        IonAccordion,
+        IonAccordionGroup,
+        IonContent,
+        IonCard,
+        IonButton,
+        IonGrid,
+        IonNote,
+        IonRow,
+        IonCol,
+        IonLabel,
+        IonIcon,
+        IonText,
+        IonButtons,
+        IonToolbar,
+        IonLabel,
+        IonItem,
+        IonCardHeader,
+        IonList,
+        IonListHeader,
+        IonCardTitle,
+        IonCardContent,
+        NoteTextComponent,
+        CampaignCardComponent,
+        CharacterCardComponent,
+        NoteCardComponent
+    ],
+    styles: [``],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LandingComponent implements OnInit {
 
-  private unsubscribe$ = new Subject<void>();
+    private unsubscribe$ = new Subject<void>();
 
-  campaigns: Campaign[] = [];
-  characters: Character[] = [];
-  notes: ParsedNote[] = [];
+    campaigns: Campaign[] = [];
+    characters: Character[] = [];
+    notes: ParsedNote[] = [];
 
-  get hasCampaigns() {
-    return this.campaigns.length > 0;
-  }
+    get isPlayer() {
+        return this.userService.isPlayer();
+    }
 
-  constructor(private campaignService: CampaignService,
-              private userService: UserService,
-              private characterService: CharacterService,
-              private noteService: NoteService,
-              private toastService: ToastService,
-              private parser: ParsingService,
-              private changeDetectorRef: ChangeDetectorRef) {
-  }
+    get hasCampaigns() {
+        return this.campaigns.length > 0;
+    }
 
-  ngOnInit() {
-    this.campaignService.getCampaignsForUser(this.userService.currentUsername!).pipe(
-      tap((res: ApiResult) => {
-        if (res.success) {
-          this.campaigns = res.data.map((campaign: Campaign) => {
-            this.changeDetectorRef.markForCheck();
-            return campaign;
-          });
-        }
-      })
-    ).subscribe();
+    constructor(private campaignService: CampaignService,
+        private userService: UserService,
+        private characterService: CharacterService,
+        private noteService: NoteService,
+        private toastService: ToastService,
+        private parser: ParsingService,
+        private changeDetectorRef: ChangeDetectorRef) {
+    }
 
-    this.characterService.getCharactersForUser(this.userService.currentUsername!).pipe(
-      tap((res: Character[]) => {
-        if (res.length > 0) {
-          this.characters = res;
-          console.log(res);
-          this.changeDetectorRef.markForCheck();
-        }
-      })
-    ).subscribe();
+    ngOnInit() {
+        console.log(this.userService.getAllRoles());
+        this.campaignService.getCampaignsForUser(this.userService.currentUsername!).pipe(
+            tap((res: ApiResult) => {
+                if (res.success) {
+                    this.campaigns = res.data.map((campaign: Campaign) => {
+                        this.changeDetectorRef.markForCheck();
+                        return campaign;
+                    });
+                }
+            })
+        ).subscribe();
 
-    this.noteService.getPlayerNotes().pipe(
-      map((res: ApiResult) => {
-        if (res.data) {
-          return res.data as Note[];
-        }
-        return [];
-      }),
-      map((res: Note[]) => {
-        return res.sort((a, b) => a.updated! > b.updated! ? -1 : 1).slice(0, 5);
-      }),
-      switchMap((res: Note[]) => {
-        const parseObservables = res.map(note => this.parser.parseNote(note));
-        return forkJoin(parseObservables);
-      })
-    ).subscribe({
-      next: parsedNotes => {
-        this.notes = parsedNotes.sort((a, b) => a.updated > b.updated ? -1 : 1);
-        console.log('Parsed Notes:', this.notes);
-        this.changeDetectorRef.markForCheck();
-      },
-      error: err => console.error('Error fetching or parsing notes:', err)
-    });
-  }
+        this.characterService.getCharactersForUser(this.userService.currentUsername!).pipe(
+            tap((res: Character[]) => {
+                if (res.length > 0) {
+                    this.characters = res;
+                    console.log(res);
+                    this.changeDetectorRef.markForCheck();
+                }
+            })
+        ).subscribe();
 
-  public notImplemented(): void {
-    this.toastService.showUnimplemented();
-  }
+        this.noteService.getPlayerNotes().pipe(
+            map((res: ApiResult) => {
+                if (res.data) {
+                    return res.data as Note[];
+                }
+                return [];
+            }),
+            map((res: Note[]) => {
+                return res.sort((a, b) => a.updated! > b.updated! ? -1 : 1).slice(0, 5);
+            }),
+            switchMap((res: Note[]) => {
+                const parseObservables = res.map(note => this.parser.parseNote(note));
+                return forkJoin(parseObservables);
+            })
+        ).subscribe({
+            next: parsedNotes => {
+                this.notes = parsedNotes.sort((a, b) => a.updated > b.updated ? -1 : 1);
+                console.log('Parsed Notes:', this.notes);
+                this.changeDetectorRef.markForCheck();
+            },
+            error: err => console.error('Error fetching or parsing notes:', err)
+        });
+    }
 
-  /**
-   * TODO:
-   * - This will soon become a separate service to handle this kind of transformation as well
-   * as searching for matching tags. E.g.: `And then [USER.Jericho] said...`
-   * @param description
-   * @returns
-   */
+    public notImplemented(): void {
+        this.toastService.showUnimplemented();
+    }
 
-  public trackByNoteId(index: number, note: ParsedNote) {
-    return note.id;
-  }
+    /**
+     * TODO:
+     * - This will soon become a separate service to handle this kind of transformation as well
+     * as searching for matching tags. E.g.: `And then [USER.Jericho] said...`
+     * @param description
+     * @returns
+     */
 
-  public trackByPartId(index: number, part: {note: Note, part: any}) {
-    return part.note.id! + index;
-  }
+    public trackByNoteId(index: number, note: ParsedNote) {
+        return note.id;
+    }
+
+    public trackByPartId(index: number, part: { note: Note, part: any }) {
+        return part.note.id! + index;
+    }
 }
